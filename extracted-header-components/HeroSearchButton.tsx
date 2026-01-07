@@ -21,11 +21,11 @@ const HeroSearchButton: FC<HeroSearchButtonProps> = ({
       } ${className}`}
     >
       <div className="flex items-center font-medium text-sm">
-        <span className="block pl-5 pr-4 py-3">Location</span>
+        <span className="block pl-5 pr-4 py-3">Packages</span>
         <span className="h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700"></span>
-        <span className="block px-4 py-3">Check In</span>
+        <span className="block px-4 py-3">Vehicles</span>
         <span className="h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700"></span>
-        <span className="block px-4 font-normal py-3">Add guests</span>
+        <span className="block px-4 font-normal py-3">Customize Your Trip</span>
       </div>
 
       <div className="flex-shrink-0 ml-auto pr-2">

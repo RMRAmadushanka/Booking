@@ -1,5 +1,8 @@
+"use client";
+
 import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
 import HeroSearchForm2Mobile from "@/components/HeroSearchForm2Mobile/HeroSearchForm2Mobile";
+import PackageCard from "@/components/PackageCard";
 
 export default function Home() {
   return (
@@ -165,6 +168,239 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Travel Packages - Different Card Styles */}
+      <div className="py-20 bg-neutral-50 dark:bg-neutral-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+              Travel Packages
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+              Discover amazing travel packages with different card styles
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6">
+            {/* Split Style */}
+            <PackageCard
+              type="travel"
+              variant="split"
+              title="San Francisco"
+              destination="San Francisco, USA"
+              classType="Premium economy"
+              origin="SFO"
+              price="from $240"
+              imageUrl="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=600&fit=crop"
+              onAction={() => console.log("Search flight to San Francisco")}
+            />
+            <PackageCard
+              type="travel"
+              variant="split"
+              title="New York Adventure"
+              destination="New York, USA"
+              classType="5 Days / 4 Nights"
+              origin="NYC"
+              price="from $1,200"
+              imageUrl="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=600&fit=crop"
+              onAction={() => console.log("View New York package")}
+            />
+            <PackageCard
+              type="travel"
+              variant="split"
+              title="Paris Romance"
+              destination="Paris, France"
+              classType="7 Days / 6 Nights"
+              origin="CDG"
+              price="from $2,450"
+              imageUrl="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=600&fit=crop"
+              onAction={() => console.log("View Paris package")}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Vehicle Packages - Different Card Styles */}
+      <div className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+              Vehicle Packages
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+              Rent the perfect vehicle with elegant card designs
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6">
+            {/* Split Style */}
+            <PackageCard
+              type="vehicle"
+              variant="split"
+              title="Luxury SUV"
+              vehicleModel="BMW X5"
+              location="New York"
+              transmission="Automatic"
+              seats={5}
+              price="from $89/day"
+              imageUrl="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent BMW X5")}
+            />
+            <PackageCard
+              type="vehicle"
+              variant="split"
+              title="Compact Car"
+              vehicleModel="Toyota Corolla"
+              location="Los Angeles"
+              transmission="Automatic"
+              seats={5}
+              price="from $45/day"
+              imageUrl="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Toyota Corolla")}
+            />
+            <PackageCard
+              type="vehicle"
+              variant="split"
+              title="Sports Car"
+              vehicleModel="Porsche 911"
+              location="Miami"
+              transmission="Manual"
+              seats={2}
+              price="from $299/day"
+              imageUrl="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Porsche 911")}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* New Card Style Showcase */}
+      <div className="py-20 bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-950">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+              Explore New Card Styles
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+              Discover unique and creative card designs for your packages
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Neon Style */}
+            <PackageCard
+              type="travel"
+              variant="neon"
+              title="Cyber City"
+              destination="Tokyo, Japan"
+              duration="4 Days / 3 Nights"
+              rating={4.9}
+              price="from $1,800"
+              badge="Hot"
+              imageUrl="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=600&fit=crop"
+              onAction={() => console.log("View Cyber City")}
+            />
+            {/* Vintage Style */}
+            <PackageCard
+              type="travel"
+              variant="vintage"
+              title="Classic Europe"
+              destination="Paris, France"
+              duration="7 Days / 6 Nights"
+              rating={4.8}
+              price="from $2,200"
+              badge="Classic"
+              imageUrl="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=600&fit=crop"
+              onAction={() => console.log("View Classic Europe")}
+            />
+            {/* Bold Style */}
+            <PackageCard
+              type="travel"
+              variant="bold"
+              title="Urban Adventure"
+              destination="New York, USA"
+              duration="5 Days / 4 Nights"
+              rating={4.7}
+              price="from $1,500"
+              badge="Bold"
+              imageUrl="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=600&fit=crop"
+              onAction={() => console.log("View Urban Adventure")}
+            />
+            {/* Soft Style */}
+            <PackageCard
+              type="travel"
+              variant="soft"
+              title="Romantic Getaway"
+              destination="Santorini, Greece"
+              duration="6 Days / 5 Nights"
+              rating={4.9}
+              price="from $2,800"
+              badge="Romantic"
+              imageUrl="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=400&h=600&fit=crop"
+              onAction={() => console.log("View Romantic Getaway")}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+            {/* Dark Style */}
+            <PackageCard
+              type="vehicle"
+              variant="dark"
+              title="Luxury Sedan"
+              vehicleModel="Mercedes S-Class"
+              location="Berlin"
+              transmission="Automatic"
+              seats={5}
+              price="from $120/day"
+              badge="Premium"
+              imageUrl="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Mercedes")}
+            />
+            {/* Vibrant Style */}
+            <PackageCard
+              type="vehicle"
+              variant="vibrant"
+              title="Sports Convertible"
+              vehicleModel="Ferrari 488"
+              location="Monaco"
+              transmission="Automatic"
+              seats={2}
+              price="from $450/day"
+              badge="Exotic"
+              imageUrl="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Ferrari")}
+            />
+            {/* Corporate Style */}
+            <PackageCard
+              type="vehicle"
+              variant="corporate"
+              title="Business Class"
+              vehicleModel="Audi A6"
+              location="London"
+              transmission="Automatic"
+              seats={5}
+              price="from $95/day"
+              badge="Business"
+              imageUrl="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Audi")}
+            />
+            {/* Artistic Style */}
+            <PackageCard
+              type="vehicle"
+              variant="artistic"
+              title="Designer Edition"
+              vehicleModel="Tesla Model S"
+              location="San Francisco"
+              transmission="Automatic"
+              seats={5}
+              price="from $150/day"
+              badge="Electric"
+              imageUrl="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400&h=600&fit=crop"
+              onAction={() => console.log("Rent Tesla")}
+            />
           </div>
         </div>
       </div>

@@ -27,14 +27,14 @@ const SearchButton: FC<SearchButtonProps> = ({
           onClick={onLocationClick}
           className={`block pl-5 pr-4 py-3 ${onLocationClick ? "cursor-pointer" : ""}`}
         >
-          Location
+          Packages
         </span>
         <span className="h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700"></span>
         <span
           onClick={onCheckInClick}
           className={`block px-4 py-3 ${onCheckInClick ? "cursor-pointer" : ""}`}
         >
-          Check In
+          Vehicles
         </span>
         <span className="h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700"></span>
         <span
@@ -45,14 +45,6 @@ const SearchButton: FC<SearchButtonProps> = ({
         </span>
       </div>
 
-      <div
-        className={`flex-shrink-0 ml-auto pr-2 ${onSearchClick ? "cursor-pointer" : ""}`}
-        onClick={onSearchClick}
-      >
-        <span className="w-8 h-8 flex items-center justify-center rounded-full bg-primary-6000 text-white">
-          <MagnifyingGlassIcon className="w-5 h-5" />
-        </span>
-      </div>
     </div>
   );
 };

@@ -2,17 +2,22 @@
 
 import React, { FC, useState } from "react";
 import StaySearchForm from "./(stay-search-form)/StaySearchForm";
+import ExperiencesSearchForm from "./(experiences-search-form)/ExperiencesSearchForm";
+import RentalCarSearchForm from "./(car-search-form)/RentalCarSearchForm";
+import FlightSearchForm from "./(flight-search-form)/FlightSearchForm";
 
 export type SearchTab = "Stays" | "Experiences" | "Cars" | "Flights";
 
 export interface HeroSearchFormProps {
   className?: string;
   currentTab?: SearchTab;
+  currentPage?: "Stays" | "Experiences" | "Cars" | "Flights";
 }
 
 const HeroSearchForm: FC<HeroSearchFormProps> = ({
   className = "",
   currentTab = "Stays",
+  currentPage,
 }) => {
   const tabs: SearchTab[] = ["Stays", "Experiences", "Cars", "Flights"];
   const [tabActive, setTabActive] = useState<SearchTab>(currentTab);
@@ -29,7 +34,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                 active
                   ? ""
                   : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-400"
-              }`}
+              } `}
               key={tab}
             >
               {active && (
@@ -44,9 +49,19 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
   };
 
   const renderForm = () => {
-    // For simplicity, we'll just use StaySearchForm for all tabs
-    // You can extend this with other forms later
-    return <StaySearchForm />;
+    switch (tabActive) {
+      case "Stays":
+        return <StaySearchForm />;
+      case "Experiences":
+        return <ExperiencesSearchForm />;
+      case "Cars":
+        return <RentalCarSearchForm />;
+      case "Flights":
+        return <FlightSearchForm />;
+
+      default:
+        return null;
+    }
   };
 
   return (

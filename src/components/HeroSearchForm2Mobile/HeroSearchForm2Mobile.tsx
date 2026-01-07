@@ -4,13 +4,19 @@ import React, { Fragment, useState } from "react";
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import ButtonSubmit from "./ButtonSubmit";
 import { useTimeoutFn } from "react-use";
-import StaySearchForm from "./StaySearchForm";
+import StaySearchForm from "./(stay-search-form)/StaySearchForm";
+import CarsSearchForm from "./(car-search-form)/CarsSearchForm";
+import FlightSearchForm from "./(flight-search-form)/FlightSearchForm";
 
 const HeroSearchForm2Mobile = () => {
   const [showModal, setShowModal] = useState(false);
+
+  // FOR RESET ALL DATA WHEN CLICK CLEAR BUTTON
   const [showDialog, setShowDialog] = useState(false);
-  const [, , resetIsShowingDialog] = useTimeoutFn(() => setShowDialog(true), 1);
+  let [, , resetIsShowingDialog] = useTimeoutFn(() => setShowDialog(true), 1);
+  //
 
   function closeModal() {
     setShowModal(false);
@@ -59,7 +65,7 @@ const HeroSearchForm2Mobile = () => {
       <Transition appear show={showModal} as={Fragment}>
         <Dialog
           as="div"
-          className="HeroSearchFormMobile__Dialog relative z-[9999]"
+          className="HeroSearchFormMobile__Dialog relative z-max"
           onClose={closeModal}
         >
           <div className="fixed inset-0 bg-neutral-100 dark:bg-neutral-900">
@@ -120,12 +126,12 @@ const HeroSearchForm2Mobile = () => {
                           </Tab.Panel>
                           <Tab.Panel>
                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-                              <StaySearchForm />
+                              <CarsSearchForm />
                             </div>
                           </Tab.Panel>
                           <Tab.Panel>
                             <div className="transition-opacity animate-[myblur_0.4s_ease-in-out]">
-                              <StaySearchForm />
+                              <FlightSearchForm />
                             </div>
                           </Tab.Panel>
                         </Tab.Panels>
@@ -141,27 +147,11 @@ const HeroSearchForm2Mobile = () => {
                         >
                           Clear all
                         </button>
-                        <button
-                          type="button"
-                          onClick={closeModal}
-                          className="flex-shrink-0 px-4 py-2.5 cursor-pointer rounded-xl bg-primary-600 flex items-center justify-center text-neutral-50 focus:outline-none relative z-20"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={1.5}
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                          </svg>
-                          <span className="ml-2">Search</span>
-                        </button>
+                        <ButtonSubmit
+                          onClick={() => {
+                            closeModal();
+                          }}
+                        />
                       </div>
                     </Tab.Group>
                   )}
