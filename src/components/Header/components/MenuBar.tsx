@@ -1,5 +1,7 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { Transition, Dialog } from "@headlessui/react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Drawer, Box } from "@mui/material";
 import NavMobile from "./Navigation/NavMobile";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
@@ -8,69 +10,61 @@ export interface MenuBarProps {
   className?: string;
   iconClassName?: string;
 }
+
 const MenuBar: React.FC<MenuBarProps> = ({
   className = "p-2.5 rounded-lg text-neutral-700 dark:text-neutral-300",
   iconClassName = "h-8 w-8",
 }) => {
-  const [isVisable, setIsVisable] = useState(false);
-
+  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    setIsVisable(false);
+    setIsVisible(false);
   }, [pathname]);
 
-  const handleOpenMenu = () => setIsVisable(true);
-  const handleCloseMenu = () => setIsVisable(false);
+  const handleOpenMenu = () => setIsVisible(true);
+  const handleCloseMenu = () => setIsVisible(false);
 
   return (
     <>
       <button
         onClick={handleOpenMenu}
         className={`focus:outline-none flex items-center justify-center ${className}`}
+        aria-label="Open navigation menu"
       >
         <Bars3Icon className={iconClassName} />
       </button>
 
-      <Transition appear show={isVisable} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-50 overflow-hidden"
-          onClose={handleCloseMenu}
+      <Drawer
+        anchor="right"
+        open={isVisible}
+        onClose={handleCloseMenu}
+        sx={{
+          zIndex: 1300,
+          "& .MuiDrawer-paper": {
+            width: { xs: "100%", sm: "28rem" },
+            maxWidth: "28rem",
+            borderLeft: "1px solid #E5E7EB",
+          },
+        }}
+        ModalProps={{
+          BackdropProps: {
+            sx: {
+              backgroundColor: "rgba(0, 0, 0, 0.25)",
+            },
+          },
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            overflow: "auto",
+          }}
         >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25 dark:bg-black/50" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-hidden">
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                <Transition.Child
-                  as={Fragment}
-                  enter="transform transition ease-in-out duration-300"
-                  enterFrom="translate-x-full"
-                  enterTo="translate-x-0"
-                  leave="transform transition ease-in-out duration-300"
-                  leaveFrom="translate-x-0"
-                  leaveTo="translate-x-full"
-                >
-                  <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                    <NavMobile onClickClose={handleCloseMenu} />
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
+          <NavMobile onClickClose={handleCloseMenu} />
+        </Box>
+      </Drawer>
     </>
   );
 };

@@ -9,26 +9,23 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <div
-        className="relative min-h-[600px] lg:min-h-[700px] flex items-center"
+        className="relative min-h-[600px] lg:min-h-[700px] flex items-center bg-[#2563EB]"
         style={{
-          background:
-            "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
+          backgroundImage: "url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl"></div>
-        </div>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/40"></div>
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
           {/* Hero Content */}
           <div className="text-center mb-10 lg:mb-16">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6 tracking-tight">
               Find Your Perfect Stay
             </h1>
-            <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto font-light">
+            <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
               Discover amazing places to stay, unique experiences, and
               adventures around the world.
             </p>
@@ -64,13 +61,13 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="py-20 bg-neutral-50 dark:bg-neutral-900">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#0F172A] mb-4">
               Why Choose Us
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               We provide the best booking experience with amazing features
             </p>
           </div>
@@ -98,13 +95,13 @@ export default function Home() {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="bg-white dark:bg-neutral-800 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-[#E5E7EB]"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
+                <h3 className="text-xl font-semibold text-[#0F172A] mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-neutral-600 dark:text-neutral-400">
+                <p className="text-[#64748B]">
                   {feature.description}
                 </p>
               </div>
@@ -114,13 +111,13 @@ export default function Home() {
       </div>
 
       {/* Popular Destinations */}
-      <div className="py-20">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#0F172A] mb-4">
               Popular Destinations
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               Explore trending locations loved by travelers
             </p>
           </div>
@@ -173,13 +170,13 @@ export default function Home() {
       </div>
 
       {/* Travel Packages - Different Card Styles */}
-      <div className="py-20 bg-neutral-50 dark:bg-neutral-900">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#0F172A] mb-4">
               Travel Packages
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               Discover amazing travel packages with different card styles
             </p>
           </div>
@@ -224,13 +221,13 @@ export default function Home() {
       </div>
 
       {/* Vehicle Packages - Different Card Styles */}
-      <div className="py-20">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#0F172A] mb-4">
               Vehicle Packages
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               Rent the perfect vehicle with elegant card designs
             </p>
           </div>
@@ -278,13 +275,13 @@ export default function Home() {
       </div>
 
       {/* New Card Style Showcase */}
-      <div className="py-20 bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-950">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#0F172A] mb-4">
               Explore New Card Styles
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               Discover unique and creative card designs for your packages
             </p>
           </div>
@@ -406,27 +403,27 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-20 bg-gradient-to-r from-primary-600 to-primary-700">
+      <div className="py-20 bg-[#2563EB]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-6">
             Ready to Start Your Journey?
           </h2>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
             Join millions of travelers who trust us for their booking needs.
             Sign up today and get exclusive deals!
           </p>
-          <button className="bg-white text-primary-600 px-8 py-4 rounded-full font-semibold hover:bg-neutral-100 transition-colors shadow-lg">
+          <button className="bg-white text-[#2563EB] px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg">
             Get Started Free
           </button>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-neutral-900 text-neutral-400 py-12">
+      <footer className="bg-[#0F172A] text-[#64748B] py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-white text-xl font-bold mb-4">HeroSearch</h3>
+              <h3 className="text-white text-xl font-semibold mb-4">HeroSearch</h3>
               <p className="text-sm">
                 Your trusted partner for finding the perfect accommodation
                 worldwide.
@@ -462,7 +459,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="border-t border-neutral-800 mt-12 pt-8 text-center text-sm">
+          <div className="border-t border-[#1E293B] mt-12 pt-8 text-center text-sm">
             <p>&copy; 2024 HeroSearch. All rights reserved.</p>
           </div>
         </div>

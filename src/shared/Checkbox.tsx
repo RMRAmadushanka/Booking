@@ -40,18 +40,18 @@ const Checkbox: FC<CheckboxProps> = ({
           type="checkbox"
           checked={checked}
           onChange={handleChange}
-          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded cursor-pointer"
+          className="h-4 w-4 text-[#2563EB] focus:ring-[#2563EB] border-[#E5E7EB] rounded cursor-pointer"
         />
       </div>
       <div className="ml-3 text-sm">
         <label
           htmlFor={name}
-          className="font-medium text-neutral-900 dark:text-neutral-100 cursor-pointer"
+          className="font-medium text-[#0F172A] cursor-pointer"
         >
           {label}
         </label>
         {subLabel && (
-          <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-0.5">
+          <p className="text-[#64748B] text-xs mt-0.5">
             {subLabel}
           </p>
         )}

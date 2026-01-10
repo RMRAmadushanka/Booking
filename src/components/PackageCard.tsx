@@ -386,30 +386,30 @@ export default function PackageCard(props: PackageCardProps) {
         };
       case "split":
         return {
-          container: "relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl border border-neutral-200 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-lg overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent",
           bokeh: "",
           contentContainer: "",
           contentWrapper: "",
           contentInner: "",
-          title: "text-2xl font-bold mb-1 text-neutral-900",
+          title: "text-2xl font-semibold mb-1 text-[#0F172A]",
           badge: "",
           favoriteButton: "",
-          button: "bg-black text-white py-2.5 px-6 rounded-lg font-medium hover:bg-neutral-800 transition-colors shadow-md text-sm",
+          button: "bg-[#2563EB] text-white py-2.5 px-6 rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors shadow-sm text-sm",
           isSplit: true as const,
         };
       default: // "default"
         return {
-          container: "relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl border border-neutral-200/50 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
-          overlay: "absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent",
-          bokeh: "absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent blur-sm",
+          container: "relative rounded-lg overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
+          overlay: "absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent",
+          bokeh: "absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent blur-sm",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-5 text-white",
-          title: "text-2xl sm:text-3xl font-bold mb-2",
-          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-primary-600 text-white text-xs font-semibold",
-          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
-          button: "w-full bg-white text-black py-2.5 px-6 rounded-xl font-semibold hover:bg-neutral-100 transition-colors shadow-md text-sm sm:text-base",
+          title: "text-2xl sm:text-3xl font-semibold mb-2",
+          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-lg bg-[#2563EB] text-white text-xs font-semibold",
+          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
+          button: "w-full bg-white text-[#0F172A] py-2.5 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm text-sm sm:text-base",
         };
     }
   };
@@ -438,7 +438,7 @@ export default function PackageCard(props: PackageCardProps) {
           <h3 className={styles.title}>{title}</h3>
           
           {/* Class Type / Subtitle */}
-          <p className="text-sm text-neutral-500 mb-3">
+          <p className="text-sm text-[#64748B] mb-3">
             {type === "travel" 
               ? (props as TravelPackageProps).classType || (props as TravelPackageProps).destination || "Premium economy"
               : (props as VehiclePackageProps).vehicleModel || "Premium"
@@ -450,7 +450,7 @@ export default function PackageCard(props: PackageCardProps) {
             {/* Price */}
             <div className="flex items-center gap-1.5">
               <svg
-                className="w-4 h-4 text-neutral-400"
+                className="w-4 h-4 text-[#64748B]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -463,14 +463,14 @@ export default function PackageCard(props: PackageCardProps) {
                   d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
                 />
               </svg>
-              <span className="text-sm text-neutral-600">{price}</span>
+              <span className="text-sm text-[#2563EB] font-medium">{price}</span>
             </div>
 
             {/* Origin Airport / Location */}
             {(type === "travel" ? (props as TravelPackageProps).origin : (props as VehiclePackageProps).location) && (
               <div className="flex items-center gap-1.5">
                 <svg
-                  className="w-4 h-4 text-neutral-400"
+                  className="w-4 h-4 text-[#64748B]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -483,7 +483,7 @@ export default function PackageCard(props: PackageCardProps) {
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                   />
                 </svg>
-                <span className="text-sm text-neutral-600">
+                <span className="text-sm text-[#64748B]">
                   {type === "travel" 
                     ? (props as TravelPackageProps).origin
                     : (props as VehiclePackageProps).location
@@ -503,7 +503,7 @@ export default function PackageCard(props: PackageCardProps) {
             </button>
             <button
               onClick={() => setIsFavorite(!isFavorite)}
-              className="p-2 text-pink-400 hover:text-pink-500 transition-colors"
+              className="p-2 text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
               aria-label="Add to favorites"
             >
               {isFavorite ? (

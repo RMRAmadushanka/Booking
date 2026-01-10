@@ -1,0 +1,101 @@
+================================================================================
+UI COMPONENT AUDIT - QUICK REFERENCE TABLE
+Hero Search App - MUI vs Tailwind Recommendations
+================================================================================
+
+Component Name                          | Path                                    | Complexity | Recommendation | Key Reason
+----------------------------------------|-----------------------------------------|------------|-----------------|------------------------------------------
+✅ MUST USE MUI (13 components)
+----------------------------------------|-----------------------------------------|------------|-----------------|------------------------------------------
+MenuBar                                | Header/components/MenuBar.tsx           | High       | MUI Dialog      | Mobile drawer, focus trap, ESC handling
+PackageFilters (Mobile)                | Packages/PackageFilters.tsx             | High       | MUI Drawer      | Mobile overlay, focus management
+AvatarDropdown                         | Header/components/AvatarDropdown.tsx     | High       | MUI Menu        | Keyboard nav, ARIA roles, focus mgmt
+CurrencyDropdown                       | Header/components/CurrencyDropdown.tsx  | Medium     | MUI Menu        | Dropdown with a11y benefits
+LangDropdown                           | Header/components/LangDropdown.tsx       | High       | MUI Menu+Tabs   | Complex: Tabs+Popover, keyboard nav
+NotifyDropdown                         | Header/components/NotifyDropdown.tsx     | Medium     | MUI Menu        | Notification list, keyboard nav
+LocationInput                          | HeroSearchForm/LocationInput.tsx        | High       | MUI Autocomplete| Async search, keyboard, ARIA combobox
+GuestsInput                            | HeroSearchForm/GuestsInput.tsx           | Medium     | MUI Popover     | Guest selector with nested inputs
+StayDatesRangeInput                    | HeroSearchForm/(stay)/StayDatesRange...  | High       | MUI DatePicker  | Date range, calendar a11y, keyboard
+FlightDateRangeInput                   | HeroSearchForm/(flight)/FlightDate...    | High       | MUI DatePicker  | Date range picker, complex logic
+RentalCarDatesRangeInput               | HeroSearchForm/(car)/RentalCarDates...   | High       | MUI DatePicker  | Date range selection
+ExperiencesDateSingleInput             | HeroSearchForm/(exp)/ExperiencesDate...  | High       | MUI DatePicker  | Single date picker
+DatesRangeInput (Mobile)               | HeroSearchForm2Mobile/DatesRangeInput   | High       | MUI DatePicker  | Mobile date range
+HeroSearchForm                         | HeroSearchForm/HeroSearchForm.tsx        | Medium     | MUI Tabs        | Tab nav, keyboard support, ARIA
+NavMobile                              | Header/components/Navigation/NavMobile  | High       | MUI Accordion   | Nested nav, expand/collapse, keyboard
+PackageFilters                         | Packages/PackageFilters.tsx             | High       | MUI Components  | Complex: Checkboxes, Slider, Search
+
+⚠️ OPTIONAL MUI (6 components)
+----------------------------------------|-----------------------------------------|------------|-----------------|------------------------------------------
+NcInputNumber                          | NcInputNumber.tsx                       | Medium     | Optional: MUI   | Number input, validation states
+Checkbox                               | shared/Checkbox.tsx                      | Low        | Optional: MUI   | Simple checkbox, reduces maintenance
+SwitchDarkMode                         | shared/SwitchDarkMode/index.tsx          | Low        | Optional: MUI   | Toggle switch, better a11y
+SwitchDarkMode2                        | shared/SwitchDarkMode2/index.tsx         | Low        | Optional: MUI   | Toggle switch variant
+ButtonSubmit                           | HeroSearchForm/ButtonSubmit.tsx          | Low        | Optional: MUI   | Simple button, Tailwind is fine
+ButtonPrimary                          | shared/ButtonPrimary/index.tsx           | Low        | Optional: MUI   | Brand button, Tailwind preferred
+
+❌ TAILWIND ONLY (24 components)
+----------------------------------------|-----------------------------------------|------------|-----------------|------------------------------------------
+Header                                 | Header/Header.tsx                        | Low        | Tailwind Only   | Layout component, branding
+HeaderSearchAndNav                     | Header/HeaderSearchAndNav.tsx            | Low        | Tailwind Only   | Layout wrapper
+NavSection                             | Header/NavSection.tsx                    | Low        | Tailwind Only   | Layout component
+TravelPackageCard                      | Packages/TravelPackageCard.tsx           | Low        | Tailwind Only   | Presentational card, brand-specific
+PackageCard                            | PackageCard.tsx                          | Low        | Tailwind Only   | Presentational card
+FlightDestinationCard                  | FlightDestinationCard.tsx                | Low        | Tailwind Only   | Presentational card
+PackageSkeleton                        | Packages/PackageSkeleton.tsx             | Low        | Tailwind Only   | Loading skeleton
+StaySearchForm                         | HeroSearchForm/(stay)/StaySearchForm.tsx  | Low        | Tailwind Only   | Form layout wrapper
+FlightSearchForm                       | HeroSearchForm/(flight)/FlightSearch...  | Medium     | Tailwind Only   | Form layout, complex but layout-focused
+RentalCarSearchForm                    | HeroSearchForm/(car)/RentalCarSearch...   | Low        | Tailwind Only   | Form layout wrapper
+ExperiencesSearchForm                  | HeroSearchForm/(exp)/ExperiencesSearch... | Low        | Tailwind Only   | Form layout wrapper
+HeroSearchForm2Mobile                  | HeroSearchForm2Mobile/HeroSearchForm...   | Low        | Tailwind Only   | Mobile form layout
+HeroSearchForm2MobileFactory           | Header/components/MobileSearch/...       | Low        | Tailwind Only   | Factory wrapper
+Avatar                                 | shared/Avatar/index.tsx                  | Low        | Tailwind Only   | Presentational component
+Logo                                   | shared/Logo/index.tsx                     | Low        | Tailwind Only   | Brand component
+SocialsList                            | shared/SocialsList/index.tsx             | Low        | Tailwind Only   | Icon list, presentational
+ButtonClose                            | shared/ButtonClose/index.tsx             | Low        | Tailwind Only   | Icon button, simple
+ClearDataButton                        | HeroSearchForm/ClearDataButton.tsx        | Low        | Tailwind Only   | Icon button, simple
+SearchButton                           | Header/SearchButton.tsx                   | Low        | Tailwind Only   | Layout component
+HeroSearchButton                       | Header/HeroSearchButton.tsx              | Low        | Tailwind Only   | Brand button
+DatePickerCustomDay                    | DatePickerCustomDay.tsx                  | Low        | Tailwind Only   | Simple presentational wrapper
+DatePickerCustomHeaderTwoMonth        | DatePickerCustomHeaderTwoMonth.tsx       | Low        | Tailwind Only   | Custom header styling
+Home Page                              | app/page.tsx                             | Low        | Tailwind Only   | Marketing page, layout & branding
+Packages Page                          | app/packages/page.tsx                    | Low        | Tailwind Only   | Page layout
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Total Components Audited: 43
+├─ MUST USE MUI:        13 (30%) - Behavior-heavy, complex a11y
+├─ OPTIONAL MUI:         6 (14%) - Could benefit but not required
+└─ TAILWIND ONLY:       24 (56%) - Layout, branding, presentational
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+✅ Use MUI For:
+   • Dialogs/Modals (MenuBar, PackageFilters mobile)
+   • Dropdowns/Menus (AvatarDropdown, LangDropdown, NotifyDropdown)
+   • Date Pickers (All date range inputs)
+   • Complex Forms (LocationInput → Autocomplete)
+   • Navigation (NavMobile → Accordion)
+   • Tabs (HeroSearchForm)
+
+❌ Keep Tailwind For:
+   • Layout components (Header, NavSection, Pages)
+   • Brand components (Logo, Avatar, Cards)
+   • Form wrappers (SearchForm layouts)
+   • Simple buttons (ButtonClose, ClearDataButton)
+
+⚠️ Consider MUI For:
+   • Simple form controls (if consistency priority)
+   • Switches (if accessibility critical)
+
+================================================================================
+MIGRATION PRIORITY
+================================================================================
+Phase 1 (High Impact): LocationInput, Date Pickers, MenuBar, NavMobile
+Phase 2 (Dropdowns):    AvatarDropdown, LangDropdown, NotifyDropdown, GuestsInput
+Phase 3 (Forms):        HeroSearchForm Tabs, PackageFilters
+Phase 4 (Optional):     Checkbox, SwitchDarkMode (if needed)
+
+================================================================================
+

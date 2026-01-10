@@ -46,11 +46,11 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
   const renderLabel = () => {
     return (
       <div className="flex flex-col">
-        <span className="font-medium text-neutral-800 dark:text-neutral-200">
+        <span className="font-medium text-[#0F172A]">
           {label}
         </span>
         {desc && (
-          <span className="text-xs text-neutral-500 dark:text-neutral-400 font-normal">
+          <span className="text-xs text-[#64748B] font-normal">
             {desc}
           </span>
         )}
@@ -69,21 +69,21 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
         className={`nc-NcInputNumber flex items-center justify-between w-28`}
       >
         <button
-          className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-400 dark:border-neutral-500 bg-white dark:bg-neutral-900 focus:outline-none hover:border-neutral-700 disabled:hover:border-neutral-400 dark:disabled:hover:border-neutral-500 disabled:opacity-50 disabled:cursor-default"
+          className="w-8 h-8 rounded-full flex items-center justify-center border border-[#E5E7EB] bg-white focus:outline-none hover:border-[#2563EB] hover:bg-[#F1F5F9] disabled:hover:border-[#E5E7EB] disabled:opacity-50 disabled:cursor-default transition-colors"
           type="button"
           onClick={handleClickDecrement}
           disabled={min >= value}
         >
-          <MinusIcon className="w-4 h-4" />
+          <MinusIcon className="w-4 h-4 text-[#64748B] hover:text-[#2563EB]" />
         </button>
-        <span>{value}</span>
+        <span className="text-[#0F172A] font-medium">{value}</span>
         <button
-          className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-400 dark:border-neutral-500 bg-white dark:bg-neutral-900 focus:outline-none hover:border-neutral-700 disabled:hover:border-neutral-400 dark:disabled:hover:border-neutral-500 disabled:opacity-50 disabled:cursor-default"
+          className="w-8 h-8 rounded-full flex items-center justify-center border border-[#E5E7EB] bg-white focus:outline-none hover:border-[#2563EB] hover:bg-[#F1F5F9] disabled:hover:border-[#E5E7EB] disabled:opacity-50 disabled:cursor-default transition-colors"
           type="button"
           onClick={handleClickIncrement}
           disabled={max ? max <= value : false}
         >
-          <PlusIcon className="w-4 h-4" />
+          <PlusIcon className="w-4 h-4 text-[#64748B] hover:text-[#2563EB]" />
         </button>
       </div>
     </div>

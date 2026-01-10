@@ -1,6 +1,7 @@
 "use client";
 
 import React, { FC, useState } from "react";
+import { Tabs, Tab, Box } from "@mui/material";
 import StaySearchForm from "./(stay-search-form)/StaySearchForm";
 import ExperiencesSearchForm from "./(experiences-search-form)/ExperiencesSearchForm";
 import RentalCarSearchForm from "./(car-search-form)/RentalCarSearchForm";
@@ -22,30 +23,8 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
   const tabs: SearchTab[] = ["Stays", "Experiences", "Cars", "Flights"];
   const [tabActive, setTabActive] = useState<SearchTab>(currentTab);
 
-  const renderTab = () => {
-    return (
-      <ul className="ml-2 sm:ml-6 md:ml-12 flex space-x-5 sm:space-x-8 lg:space-x-11 overflow-x-auto hiddenScrollbar">
-        {tabs.map((tab) => {
-          const active = tab === tabActive;
-          return (
-            <li
-              onClick={() => setTabActive(tab)}
-              className={`flex-shrink-0 flex items-center cursor-pointer text-sm lg:text-base font-medium ${
-                active
-                  ? ""
-                  : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-400"
-              } `}
-              key={tab}
-            >
-              {active && (
-                <span className="block w-2.5 h-2.5 rounded-full bg-neutral-800 dark:bg-neutral-100 mr-2" />
-              )}
-              <span>{tab}</span>
-            </li>
-          );
-        })}
-      </ul>
-    );
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabActive(tabs[newValue]);
   };
 
   const renderForm = () => {
@@ -68,7 +47,66 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
     <div
       className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 ${className}`}
     >
-      {renderTab()}
+      <Box
+        sx={{
+          ml: { xs: 0.5, sm: 1.5, md: 3 },
+          overflowX: "auto",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+        }}
+      >
+        <Tabs
+          value={tabs.indexOf(tabActive)}
+          onChange={handleTabChange}
+          sx={{
+            minHeight: "auto",
+            "& .MuiTabs-indicator": {
+              display: "none",
+            },
+            "& .MuiTabs-flexContainer": {
+              gap: { xs: "1.25rem", sm: "2rem", lg: "2.75rem" },
+            },
+          }}
+        >
+          {tabs.map((tab, index) => (
+            <Tab
+              key={tab}
+              label={
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      bgcolor: tabs.indexOf(tabActive) === index ? "#2563EB" : "transparent",
+                    }}
+                  />
+                  <span>{tab}</span>
+                </Box>
+              }
+              sx={{
+                textTransform: "none",
+                fontSize: { xs: "0.875rem", lg: "1rem" },
+                fontWeight: tabs.indexOf(tabActive) === index ? 600 : 500,
+                color: tabs.indexOf(tabActive) === index ? "#2563EB" : "#64748B",
+                minWidth: "auto",
+                padding: 0,
+                "&:hover": {
+                  color: "#2563EB",
+                },
+              }}
+            />
+          ))}
+        </Tabs>
+      </Box>
       {renderForm()}
     </div>
   );

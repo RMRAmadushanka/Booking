@@ -4,17 +4,15 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #312e81;
+  --foreground: #0F172A;
+  
+  /* Corporate Blue Design System */
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-dark: #0F172A;
+  --color-muted: #64748B;
+  --color-accent: #2DD4BF;
+  --color-border: #E5E7EB;
 }
 
 @theme inline {
@@ -22,29 +20,20 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-primary-50: var(--color-primary-50);
-  --color-primary-100: var(--color-primary-100);
-  --color-primary-200: var(--color-primary-200);
-  --color-primary-300: var(--color-primary-300);
-  --color-primary-400: var(--color-primary-400);
-  --color-primary-500: var(--color-primary-500);
-  --color-primary-600: var(--color-primary-600);
-  --color-primary-700: var(--color-primary-700);
-  --color-primary-800: var(--color-primary-800);
-  --color-primary-900: var(--color-primary-900);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  
+  /* Semantic Color System */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-dark: var(--color-dark);
+  --color-muted: var(--color-muted);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
 
 /* Custom field padding */
@@ -65,21 +54,13 @@ body {
 /* Focused field styles */
 .nc-hero-field-focused {
   background-color: white;
-  border-radius: 9999px;
-}
-
-.dark .nc-hero-field-focused {
-  background-color: #262626;
+  border-radius: 0.5rem;
 }
 
 .nc-hero-field-focused--2 {
   background-color: white;
-  border-radius: 9999px;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-.dark .nc-hero-field-focused--2 {
-  background-color: #262626;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 /* Flex utilities */
@@ -126,10 +107,58 @@ body {
   font-family: inherit !important;
   border: none !important;
   background-color: transparent !important;
+  width: 100% !important;
 }
 
 .react-datepicker__month-container {
   background-color: transparent !important;
+  width: auto !important;
+  min-width: 280px !important;
+}
+
+.react-datepicker__month {
+  margin: 0.5rem 0.25rem 0.5rem 0.75rem !important;
+}
+
+/* Two month layout - ensure proper spacing */
+.react-datepicker__month-container + .react-datepicker__month-container {
+  margin-left: 0.75rem !important;
+}
+
+/* Reduce right padding on last month container */
+.react-datepicker__month-container:last-child .react-datepicker__month {
+  margin-right: 0.25rem !important;
+}
+
+/* Remove any extra padding from react-datepicker wrapper */
+.react-datepicker__input-container {
+  padding-right: 0 !important;
+}
+
+/* Container for multiple months */
+.react-datepicker__month-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .react-datepicker__month-container {
+    min-width: 240px !important;
+  }
+  
+  .react-datepicker__month {
+    margin: 0.5rem 0.125rem 0.5rem 0.5rem !important;
+  }
+  
+  .react-datepicker__month-container + .react-datepicker__month-container {
+    margin-left: 0.5rem !important;
+  }
+  
+  .react-datepicker__month-container:last-child .react-datepicker__month {
+    margin-right: 0.125rem !important;
+  }
 }
 
 .react-datepicker__header {
@@ -162,37 +191,47 @@ body {
 }
 
 .react-datepicker__day:hover {
-  background-color: #f3f4f6 !important;
-  border-radius: 9999px !important;
+  background-color: #f1f5f9 !important;
+  border-radius: 0.5rem !important;
 }
 
 .react-datepicker__day--selected,
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range {
-  background-color: #4f46e5 !important;
+  background-color: #2563EB !important;
   color: white !important;
 }
 
 .react-datepicker__day--keyboard-selected {
-  background-color: #e0e7ff !important;
+  background-color: #dbeafe !important;
 }
 
 .react-datepicker__day--range-start,
 .react-datepicker__day--range-end {
-  background-color: #4f46e5 !important;
+  background-color: #2563EB !important;
   color: white !important;
 }
 
-.dark .react-datepicker__day:hover {
-  background-color: #374151 !important;
+.react-datepicker__day--disabled {
+  color: #cbd5e1 !important;
 }
 
-.dark .react-datepicker__current-month,
-.dark .react-datepicker__day {
-  color: #e5e7eb !important;
+/* Hide ALL default react-datepicker navigation arrows */
+.react-datepicker__navigation {
+  display: none !important;
 }
 
-.dark .react-datepicker__day--disabled {
-  color: #4b5563 !important;
+/* Show only our custom navigation arrows (with custom-nav-arrow class) */
+.custom-nav-arrow {
+  display: flex !important;
+}
+
+/* Additional specificity to hide default arrows */
+.react-datepicker__month-container > .react-datepicker__navigation {
+  display: none !important;
+}
+
+.react-datepicker__header > .react-datepicker__navigation:not(.custom-nav-arrow) {
+  display: none !important;
 }
 

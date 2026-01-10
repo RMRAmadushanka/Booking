@@ -60,7 +60,7 @@ const LocationInput: FC<LocationInputProps> = ({
   const renderRecentSearches = () => {
     return (
       <>
-        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
+        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-[#0F172A]">
           Recent searches
         </h3>
         <div className="mt-2">
@@ -73,12 +73,12 @@ const LocationInput: FC<LocationInputProps> = ({
             <span
               onClick={() => handleSelectLocation(item)}
               key={item}
-              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
             >
-              <span className="block text-neutral-400">
+              <span className="block text-[#64748B]">
                 <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
               </span>
-              <span className="block font-medium text-neutral-700 dark:text-neutral-200">
+              <span className="block font-medium text-[#0F172A]">
                 {item}
               </span>
             </span>
@@ -100,12 +100,12 @@ const LocationInput: FC<LocationInputProps> = ({
           <span
             onClick={() => handleSelectLocation(item)}
             key={item}
-            className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+            className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
           >
-            <span className="block text-neutral-400">
+            <span className="block text-[#64748B]">
               <ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
             </span>
-            <span className="block font-medium text-neutral-700 dark:text-neutral-200">
+            <span className="block font-medium text-[#0F172A]">
               {item}
             </span>
           </span>
@@ -122,12 +122,12 @@ const LocationInput: FC<LocationInputProps> = ({
           showPopover ? "nc-hero-field-focused" : ""
         }`}
       >
-        <div className="text-neutral-300 dark:text-neutral-400">
+        <div className="text-[#64748B]">
           <MapPinIcon className="w-5 h-5 lg:w-7 lg:h-7" />
         </div>
         <div className="flex-grow">
           <input
-            className={`block w-full bg-transparent border-none focus:ring-0 p-0 focus:outline-none focus:placeholder-neutral-300 xl:text-lg font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate`}
+            className={`block w-full bg-transparent border-none focus:ring-0 p-0 focus:outline-none focus:placeholder-[#64748B] xl:text-lg font-semibold placeholder-[#0F172A] truncate text-[#0F172A]`}
             placeholder={placeHolder}
             value={value}
             autoFocus={showPopover}
@@ -136,7 +136,7 @@ const LocationInput: FC<LocationInputProps> = ({
             }}
             ref={inputRef}
           />
-          <span className="block mt-0.5 text-sm text-neutral-400 font-light">
+          <span className="block mt-0.5 text-sm text-[#64748B] font-light">
             <span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
           </span>
           {value && showPopover && (
@@ -151,12 +151,12 @@ const LocationInput: FC<LocationInputProps> = ({
 
       {showPopover && (
         <div
-          className={`h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 bg-white dark:bg-neutral-800 ${divHideVerticalLineClass}`}
+          className={`h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 bg-white ${divHideVerticalLineClass}`}
         ></div>
       )}
 
       {showPopover && (
-        <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
+        <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white top-full mt-3 py-3 sm:py-6 rounded-lg shadow-lg border border-[#E5E7EB] max-h-96 overflow-y-auto">
           {value ? renderSearchValue() : renderRecentSearches()}
         </div>
       )}
@@ -165,4 +165,3 @@ const LocationInput: FC<LocationInputProps> = ({
 };
 
 export default LocationInput;
-

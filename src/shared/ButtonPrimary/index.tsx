@@ -16,7 +16,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 bg-primary-600 text-white rounded-full font-medium hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${className}`}
+      className={`px-4 py-2 bg-[#2563EB] text-white rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:ring-offset-2 ${className}`}
     >
       {children}
     </button>
@@ -24,6 +24,8 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
 };
 
 export default ButtonPrimary;
+
+
 
 
 

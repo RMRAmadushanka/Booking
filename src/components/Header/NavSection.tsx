@@ -18,12 +18,12 @@ const NavSection: FC<NavSectionProps> = ({
 }) => {
   return (
     <div
-      className={`hidden md:flex relative z-10 flex-1 justify-end text-neutral-700 dark:text-neutral-100 ${className}`}
+      className={`hidden md:flex relative z-10 flex-1 justify-end text-[#64748B] ${className}`}
     >
       <div className="flex space-x-1">
         <Link
           href={listPropertyHref}
-          className="self-center hidden xl:inline-flex px-4 py-2 border border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 rounded-full items-center text-sm text-gray-700 dark:text-neutral-300 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="self-center hidden xl:inline-flex px-4 py-2 border border-[#E5E7EB] hover:border-[#2563EB] rounded-lg items-center text-sm text-[#64748B] hover:text-[#2563EB] font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-opacity-75 transition-colors"
         >
           {listPropertyText}
         </Link>

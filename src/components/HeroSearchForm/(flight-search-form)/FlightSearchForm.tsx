@@ -88,7 +88,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-20 w-full sm:min-w-[340px] max-w-sm bg-white dark:bg-neutral-800 top-full mt-3 left-1/2 -translate-x-1/2  py-5 sm:py-6 px-4 sm:px-8 rounded-3xl shadow-xl ring-1 ring-black/5 dark:ring-white/10">
+              <Popover.Panel className="absolute z-20 w-full sm:min-w-[340px] max-w-sm bg-white top-full mt-3 left-1/2 -translate-x-1/2 py-5 sm:py-6 px-4 sm:px-8 rounded-lg shadow-lg border border-[#E5E7EB]">
                 <NcInputNumber
                   className="w-full"
                   defaultValue={guestAdultsInputValue}
@@ -150,9 +150,9 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-20 w-screen max-w-[200px] sm:max-w-[220px] px-4 top-full mt-3 transform -translate-x-1/2 left-1/2 sm:px-0  ">
-                <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 ">
-                  <div className="relative grid gap-8 bg-white dark:bg-neutral-800 p-7 ">
+              <Popover.Panel className="absolute z-20 w-screen max-w-[200px] sm:max-w-[220px] px-4 top-full mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
+                <div className="overflow-hidden rounded-lg shadow-lg border border-[#E5E7EB]">
+                  <div className="relative grid gap-8 bg-white p-7">
                     {flightClass.map((item) => (
                       <a
                         key={item.name}
@@ -162,9 +162,9 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
                           setFlightClassState(item.name);
                           close();
                         }}
-                        className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                        className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-blue-50 focus:outline-none focus-visible:ring focus-visible:ring-[#2563EB] focus-visible:ring-opacity-50"
                       >
-                        <p className="text-sm font-medium ">{item.name}</p>
+                        <p className="text-sm font-medium text-[#0F172A]">{item.name}</p>
                       </a>
                     ))}
                   </div>
@@ -179,34 +179,34 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
 
   const renderRadioBtn = () => {
     return (
-      <div className=" py-5 [ nc-hero-field-padding ] flex flex-row flex-wrap border-b border-neutral-100 dark:border-neutral-700">
+      <div className="py-5 [ nc-hero-field-padding ] flex flex-row flex-wrap border-b border-[#E5E7EB]">
         <div
-          className={`py-1.5 px-4 flex items-center rounded-full font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 ${
+          className={`py-1.5 px-4 flex items-center rounded-lg font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
             dropOffLocationType === "roundTrip"
-              ? "bg-black shadow-black/10 shadow-lg text-white"
-              : "border border-neutral-300 dark:border-neutral-700"
+              ? "bg-[#2563EB] shadow-sm text-white"
+              : "border border-[#E5E7EB] text-[#64748B] hover:border-[#2563EB] hover:text-[#2563EB]"
           }`}
           onClick={(e) => setDropOffLocationType("roundTrip")}
         >
           Round-trip
         </div>
         <div
-          className={`py-1.5 px-4 flex items-center rounded-full font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 ${
+          className={`py-1.5 px-4 flex items-center rounded-lg font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
             dropOffLocationType === "oneWay"
-              ? "bg-black text-white shadow-black/10 shadow-lg"
-              : "border border-neutral-300 dark:border-neutral-700"
+              ? "bg-[#2563EB] text-white shadow-sm"
+              : "border border-[#E5E7EB] text-[#64748B] hover:border-[#2563EB] hover:text-[#2563EB]"
           }`}
           onClick={(e) => setDropOffLocationType("oneWay")}
         >
           One-way
         </div>
 
-        <div className="self-center border-r border-slate-200 dark:border-slate-700 h-8 mr-2 my-1 sm:mr-3"></div>
+        <div className="self-center border-r border-[#E5E7EB] h-8 mr-2 my-1 sm:mr-3"></div>
 
-        <div className="mr-2 my-1 sm:mr-3 border border-neutral-300 dark:border-neutral-700 rounded-full">
+        <div className="mr-2 my-1 sm:mr-3 border border-[#E5E7EB] rounded-lg">
           {renderSelectClass()}
         </div>
-        <div className="my-1 border border-neutral-300 dark:border-neutral-700 rounded-full">
+        <div className="my-1 border border-[#E5E7EB] rounded-lg">
           {renderGuest()}
         </div>
       </div>
@@ -215,22 +215,22 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
 
   const renderForm = () => {
     return (
-      <form className="w-full relative mt-8 rounded-[40px] xl:rounded-[49px] rounded-t-2xl xl:rounded-t-3xl shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800">
+      <form className="w-full relative mt-8 rounded-lg shadow-sm bg-white border border-[#E5E7EB]">
         {renderRadioBtn()}
-        <div className="flex flex-1 rounded-full">
+        <div className="flex flex-1">
           <LocationInput
             placeHolder="Flying from"
             desc="Where do you want to fly from?"
             className="flex-1"
           />
-          <div className="self-center border-r border-slate-200 dark:border-slate-700 h-8"></div>
+          <div className="self-center border-r border-[#E5E7EB] h-8"></div>
           <LocationInput
             placeHolder="Flying to"
             desc="Where you want to fly to?"
             className="flex-1"
             divHideVerticalLineClass=" -inset-x-0.5"
           />
-          <div className="self-center border-r border-slate-200 dark:border-slate-700 h-8"></div>
+          <div className="self-center border-r border-[#E5E7EB] h-8"></div>
           <FlightDateRangeInput
             selectsRange={dropOffLocationType !== "oneWay"}
             className="flex-1"
