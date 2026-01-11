@@ -75,14 +75,14 @@ export default function CurrencyDropdown() {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute z-10 w-screen max-w-[140px] px-4 mt-4 right-0 sm:px-0">
-                <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="overflow-hidden rounded-[var(--radius-lg)] shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid gap-7 bg-white dark:bg-neutral-800 p-7">
                     {headerCurrency.map((item, index) => (
                       <a
                         key={index}
                         href={item.href}
                         onClick={() => close()}
-                        className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
+                        className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-gray-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
                           item.active
                             ? "bg-gray-100 dark:bg-neutral-700"
                             : "opacity-80"

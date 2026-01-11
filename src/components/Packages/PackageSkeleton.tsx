@@ -4,7 +4,7 @@ import React from "react";
 
 const PackageSkeleton: React.FC = () => {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-[#E5E7EB] animate-pulse">
+    <div className="bg-white rounded-[var(--radius)] overflow-hidden shadow-sm border border-[#E5E7EB] animate-pulse">
       {/* Image Skeleton */}
       <div className="h-64 bg-gray-200" />
 

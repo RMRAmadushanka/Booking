@@ -138,7 +138,7 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
           </Typography>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-50 transition-colors"
+            className="p-2 rounded-[var(--radius)] hover:bg-gray-50 transition-colors"
             aria-label="Close filters"
           >
             <XMarkIcon className="w-6 h-6 text-[#64748B]" />
@@ -522,7 +522,7 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
             setLocalSearch("");
           }}
           disabled={!hasActiveFilters}
-          className="w-full px-4 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:bg-[#E5E7EB] disabled:text-[#64748B] disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+          className="w-full px-4 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:bg-[#E5E7EB] disabled:text-[#64748B] disabled:cursor-not-allowed text-white font-medium rounded-[var(--radius)] transition-colors"
         >
           Clear All
         </button>

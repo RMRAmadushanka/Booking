@@ -13,6 +13,31 @@
   --color-muted: #64748B;
   --color-accent: #2DD4BF;
   --color-border: #E5E7EB;
+
+  /* ===========================================
+   * CORNER RADIUS SYSTEM
+   * ===========================================
+   * Primary radius: 12px (soft, modern, friendly)
+   * Use --radius as the default for most UI elements.
+   * 
+   * Scale:
+   * - none: Sharp corners (0px)
+   * - sm: Subtle rounding (6px)
+   * - DEFAULT/base: Primary radius (12px) ← Use this by default
+   * - md: Medium rounding (16px)
+   * - lg: Large rounding (20px)
+   * - xl: Extra large (28px)
+   * - 2xl: Very large (36px)
+   * - full: Circular/pill shape (9999px)
+   * =========================================== */
+  --radius: 12px;
+  --radius-none: 0px;
+  --radius-sm: 6px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
 }
 
 @theme inline {
@@ -28,6 +53,18 @@
   --color-muted: var(--color-muted);
   --color-accent: var(--color-accent);
   --color-border: var(--color-border);
+
+  /* Border Radius System - Tailwind tokens
+   * Usage: rounded-base, rounded-sm, rounded-md, etc.
+   * The primary radius (12px) is mapped to "base" for clarity */
+  --radius-none: 0px;
+  --radius-sm: 6px;
+  --radius-base: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
 }
 
 body {
@@ -36,9 +73,15 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Custom field padding */
+/* Custom field padding - Mobile optimized */
 .nc-hero-field-padding {
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .nc-hero-field-padding {
+    padding: 0.875rem 1.25rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -51,15 +94,15 @@ body {
   padding: 0.75rem 1rem;
 }
 
-/* Focused field styles */
+/* Focused field styles - using radius system */
 .nc-hero-field-focused {
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-2xl);
 }
 
 .nc-hero-field-focused--2 {
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-2xl);
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
@@ -102,12 +145,46 @@ body {
   }
 }
 
+/* Mobile modal animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+/* Safe area for mobile devices with notches */
+.safe-area-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
 /* React DatePicker custom styles */
 .react-datepicker {
   font-family: inherit !important;
   border: none !important;
   background-color: transparent !important;
   width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .react-datepicker__month-container {
@@ -120,7 +197,7 @@ body {
   margin: 0.5rem 0.25rem 0.5rem 0.75rem !important;
 }
 
-/* Two month layout - ensure proper spacing */
+/* Two month layout - ensure proper spacing (horizontal) */
 .react-datepicker__month-container + .react-datepicker__month-container {
   margin-left: 0.75rem !important;
 }
@@ -142,22 +219,66 @@ body {
   gap: 0.5rem !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
+/* Mobile: Single month, vertical layout, centered */
+@media (max-width: 767px) {
+  .react-datepicker {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
   .react-datepicker__month-container {
-    min-width: 240px !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
   
   .react-datepicker__month {
-    margin: 0.5rem 0.125rem 0.5rem 0.5rem !important;
+    margin: 0.25rem 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
+  .react-datepicker__week {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  
+  .react-datepicker__day-names {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  
+  .react-datepicker__header {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    width: 2.5rem !important;
+    line-height: 2.5rem !important;
+    margin: 0.1rem !important;
+  }
+  
+  .react-datepicker__current-month {
+    font-size: 1rem !important;
+  }
+}
+
+/* Desktop/Tablet: Two months, horizontal layout */
+@media (min-width: 768px) {
+  .react-datepicker {
+    flex-direction: row !important;
   }
   
   .react-datepicker__month-container + .react-datepicker__month-container {
-    margin-left: 0.5rem !important;
-  }
-  
-  .react-datepicker__month-container:last-child .react-datepicker__month {
-    margin-right: 0.125rem !important;
+    margin-left: 1rem !important;
+    padding-left: 1rem !important;
+    border-left: 1px solid #E5E7EB !important;
   }
 }
 
@@ -192,7 +313,7 @@ body {
 
 .react-datepicker__day:hover {
   background-color: #f1f5f9 !important;
-  border-radius: 0.5rem !important;
+  border-radius: var(--radius) !important;
 }
 
 .react-datepicker__day--selected,

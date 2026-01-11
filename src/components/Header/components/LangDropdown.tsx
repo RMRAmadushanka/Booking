@@ -68,7 +68,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
             key={index}
             href={item.href}
             onClick={() => close()}
-            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
+            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
               item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
             }`}
           >
@@ -92,7 +92,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
             key={index}
             href={item.href}
             onClick={() => close()}
-            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
+            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
               item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
             }`}
           >
@@ -133,7 +133,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className={`absolute z-20  ${panelClassName}`}>
-                <div className="p-3 sm:p-6 rounded-2xl bg-white dark:bg-neutral-800 shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="p-3 sm:p-6 rounded-[var(--radius-lg)] bg-white dark:bg-neutral-800 shadow-lg ring-1 ring-black ring-opacity-5">
                   <Tab.Group>
                     <Tab.List className="flex space-x-1 rounded-full bg-gray-100 dark:bg-slate-700 p-1">
                       {["Language", "Currency"].map((category) => (
@@ -156,7 +156,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
                     <Tab.Panels className="mt-5">
                       <Tab.Panel
                         className={classNames(
-                          "rounded-xl p-3",
+                          "rounded-[var(--radius-md)] p-3",
                           "focus:outline-none focus:ring-0"
                         )}
                       >
@@ -164,7 +164,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
                       </Tab.Panel>
                       <Tab.Panel
                         className={classNames(
-                          "rounded-xl p-3",
+                          "rounded-[var(--radius-md)] p-3",
                           "focus:outline-none focus:ring-0"
                         )}
                       >

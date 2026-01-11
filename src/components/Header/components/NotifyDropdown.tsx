@@ -95,14 +95,14 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute z-10 w-screen max-w-xs sm:max-w-sm px-4 top-full -right-28 sm:right-0 sm:px-0">
-                    <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="overflow-hidden rounded-[var(--radius-lg)] shadow-lg ring-1 ring-black ring-opacity-5">
                       <div className="relative grid gap-8 bg-white dark:bg-neutral-800 p-7">
                         <h3 className="text-xl font-semibold">Notifications</h3>
                         {notifications.map((item, index) => (
                           <a
                             key={index}
                             href={item.href}
-                            className="flex p-2 pr-8 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 relative"
+                            className="flex p-2 pr-8 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 relative"
                             onClick={handleClose}
                           >
                             <Avatar

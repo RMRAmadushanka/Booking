@@ -42,7 +42,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
     guestChildrenInputValue + guestAdultsInputValue + guestInfantsInputValue;
 
   return (
-    <Popover className={`flex relative ${className}`}>
+    <Popover className={`flex relative flex-col lg:flex-row ${className}`}>
       {({ open }) => (
         <>
           <div
@@ -76,15 +76,23 @@ const GuestsInput: FC<GuestsInputProps> = ({
               )}
             </Popover.Button>
 
+            {/* Desktop submit button - hidden on mobile */}
             {hasButtonSubmit && (
-              <div className="pr-2 xl:pr-4">
+              <div className="hidden lg:block pr-2 xl:pr-4">
                 <ButtonSubmit href={buttonSubmitHref} />
               </div>
             )}
           </div>
 
+          {/* Mobile submit button - full width at bottom */}
+          {hasButtonSubmit && (
+            <div className="lg:hidden p-4 pt-2">
+              <ButtonSubmit href={buttonSubmitHref} />
+            </div>
+          )}
+
           {open && (
-            <div className="h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 -left-0.5 right-0.5 bg-white"></div>
+            <div className="h-8 absolute self-center top-1/2 -translate-y-1/2 z-0 -left-0.5 right-0.5 bg-white hidden lg:block"></div>
           )}
           <Transition
             as={Fragment}
@@ -95,7 +103,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute right-0 z-10 w-full sm:min-w-[340px] max-w-sm bg-white top-full mt-3 py-5 sm:py-6 px-4 sm:px-8 rounded-lg shadow-lg border border-[#E5E7EB]">
+            <Popover.Panel className="absolute left-0 lg:left-auto lg:right-0 z-10 w-full sm:min-w-[340px] max-w-sm bg-white top-full mt-3 py-5 sm:py-6 px-4 sm:px-8 rounded-[var(--radius-xl)] shadow-lg border border-[#E5E7EB]">
               <NcInputNumber
                 className="w-full"
                 defaultValue={guestAdultsInputValue}

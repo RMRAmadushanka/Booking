@@ -230,33 +230,33 @@ export default function PackageCard(props: PackageCardProps) {
     switch (variant) {
       case "glass":
         return {
-          container: "relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl border border-white/20 bg-white/5 backdrop-blur-sm w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius-lg)] overflow-hidden shadow-xl hover:shadow-2xl border border-white/20 bg-white/5 backdrop-blur-sm w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent",
           bokeh: "absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/50 to-transparent blur-sm",
           contentContainer: "absolute bottom-0 left-0 right-0",
-          contentWrapper: "relative backdrop-blur-md bg-white/10 border-t border-white/20 rounded-t-2xl",
+          contentWrapper: "relative backdrop-blur-md bg-white/10 border-t border-white/20 rounded-t-[var(--radius-lg)]",
           contentInner: "relative z-10 p-5 text-white",
           title: "text-2xl sm:text-3xl font-bold mb-2 drop-shadow-lg",
           badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold border border-white/30",
           favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-colors border border-white/30",
-          button: "w-full bg-white/95 backdrop-blur-sm text-black py-2.5 px-6 rounded-xl font-semibold hover:bg-white transition-all shadow-lg hover:shadow-xl text-sm sm:text-base",
+          button: "w-full bg-white/95 backdrop-blur-sm text-black py-2.5 px-6 rounded-[var(--radius-md)] font-semibold hover:bg-white transition-all shadow-lg hover:shadow-xl text-sm sm:text-base",
         };
       case "minimal":
         return {
-          container: "relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl border border-neutral-200 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
+          container: "relative rounded-[var(--radius-md)] overflow-hidden shadow-lg hover:shadow-xl border border-neutral-200 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent",
           bokeh: "",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-6 text-white",
           title: "text-2xl font-semibold mb-2",
-          badge: "absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-neutral-900/80 text-white text-xs font-medium",
+          badge: "absolute top-4 left-4 z-10 px-2.5 py-1 rounded-[var(--radius)] bg-neutral-900/80 text-white text-xs font-medium",
           favoriteButton: "absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-900/60 hover:bg-neutral-900/80 transition-colors",
-          button: "w-full bg-neutral-900 text-white py-2.5 px-6 rounded-lg font-medium hover:bg-neutral-800 transition-colors text-sm",
+          button: "w-full bg-neutral-900 text-white py-2.5 px-6 rounded-[var(--radius)] font-medium hover:bg-neutral-800 transition-colors text-sm",
         };
       case "modern":
         return {
-          container: "relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border-2 border-primary-500/20 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius-xl)] overflow-hidden shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] border-2 border-primary-500/20 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-700/40 to-transparent",
           bokeh: "absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-primary-900/60 to-transparent blur-xl",
           contentContainer: "absolute bottom-0 left-0 right-0",
@@ -265,11 +265,11 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-3xl font-extrabold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent",
           badge: "absolute top-4 left-4 z-10 px-4 py-2 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white text-xs font-bold shadow-lg",
           favoriteButton: "absolute top-4 right-4 z-10 p-3 rounded-full bg-primary-500/80 backdrop-blur-sm hover:bg-primary-500 transition-colors shadow-lg",
-          button: "w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-6 rounded-xl font-bold hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base",
+          button: "w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-6 rounded-[var(--radius-md)] font-bold hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base",
         };
       case "elegant":
         return {
-          container: "relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl border border-neutral-300/50 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-500",
+          container: "relative rounded-[var(--radius-lg)] overflow-hidden shadow-xl hover:shadow-2xl border border-neutral-300/50 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-500",
           overlay: "absolute inset-0 bg-gradient-to-t from-neutral-900/85 via-neutral-800/50 to-neutral-700/20",
           bokeh: "absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-neutral-900/70 via-neutral-800/40 to-transparent",
           contentContainer: "absolute bottom-0 left-0 right-0",
@@ -278,33 +278,33 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-2xl sm:text-3xl font-light mb-3 tracking-wide",
           badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-neutral-800/90 backdrop-blur-sm text-white text-xs font-light tracking-wider border border-white/10",
           favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-full bg-neutral-800/60 backdrop-blur-sm hover:bg-neutral-800/80 transition-all border border-white/20",
-          button: "w-full bg-white/10 backdrop-blur-sm text-white py-2.5 px-6 rounded-lg font-light hover:bg-white/20 transition-all border border-white/20 text-sm sm:text-base tracking-wide",
+          button: "w-full bg-white/10 backdrop-blur-sm text-white py-2.5 px-6 rounded-[var(--radius)] font-light hover:bg-white/20 transition-all border border-white/20 text-sm sm:text-base tracking-wide",
         };
       case "neon":
         return {
-          container: "relative rounded-2xl overflow-hidden shadow-2xl hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] border-2 border-purple-500/50 bg-black w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius-lg)] overflow-hidden shadow-2xl hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] border-2 border-purple-500/50 bg-black w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-purple-900/90 via-pink-900/60 to-transparent",
           bokeh: "absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-purple-600/40 via-pink-600/30 to-transparent blur-2xl",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-6 text-white",
           title: "text-3xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]",
-          badge: "absolute top-4 left-4 z-10 px-4 py-2 rounded-lg bg-purple-500/90 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.8)] border border-purple-400/50",
+          badge: "absolute top-4 left-4 z-10 px-4 py-2 rounded-[var(--radius)] bg-purple-500/90 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.8)] border border-purple-400/50",
           favoriteButton: "absolute top-4 right-4 z-10 p-3 rounded-full bg-purple-500/80 hover:bg-purple-500 transition-all shadow-[0_0_15px_rgba(168,85,247,0.6)] border border-purple-400/50",
-          button: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-xl font-bold hover:from-purple-500 hover:to-pink-500 transition-all shadow-[0_0_20px_rgba(168,85,247,0.6)] hover:shadow-[0_0_30px_rgba(168,85,247,0.8)] text-sm sm:text-base",
+          button: "w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-[var(--radius-md)] font-bold hover:from-purple-500 hover:to-pink-500 transition-all shadow-[0_0_20px_rgba(168,85,247,0.6)] hover:shadow-[0_0_30px_rgba(168,85,247,0.8)] text-sm sm:text-base",
         };
       case "vintage":
         return {
-          container: "relative rounded-lg overflow-hidden shadow-2xl hover:shadow-3xl border-4 border-amber-800/40 bg-gradient-to-br from-amber-50 to-amber-100 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius)] overflow-hidden shadow-2xl hover:shadow-3xl border-4 border-amber-800/40 bg-gradient-to-br from-amber-50 to-amber-100 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-amber-900/85 via-amber-800/50 to-amber-700/20",
           bokeh: "absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-amber-900/60 to-transparent",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-6 text-amber-50",
           title: "text-3xl font-bold mb-2 italic tracking-tight drop-shadow-lg",
-          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-md bg-amber-800/90 text-amber-50 text-xs font-bold border-2 border-amber-700/50 shadow-lg",
+          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-[var(--radius)] bg-amber-800/90 text-amber-50 text-xs font-bold border-2 border-amber-700/50 shadow-lg",
           favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-full bg-amber-800/80 hover:bg-amber-800 transition-colors border-2 border-amber-700/50 shadow-md",
-          button: "w-full bg-amber-800 text-amber-50 py-3 px-6 rounded-lg font-bold hover:bg-amber-900 transition-all border-2 border-amber-700/50 shadow-lg text-sm sm:text-base",
+          button: "w-full bg-amber-800 text-amber-50 py-3 px-6 rounded-[var(--radius)] font-bold hover:bg-amber-900 transition-all border-2 border-amber-700/50 shadow-lg text-sm sm:text-base",
         };
       case "bold":
         return {
@@ -334,20 +334,20 @@ export default function PackageCard(props: PackageCardProps) {
         };
       case "dark":
         return {
-          container: "relative rounded-xl overflow-hidden shadow-xl hover:shadow-2xl border border-neutral-800 bg-neutral-950 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius-md)] overflow-hidden shadow-xl hover:shadow-2xl border border-neutral-800 bg-neutral-950 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-neutral-950/95 via-neutral-900/80 to-neutral-800/40",
           bokeh: "",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-6 text-neutral-100",
           title: "text-2xl sm:text-3xl font-medium mb-2 text-white",
-          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-md bg-neutral-800/90 text-neutral-200 text-xs font-medium border border-neutral-700",
+          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-[var(--radius)] bg-neutral-800/90 text-neutral-200 text-xs font-medium border border-neutral-700",
           favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-full bg-neutral-800/80 hover:bg-neutral-700 transition-colors border border-neutral-700",
-          button: "w-full bg-neutral-800 text-neutral-100 py-2.5 px-6 rounded-lg font-medium hover:bg-neutral-700 transition-colors border border-neutral-700 text-sm sm:text-base",
+          button: "w-full bg-neutral-800 text-neutral-100 py-2.5 px-6 rounded-[var(--radius)] font-medium hover:bg-neutral-700 transition-colors border border-neutral-700 text-sm sm:text-base",
         };
       case "vibrant":
         return {
-          container: "relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(255,0,150,0.4)] border-4 border-cyan-400/50 bg-gradient-to-br from-cyan-400 via-pink-400 to-yellow-400 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius-xl)] overflow-hidden shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(255,0,150,0.4)] border-4 border-cyan-400/50 bg-gradient-to-br from-cyan-400 via-pink-400 to-yellow-400 w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent",
           bokeh: "absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-cyan-500/30 via-pink-500/30 to-yellow-500/30 blur-2xl",
           contentContainer: "absolute bottom-0 left-0 right-0",
@@ -356,11 +356,11 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-3xl font-extrabold mb-2 bg-gradient-to-r from-cyan-200 via-pink-200 to-yellow-200 bg-clip-text text-transparent drop-shadow-lg",
           badge: "absolute top-4 left-4 z-10 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 via-pink-500 to-yellow-500 text-white text-xs font-bold shadow-lg",
           favoriteButton: "absolute top-4 right-4 z-10 p-3 rounded-full bg-white/30 backdrop-blur-sm hover:bg-white/50 transition-all border-2 border-white/50",
-          button: "w-full bg-gradient-to-r from-cyan-500 via-pink-500 to-yellow-500 text-white py-3 px-6 rounded-2xl font-bold hover:opacity-90 transition-all shadow-lg text-sm sm:text-base",
+          button: "w-full bg-gradient-to-r from-cyan-500 via-pink-500 to-yellow-500 text-white py-3 px-6 rounded-[var(--radius-lg)] font-bold hover:opacity-90 transition-all shadow-lg text-sm sm:text-base",
         };
       case "corporate":
         return {
-          container: "relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl border border-neutral-300 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius)] overflow-hidden shadow-lg hover:shadow-xl border border-neutral-300 bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-800/50 to-blue-700/20",
           bokeh: "",
           contentContainer: "absolute bottom-0 left-0 right-0",
@@ -382,11 +382,11 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent",
           badge: "absolute top-4 left-4 z-10 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/80 via-purple-500/80 to-pink-500/80 backdrop-blur-md text-white text-xs font-bold border border-white/30",
           favoriteButton: "absolute top-4 right-4 z-10 p-3 rounded-full bg-gradient-to-r from-indigo-500/60 via-purple-500/60 to-pink-500/60 backdrop-blur-md hover:opacity-80 transition-all border border-white/30",
-          button: "w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-3 px-6 rounded-2xl font-bold hover:opacity-90 transition-all shadow-xl text-sm sm:text-base",
+          button: "w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-3 px-6 rounded-[var(--radius-lg)] font-bold hover:opacity-90 transition-all shadow-xl text-sm sm:text-base",
         };
       case "split":
         return {
-          container: "relative rounded-lg overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
+          container: "relative rounded-[var(--radius)] overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-all duration-300",
           overlay: "absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent",
           bokeh: "",
           contentContainer: "",
@@ -395,21 +395,21 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-2xl font-semibold mb-1 text-[#0F172A]",
           badge: "",
           favoriteButton: "",
-          button: "bg-[#2563EB] text-white py-2.5 px-6 rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors shadow-sm text-sm",
+          button: "bg-[#2563EB] text-white py-2.5 px-6 rounded-[var(--radius)] font-medium hover:bg-[#1D4ED8] transition-colors shadow-sm text-sm",
           isSplit: true as const,
         };
       default: // "default"
         return {
-          container: "relative rounded-lg overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
+          container: "relative rounded-[var(--radius)] overflow-hidden shadow-sm hover:shadow-md border border-[#E5E7EB] bg-white w-full max-w-sm mx-auto group cursor-pointer transition-shadow duration-300",
           overlay: "absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent",
           bokeh: "absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent blur-sm",
           contentContainer: "absolute bottom-0 left-0 right-0",
           contentWrapper: "",
           contentInner: "relative z-10 p-5 text-white",
           title: "text-2xl sm:text-3xl font-semibold mb-2",
-          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-lg bg-[#2563EB] text-white text-xs font-semibold",
-          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
-          button: "w-full bg-white text-[#0F172A] py-2.5 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm text-sm sm:text-base",
+          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-[var(--radius)] bg-[#2563EB] text-white text-xs font-semibold",
+          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-[var(--radius)] bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
+          button: "w-full bg-white text-[#0F172A] py-2.5 px-6 rounded-[var(--radius)] font-semibold hover:bg-gray-50 transition-colors shadow-sm text-sm sm:text-base",
         };
     }
   };

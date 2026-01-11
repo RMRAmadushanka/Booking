@@ -3,28 +3,18 @@ import { NavItemType } from "@/shared/Navigation/NavigationItem";
 export const NAVIGATION_DEMO: NavItemType[] = [
   {
     id: "1",
-    name: "Home",
-    href: "/",
+    name: "Packages",
+    href: "/packages",
   },
   {
     id: "2",
-    name: "Stays",
-    href: "/listing-stay",
+    name: "Vehicles",
+    href: "/Vehicles",
   },
   {
     id: "3",
-    name: "Experiences",
-    href: "/listing-experiences",
-  },
-  {
-    id: "4",
-    name: "Cars",
-    href: "/listing-car",
-  },
-  {
-    id: "5",
-    name: "Flights",
-    href: "/listing-flight",
+    name: "Customize Your Trip",
+    href: "/Customize Your Trip",
   },
 ];
 

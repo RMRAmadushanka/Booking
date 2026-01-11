@@ -1,5 +1,7 @@
+"use client";
+
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ReactDatePickerCustomHeaderProps } from "react-datepicker";
 
 const DatePickerCustomHeaderTwoMonth = ({
@@ -8,12 +10,25 @@ const DatePickerCustomHeaderTwoMonth = ({
   decreaseMonth,
   increaseMonth,
 }: ReactDatePickerCustomHeaderProps) => {
-  // For two-month view:
+  const [isSingleMonth, setIsSingleMonth] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsSingleMonth(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // For single month (mobile): show both arrows on the single header
+  // For two-month view (desktop):
   // - First month (count 0): Show only left arrow
   // - Second month (count 1): Show only right arrow
   // This prevents duplicate arrows in the middle
-  const showLeftArrow = customHeaderCount === 0;
-  const showRightArrow = customHeaderCount === 1;
+  const showLeftArrow = isSingleMonth || customHeaderCount === 0;
+  const showRightArrow = isSingleMonth || customHeaderCount === 1;
 
   return (
     <div className="relative flex items-center justify-center min-h-[2.5rem]">

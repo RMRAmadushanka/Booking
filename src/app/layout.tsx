@@ -15,9 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HeroSearch - Find Your Perfect Stay",
+  title: "Tabilon - Find Your Perfect Stay",
   description:
     "Discover amazing places to stay, unique experiences, and adventures around the world.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

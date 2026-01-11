@@ -73,7 +73,7 @@ const LocationInput: FC<LocationInputProps> = ({
             <span
               onClick={() => handleSelectLocation(item)}
               key={item}
-              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+              className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-xl)]"
             >
               <span className="block text-[#64748B]">
                 <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
@@ -100,7 +100,7 @@ const LocationInput: FC<LocationInputProps> = ({
           <span
             onClick={() => handleSelectLocation(item)}
             key={item}
-            className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+            className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-xl)]"
           >
             <span className="block text-[#64748B]">
               <ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
@@ -156,7 +156,7 @@ const LocationInput: FC<LocationInputProps> = ({
       )}
 
       {showPopover && (
-        <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white top-full mt-3 py-3 sm:py-6 rounded-lg shadow-lg border border-[#E5E7EB] max-h-96 overflow-y-auto">
+        <div className="absolute left-0 right-0 lg:right-auto z-40 w-auto lg:w-full min-w-0 lg:min-w-[300px] sm:min-w-[500px] bg-white top-full mt-3 py-3 sm:py-6 rounded-[var(--radius-2xl)] shadow-lg border border-[#E5E7EB] max-h-80 lg:max-h-96 overflow-y-auto mx-4 lg:mx-0">
           {value ? renderSearchValue() : renderRecentSearches()}
         </div>
       )}

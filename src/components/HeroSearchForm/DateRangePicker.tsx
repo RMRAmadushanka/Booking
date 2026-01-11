@@ -1,8 +1,9 @@
 "use client";
 
-import React, { Fragment, useState, FC } from "react";
+import React, { Fragment, useState, useEffect, FC } from "react";
+import { createPortal } from "react-dom";
 import { Popover, Transition } from "@headlessui/react";
-import { CalendarIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import DatePickerCustomHeaderTwoMonth from "@/components/DatePickerCustomHeaderTwoMonth";
 import DatePickerCustomDay from "@/components/DatePickerCustomDay";
 import DatePicker from "react-datepicker";
@@ -38,6 +39,53 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(defaultStartDate);
   const [endDate, setEndDate] = useState<Date | null>(defaultEndDate);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Lock body scroll when mobile modal is open
+  useEffect(() => {
+    if (isMobileModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileModalOpen]);
+
+  // Don't render until we know if it's mobile or not (prevents hydration mismatch)
+  if (isMobile === null) {
+    return (
+      <div className={`DateRangePicker z-10 relative flex flex-col lg:flex-row ${className}`}>
+        <div className={`flex-1 z-10 flex items-center focus:outline-none`}>
+          <div className={`flex-1 z-10 flex relative ${fieldClassName} items-center space-x-3`}>
+            <div className="text-[#64748B]">
+              <CalendarIcon className="w-5 h-5 lg:w-7 lg:h-7" />
+            </div>
+            <div className="flex-grow text-left">
+              <span className="block xl:text-lg font-semibold text-[#0F172A]">
+                {placeholder}
+              </span>
+              <span className="block mt-1 text-sm text-[#64748B] leading-none font-light">
+                {description}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const onChangeDate = (dates: [Date | null, Date | null] | Date | null) => {
     if (selectsRange && Array.isArray(dates)) {
@@ -62,8 +110,8 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
     onChange?.(null, null);
   };
 
-  const renderInput = () => {
-    const displayText = startDate
+  const getDisplayText = () => {
+    return startDate
       ? startDate.toLocaleDateString("en-US", {
           month: "short",
           day: "2-digit",
@@ -76,7 +124,9 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
             })
           : "")
       : placeholder;
+  };
 
+  const renderInput = () => {
     return (
       <>
         <div className="text-[#64748B]">
@@ -84,7 +134,7 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
         </div>
         <div className="flex-grow text-left">
           <span className="block xl:text-lg font-semibold text-[#0F172A]">
-            {displayText}
+            {getDisplayText()}
           </span>
           <span className="block mt-1 text-sm text-[#64748B] leading-none font-light">
             {description}
@@ -94,8 +144,153 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
     );
   };
 
+  const renderDatePicker = () => (
+    selectsRange ? (
+      <DatePicker
+        selected={startDate}
+        onChange={onChangeDate}
+        startDate={startDate}
+        endDate={endDate}
+        selectsRange
+        monthsShown={isMobile ? 1 : 2}
+        showPopperArrow={false}
+        inline
+        renderCustomHeader={(p) => (
+          <DatePickerCustomHeaderTwoMonth {...p} />
+        )}
+        renderDayContents={(day, date) => (
+          <DatePickerCustomDay dayOfMonth={day} date={date} />
+        )}
+      />
+    ) : (
+      <DatePicker
+        selected={startDate}
+        onChange={onChangeDate}
+        monthsShown={isMobile ? 1 : 2}
+        showPopperArrow={false}
+        inline
+        renderCustomHeader={(p) => (
+          <DatePickerCustomHeaderTwoMonth {...p} />
+        )}
+        renderDayContents={(day, date) => (
+          <DatePickerCustomDay dayOfMonth={day} date={date} />
+        )}
+      />
+    )
+  );
+
+  // Mobile Modal - rendered via Portal to ensure it's above everything
+  const renderMobileModal = () => {
+    if (!isMobileModalOpen) return null;
+    
+    const modalContent = (
+      <div className="fixed inset-0 z-[9999]">
+        {/* Backdrop */}
+        <div 
+          className="fixed inset-0 bg-black/50 animate-fadeIn"
+          onClick={() => setIsMobileModalOpen(false)}
+        />
+
+        {/* Full-screen modal */}
+        <div className="fixed inset-0 bg-white flex flex-col animate-slideUp z-[10000]">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-4 border-b border-[#E5E7EB]">
+            <h2 className="text-lg font-semibold text-[#0F172A]">
+              {selectsRange ? "Select Dates" : "Select Date"}
+            </h2>
+            <button
+              onClick={() => setIsMobileModalOpen(false)}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              type="button"
+            >
+              <XMarkIcon className="w-6 h-6 text-[#64748B]" />
+            </button>
+          </div>
+
+          {/* Selected dates display */}
+          <div className="px-4 py-3 bg-[#F8FAFC] border-b border-[#E5E7EB]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#64748B]">{description}</p>
+                <p className="text-base font-semibold text-[#0F172A] mt-1">
+                  {getDisplayText()}
+                </p>
+              </div>
+              {startDate && (
+                <button
+                  onClick={handleClear}
+                  className="text-sm text-[#2563EB] font-medium hover:underline"
+                  type="button"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Calendar */}
+          <div className="flex-1 overflow-y-auto px-4 py-6 flex justify-center">
+            {renderDatePicker()}
+          </div>
+
+          {/* Footer with Apply button */}
+          <div className="p-4 border-t border-[#E5E7EB] bg-white safe-area-bottom">
+            <button
+              onClick={() => setIsMobileModalOpen(false)}
+              className="w-full h-12 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold rounded-[var(--radius-xl)] transition-colors"
+              type="button"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Use portal to render at document body level
+    if (typeof document !== 'undefined') {
+      return createPortal(modalContent, document.body);
+    }
+    return null;
+  };
+
+  // Mobile: Use modal, Desktop: Use popover
+  if (isMobile) {
+    return (
+      <div className={`DateRangePicker z-10 relative flex flex-col ${className}`}>
+        <div
+          className={`flex-1 z-10 flex items-center focus:outline-none ${
+            isMobileModalOpen ? "nc-hero-field-focused" : ""
+          }`}
+        >
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsMobileModalOpen(true);
+            }}
+            className={`flex-1 z-10 flex relative ${fieldClassName} items-center space-x-3 focus:outline-none text-left`}
+          >
+            {renderInput()}
+          </button>
+        </div>
+
+        {/* Mobile submit button - full width at bottom */}
+        {hasButtonSubmit && (
+          <div className="p-4 pt-2">
+            <ButtonSubmit href={buttonSubmitHref} />
+          </div>
+        )}
+
+        {renderMobileModal()}
+      </div>
+    );
+  }
+
+  // Desktop: Use Popover
   return (
-    <Popover className={`DateRangePicker z-10 relative flex ${className}`}>
+    <Popover className={`DateRangePicker z-10 relative flex flex-col lg:flex-row ${className}`}>
       {({ open }) => (
         <>
           <div
@@ -112,7 +307,7 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
               )}
             </Popover.Button>
 
-            {/* BUTTON SUBMIT OF FORM */}
+            {/* BUTTON SUBMIT OF FORM - Desktop only */}
             {hasButtonSubmit && (
               <div className="pr-2 xl:pr-4">
                 <ButtonSubmit href={buttonSubmitHref} />
@@ -135,40 +330,11 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute left-1/2 z-10 mt-3 top-full w-screen max-w-[90vw] -translate-x-1/2 transform px-4 sm:px-0 sm:max-w-[700px]">
-              <div className="overflow-hidden rounded-lg shadow-lg border border-[#E5E7EB] bg-white py-4 pl-3 pr-2 sm:py-6 sm:pl-4 sm:pr-3 lg:py-8 lg:pl-6">
-                {selectsRange ? (
-                  <DatePicker
-                    selected={startDate}
-                    onChange={onChangeDate}
-                    startDate={startDate}
-                    endDate={endDate}
-                    selectsRange
-                    monthsShown={2}
-                    showPopperArrow={false}
-                    inline
-                    renderCustomHeader={(p) => (
-                      <DatePickerCustomHeaderTwoMonth {...p} />
-                    )}
-                    renderDayContents={(day, date) => (
-                      <DatePickerCustomDay dayOfMonth={day} date={date} />
-                    )}
-                  />
-                ) : (
-                  <DatePicker
-                    selected={startDate}
-                    onChange={onChangeDate}
-                    monthsShown={2}
-                    showPopperArrow={false}
-                    inline
-                    renderCustomHeader={(p) => (
-                      <DatePickerCustomHeaderTwoMonth {...p} />
-                    )}
-                    renderDayContents={(day, date) => (
-                      <DatePickerCustomDay dayOfMonth={day} date={date} />
-                    )}
-                  />
-                )}
+            <Popover.Panel 
+              className="absolute z-20 mt-3 top-full transform left-1/2 -translate-x-1/2 w-auto max-w-[700px]"
+            >
+              <div className="overflow-hidden rounded-[var(--radius-xl)] shadow-lg border border-[#E5E7EB] bg-white py-6 px-4 lg:py-8 lg:px-6">
+                {renderDatePicker()}
               </div>
             </Popover.Panel>
           </Transition>

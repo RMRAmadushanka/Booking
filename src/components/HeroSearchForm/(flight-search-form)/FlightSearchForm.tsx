@@ -69,7 +69,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
               as="button"
               className={`
            ${open ? "" : ""}
-            px-4 py-1.5 rounded-md inline-flex items-center font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xs`}
+            px-4 py-1.5 rounded-[var(--radius-lg)] inline-flex items-center font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xs`}
             >
               <span>{`${totalGuests || ""} Guests`}</span>
               <ChevronDownIcon
@@ -88,7 +88,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-20 w-full sm:min-w-[340px] max-w-sm bg-white top-full mt-3 left-1/2 -translate-x-1/2 py-5 sm:py-6 px-4 sm:px-8 rounded-lg shadow-lg border border-[#E5E7EB]">
+              <Popover.Panel className="absolute z-20 w-full sm:min-w-[340px] max-w-sm bg-white top-full mt-3 left-1/2 -translate-x-1/2 py-5 sm:py-6 px-4 sm:px-8 rounded-[var(--radius-xl)] shadow-lg border border-[#E5E7EB]">
                 <NcInputNumber
                   className="w-full"
                   defaultValue={guestAdultsInputValue}
@@ -131,7 +131,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
             <Popover.Button
               className={`
            ${open ? "" : ""}
-            px-4 py-1.5 rounded-md inline-flex items-center font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xs`}
+            px-4 py-1.5 rounded-[var(--radius-lg)] inline-flex items-center font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-xs`}
             >
               <span>{`${flightClassState}`}</span>
               <ChevronDownIcon
@@ -151,7 +151,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className="absolute z-20 w-screen max-w-[200px] sm:max-w-[220px] px-4 top-full mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
-                <div className="overflow-hidden rounded-lg shadow-lg border border-[#E5E7EB]">
+                <div className="overflow-hidden rounded-[var(--radius-xl)] shadow-lg border border-[#E5E7EB]">
                   <div className="relative grid gap-8 bg-white p-7">
                     {flightClass.map((item) => (
                       <a
@@ -162,7 +162,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
                           setFlightClassState(item.name);
                           close();
                         }}
-                        className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-blue-50 focus:outline-none focus-visible:ring focus-visible:ring-[#2563EB] focus-visible:ring-opacity-50"
+                        className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius-lg)] hover:bg-blue-50 focus:outline-none focus-visible:ring focus-visible:ring-[#2563EB] focus-visible:ring-opacity-50"
                       >
                         <p className="text-sm font-medium text-[#0F172A]">{item.name}</p>
                       </a>
@@ -179,9 +179,9 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
 
   const renderRadioBtn = () => {
     return (
-      <div className="py-5 [ nc-hero-field-padding ] flex flex-row flex-wrap border-b border-[#E5E7EB]">
+      <div className="py-4 lg:py-5 px-4 lg:px-6 flex flex-row flex-wrap border-b border-[#E5E7EB]">
         <div
-          className={`py-1.5 px-4 flex items-center rounded-lg font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
+          className={`py-1.5 px-3 sm:px-4 flex items-center rounded-[var(--radius-lg)] font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
             dropOffLocationType === "roundTrip"
               ? "bg-[#2563EB] shadow-sm text-white"
               : "border border-[#E5E7EB] text-[#64748B] hover:border-[#2563EB] hover:text-[#2563EB]"
@@ -191,7 +191,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
           Round-trip
         </div>
         <div
-          className={`py-1.5 px-4 flex items-center rounded-lg font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
+          className={`py-1.5 px-3 sm:px-4 flex items-center rounded-[var(--radius-lg)] font-medium text-xs cursor-pointer mr-2 my-1 sm:mr-3 transition-colors ${
             dropOffLocationType === "oneWay"
               ? "bg-[#2563EB] text-white shadow-sm"
               : "border border-[#E5E7EB] text-[#64748B] hover:border-[#2563EB] hover:text-[#2563EB]"
@@ -201,12 +201,12 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
           One-way
         </div>
 
-        <div className="self-center border-r border-[#E5E7EB] h-8 mr-2 my-1 sm:mr-3"></div>
+        <div className="hidden sm:block self-center border-r border-[#E5E7EB] h-8 mr-2 my-1 sm:mr-3"></div>
 
-        <div className="mr-2 my-1 sm:mr-3 border border-[#E5E7EB] rounded-lg">
+        <div className="mr-2 my-1 sm:mr-3 border border-[#E5E7EB] rounded-[var(--radius-lg)]">
           {renderSelectClass()}
         </div>
-        <div className="my-1 border border-[#E5E7EB] rounded-lg">
+        <div className="my-1 border border-[#E5E7EB] rounded-[var(--radius-lg)]">
           {renderGuest()}
         </div>
       </div>
@@ -215,25 +215,30 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({}) => {
 
   const renderForm = () => {
     return (
-      <form className="w-full relative mt-8 rounded-lg shadow-sm bg-white border border-[#E5E7EB]">
+      <form className="w-full relative mt-8 rounded-[var(--radius-2xl)] shadow-sm bg-white border border-[#E5E7EB]">
         {renderRadioBtn()}
-        <div className="flex flex-1">
+        <div className="flex flex-col lg:flex-row flex-1">
           <LocationInput
             placeHolder="Flying from"
             desc="Where do you want to fly from?"
             className="flex-1"
           />
-          <div className="self-center border-r border-[#E5E7EB] h-8"></div>
+          {/* Horizontal divider for mobile, vertical for desktop */}
+          <div className="lg:hidden border-b border-[#E5E7EB] mx-4"></div>
+          <div className="hidden lg:block self-center border-r border-[#E5E7EB] h-8"></div>
           <LocationInput
             placeHolder="Flying to"
             desc="Where you want to fly to?"
             className="flex-1"
             divHideVerticalLineClass=" -inset-x-0.5"
           />
-          <div className="self-center border-r border-[#E5E7EB] h-8"></div>
+          {/* Horizontal divider for mobile, vertical for desktop */}
+          <div className="lg:hidden border-b border-[#E5E7EB] mx-4"></div>
+          <div className="hidden lg:block self-center border-r border-[#E5E7EB] h-8"></div>
           <FlightDateRangeInput
             selectsRange={dropOffLocationType !== "oneWay"}
             className="flex-1"
+            hasButtonSubmit={true}
           />
         </div>
       </form>

@@ -1,5 +1,35 @@
 import { createTheme } from "@mui/material/styles";
 
+/**
+ * ===========================================
+ * CORNER RADIUS SYSTEM
+ * ===========================================
+ * This file defines the MUI theme radius values that stay in sync
+ * with Tailwind CSS variables defined in globals.css.
+ * 
+ * Primary radius: 12px (soft, modern, friendly)
+ * 
+ * Scale (matching Tailwind):
+ * - RADIUS_BASE (12px): Default for most components
+ * - RADIUS_SM (6px): Subtle rounding
+ * - RADIUS_MD (16px): Medium elements
+ * - RADIUS_LG (20px): Large elements
+ * - RADIUS_FULL (9999px): Circular/pill shapes
+ * ===========================================
+ */
+
+// Shared radius constants - single source of truth
+export const RADIUS = {
+  none: 0,
+  sm: 6,
+  base: 12,   // Primary radius - use this by default
+  md: 16,
+  lg: 20,
+  xl: 28,
+  '2xl': 36,
+  full: 9999,
+} as const;
+
 // Project color palette matching Tailwind CSS variables
 const theme = createTheme({
   palette: {
@@ -62,7 +92,7 @@ const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: RADIUS.base, // 8px - primary radius
   },
   components: {
     MuiButton: {
@@ -70,7 +100,7 @@ const theme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 500,
-          borderRadius: 8,
+          borderRadius: RADIUS.base,
           padding: "10px 16px",
           "&:hover": {
             backgroundColor: "#1D4ED8",
@@ -88,7 +118,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 8,
+            borderRadius: RADIUS.base,
             "& fieldset": {
               borderColor: "#E5E7EB",
             },
@@ -106,7 +136,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 8,
+            borderRadius: RADIUS.base,
             "& fieldset": {
               borderColor: "#E5E7EB",
             },
@@ -119,7 +149,7 @@ const theme = createTheme({
           },
         },
         paper: {
-          borderRadius: 8,
+          borderRadius: RADIUS.base,
           border: "1px solid #E5E7EB",
           boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
         },
@@ -156,7 +186,7 @@ const theme = createTheme({
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: 12,
+          borderRadius: RADIUS.base, // Standardized to 8px (was 12px)
           border: "1px solid #E5E7EB",
           boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
           marginTop: 8,
@@ -166,7 +196,7 @@ const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: RADIUS.sm, // 4px for menu items (subtle)
           margin: "4px 8px",
           "&:hover": {
             backgroundColor: "#F1F5F9",
@@ -220,7 +250,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 8,
+            borderRadius: RADIUS.base,
           },
         },
       },
@@ -237,11 +267,11 @@ const theme = createTheme({
         },
         track: {
           height: 6,
-          borderRadius: 3,
+          borderRadius: RADIUS.sm, // 4px for slider track
         },
         rail: {
           height: 6,
-          borderRadius: 3,
+          borderRadius: RADIUS.sm, // 4px for slider rail
           backgroundColor: "#E5E7EB",
         },
       },

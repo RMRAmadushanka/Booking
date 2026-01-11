@@ -61,7 +61,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute z-10 w-screen max-w-[260px] px-4 top-full -right-10 sm:right-0 sm:px-0">
-                    <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="overflow-hidden rounded-[var(--radius-lg)] shadow-lg ring-1 ring-black ring-opacity-5">
                       <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                         <div className="flex items-center space-x-3">
                           <Avatar sizeClass="w-12 h-12" />
@@ -77,7 +77,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         {/* ------------------ 1 --------------------- */}
                         <Link
                           href={"/account"}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                           onClick={handleClose}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -112,7 +112,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         {/* ------------------ 2 --------------------- */}
                         <Link
                           href={"/author"}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                           onClick={handleClose}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -164,7 +164,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         {/* ------------------ 2 --------------------- */}
                         <Link
                           href={"/account-savelists"}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                           onClick={handleClose}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -191,7 +191,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
 
                         {/* ------------------ 2 --------------------- */}
-                        <div className="flex items-center justify-between p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+                        <div className="flex items-center justify-between p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
                           <div className="flex items-center">
                             <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
                               <svg
@@ -234,7 +234,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         {/* ------------------ 2 --------------------- */}
                         <Link
                           href={"/#"}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                           onClick={handleClose}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -297,7 +297,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         {/* ------------------ 2 --------------------- */}
                         <Link
                           href={"/#"}
-                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                           onClick={handleClose}
                         >
                           <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">

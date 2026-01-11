@@ -2,6 +2,8 @@
 
 import React, { FC } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import MainLogo from "@/images/MainLogo.png";
 
 interface LogoProps {
   className?: string;
@@ -10,7 +12,14 @@ interface LogoProps {
 const Logo: FC<LogoProps> = ({ className = "" }) => {
   return (
     <Link href="/" className={`flex items-center ${className}`}>
-      <span className="text-2xl font-bold text-primary-600">HeroSearch</span>
+      <Image
+        src={MainLogo}
+        alt="Tabilon"
+        width={140}
+        height={40}
+        className="h-8 sm:h-10 w-auto"
+        priority
+      />
     </Link>
   );
 };

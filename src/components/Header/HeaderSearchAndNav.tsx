@@ -2,8 +2,6 @@
 
 import React, { FC } from "react";
 import SearchButton from "./SearchButton";
-import NavSection from "./NavSection";
-import HeroSearchForm2MobileFactory from "./components/MobileSearch/HeroSearchForm2MobileFactory";
 
 interface HeaderSearchAndNavProps {
   className?: string;
@@ -32,21 +30,24 @@ const HeaderSearchAndNav: FC<HeaderSearchAndNavProps> = ({
   return (
     <div className={`flex flex-[2] lg:flex-none mx-auto ${className}`}>
       <div className="flex-1 hidden lg:flex self-center">
-        <SearchButton
-          onLocationClick={onLocationClick}
-          onCheckInClick={onCheckInClick}
-          onGuestsClick={onGuestsClick}
-          onSearchClick={onSearchClick}
-        />
-      </div>
-      {showMobileSearch && (
-        <div className="self-center flex-1 lg:hidden w-full max-w-lg mx-auto">
-          <HeroSearchForm2MobileFactory />
+        {/* Luxury container with glass effect */}
+        <div className="relative group">
+          {/* Subtle glow effect on hover */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-200/20 via-cyan-100/10 to-blue-200/20 rounded-[var(--radius-xl)] blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          {/* Main container */}
+          <div className="relative">
+            <SearchButton
+              onLocationClick={onLocationClick}
+              onCheckInClick={onCheckInClick}
+              onGuestsClick={onGuestsClick}
+              onSearchClick={onSearchClick}
+            />
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 export default HeaderSearchAndNav;
-

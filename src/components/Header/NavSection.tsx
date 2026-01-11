@@ -23,7 +23,7 @@ const NavSection: FC<NavSectionProps> = ({
       <div className="flex space-x-1">
         <Link
           href={listPropertyHref}
-          className="self-center hidden xl:inline-flex px-4 py-2 border border-[#E5E7EB] hover:border-[#2563EB] rounded-lg items-center text-sm text-[#64748B] hover:text-[#2563EB] font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-opacity-75 transition-colors"
+          className="self-center hidden xl:inline-flex px-4 py-2 border border-[#E5E7EB] hover:border-[#2563EB] rounded-[var(--radius-md)] items-center text-sm text-[#64748B] hover:text-[#2563EB] font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-opacity-75 transition-colors"
         >
           {listPropertyText}
         </Link>

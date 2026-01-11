@@ -1,8 +1,8 @@
 "use client";
 
 import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
-import HeroSearchForm2Mobile from "@/components/HeroSearchForm2Mobile/HeroSearchForm2Mobile";
 import PackageCard from "@/components/PackageCard";
+import heroImage from "@/images/home-beach-hero.jpg";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <div
         className="relative min-h-[600px] lg:min-h-[700px] flex items-center bg-[#2563EB]"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop')",
+          backgroundImage: `url(${heroImage.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -31,14 +31,9 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Desktop Search Form */}
-          <div className="hidden lg:flex justify-center">
-            <HeroSearchForm  />
-          </div>
-
-          {/* Mobile Search Form */}
-          <div className="lg:hidden max-w-lg mx-auto">
-            <HeroSearchForm2Mobile />
+          {/* Search Form */}
+          <div className="flex justify-center">
+            <HeroSearchForm />
           </div>
 
           {/* Stats */}
@@ -95,7 +90,7 @@ export default function Home() {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-[#E5E7EB]"
+                className="bg-white p-8 rounded-[var(--radius)] shadow-sm hover:shadow-md transition-shadow border border-[#E5E7EB]"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-semibold text-[#0F172A] mb-2">
@@ -151,7 +146,7 @@ export default function Home() {
             ].map((destination, idx) => (
               <div
                 key={idx}
-                className="group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer"
+                className="group relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] cursor-pointer"
               >
                 <img
                   src={destination.image}
@@ -412,7 +407,7 @@ export default function Home() {
             Join millions of travelers who trust us for their booking needs.
             Sign up today and get exclusive deals!
           </p>
-          <button className="bg-white text-[#2563EB] px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg">
+          <button className="bg-white text-[#2563EB] px-8 py-4 rounded-[var(--radius)] font-semibold hover:bg-gray-50 transition-colors shadow-lg">
             Get Started Free
           </button>
         </div>
