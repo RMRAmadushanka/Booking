@@ -120,10 +120,12 @@ body {
 }
 
 /* Hidden scrollbar */
-.hiddenScrollbar::-webkit-scrollbar {
+.hiddenScrollbar::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-.hiddenScrollbar {
+.hiddenScrollbar,
+.scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
