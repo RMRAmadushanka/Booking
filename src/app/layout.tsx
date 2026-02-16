@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tabilon - Find Your Perfect Stay",
+  title: "Drimooria Travels - Find Your Perfect Stay",
   description:
     "Discover amazing places to stay, unique experiences, and adventures around the world.",
   icons: {

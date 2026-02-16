@@ -54,10 +54,10 @@ const XIcon = () => (
 );
 
 const socialLinks = [
-  { label: "Facebook", href: "https://facebook.com/tabilon", icon: FacebookIcon },
-  { label: "Instagram", href: "https://instagram.com/tabilon", icon: InstagramIcon },
-  { label: "LinkedIn", href: "https://linkedin.com/company/tabilon", icon: LinkedInIcon },
-  { label: "X", href: "https://x.com/tabilon", icon: XIcon },
+  { label: "Facebook", href: "https://facebook.com/Drimooria Travels", icon: FacebookIcon },
+  { label: "Instagram", href: "https://instagram.com/Drimooria Travels", icon: InstagramIcon },
+  { label: "LinkedIn", href: "https://linkedin.com/company/Drimooria Travels", icon: LinkedInIcon },
+  { label: "X", href: "https://x.com/Drimooria Travels", icon: XIcon },
 ];
 
 interface FooterLinkProps {
@@ -178,7 +178,7 @@ const Footer: React.FC = () => {
             <Link href="/" className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 rounded">
               <Image
                 src={MainLogo}
-                alt="Tabilon - Travel Agency"
+                alt="Drimooria Travels - Travel Agency"
                 width={140}
                 height={40}
                 className="h-10 w-auto"
@@ -249,10 +249,10 @@ const Footer: React.FC = () => {
                 <span className="text-[#64748B]" aria-hidden="true">✉️</span>
                 <div>
                   <a
-                    href="mailto:info@tabilon.com"
+                    href="mailto:info@Drimooria Travels.com"
                     className="text-[#2563EB] hover:text-[#2DD4BF] focus:text-[#2DD4BF] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] transition-colors duration-200"
                   >
-                    info@tabilon.com
+                    info@Drimooria Travels.com
                   </a>
                 </div>
               </div>
@@ -275,7 +275,7 @@ const Footer: React.FC = () => {
             <Link href="/" className="inline-block mb-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 rounded">
               <Image
                 src={MainLogo}
-                alt="Tabilon - Travel Agency"
+                alt="Drimooria Travels - Travel Agency"
                 width={120}
                 height={36}
                 className="h-9 w-auto"
@@ -330,10 +330,10 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-3 min-h-[44px]">
                 <span className="text-[#64748B]" aria-hidden="true">✉️</span>
                 <a
-                  href="mailto:info@tabilon.com"
+                  href="mailto:info@Drimooria Travels.com"
                   className="text-[#2563EB] hover:text-[#2DD4BF] focus:text-[#2DD4BF] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] transition-colors duration-200"
                 >
-                  info@tabilon.com
+                  info@Drimooria Travels.com
                 </a>
               </div>
               <div className="flex items-center gap-3 min-h-[44px]">
@@ -377,7 +377,7 @@ const Footer: React.FC = () => {
       <div className="border-t border-[#64748B]/20 bg-[#FFFFFF]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-[#64748B] text-sm text-center">
-            © {currentYear} Tabilon. All rights reserved.
+            © {currentYear} Drimooria Travels. All rights reserved.
           </p>
         </div>
       </div>

@@ -14,9 +14,9 @@ const Logo: FC<LogoProps> = ({ className = "" }) => {
     <Link href="/" className={`flex items-center ${className}`}>
       <Image
         src={MainLogo}
-        alt="Tabilon"
+        alt="Drimooria Travels"
         width={140}
-        height={40}
+        height={200}
         className="h-8 sm:h-10 w-auto"
         priority
       />

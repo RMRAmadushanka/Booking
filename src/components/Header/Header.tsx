@@ -39,9 +39,9 @@ const Header: FC<HeaderProps> = ({ className = "" }) => {
             <Link href="/" className="flex items-center">
               <Image
                 src={MainLogo}
-                alt="Tabilon"
+                alt="Drimooria Travels"
                 width={140}
-                height={40}
+                height={20}
                 className="h-8 sm:h-10 w-auto"
                 priority
               />

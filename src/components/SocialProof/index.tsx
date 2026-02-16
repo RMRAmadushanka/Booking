@@ -14,14 +14,14 @@ const testimonials: Testimonial[] = [
   {
     id: "1",
     quote:
-      "Tabilon handled our entire corporate retreat seamlessly. From flights to accommodations, every detail was perfect.",
+      "Drimooria Travels handled our entire corporate retreat seamlessly. From flights to accommodations, every detail was perfect.",
     name: "Marcus Chen",
     location: "Singapore",
   },
   {
     id: "2",
     quote:
-      "We've worked with many travel agencies, but Tabilon's attention to our business requirements is unmatched.",
+      "We've worked with many travel agencies, but Drimooria Travels's attention to our business requirements is unmatched.",
     name: "Elena Hoffmann",
     location: "Germany",
   },
@@ -141,7 +141,7 @@ export default function SocialProof() {
             Trusted by Travelers Worldwide
           </h2>
           <p className="text-[#64748B] text-lg max-w-xl mx-auto">
-            Real experiences from clients who explored with Tabilon
+            Real experiences from clients who explored with Drimooria Travels
           </p>
         </header>
 

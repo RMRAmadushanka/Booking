@@ -143,7 +143,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <div className="py-6 px-5 relative">
         <Logo />
         <p className="mt-4 text-[#64748B] text-sm leading-relaxed">
-          Find and book your perfect travel experience with Tabilon.
+          Find and book your perfect travel experience with Drimooria Travels.
         </p>
 
         
