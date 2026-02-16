@@ -9,12 +9,12 @@ export const NAVIGATION_DEMO: NavItemType[] = [
   {
     id: "2",
     name: "Vehicles",
-    href: "/Vehicles",
+    href: "/vehicles",
   },
   {
     id: "3",
     name: "Customize Your Trip",
-    href: "/Customize Your Trip",
+    href: "/customize-trip",
   },
 ];
 

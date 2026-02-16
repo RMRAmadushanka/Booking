@@ -28,6 +28,14 @@ const SearchButton: FC<SearchButtonProps> = ({
     }
   };
 
+  const handleVehiclesClick = () => {
+    if (onCheckInClick) {
+      onCheckInClick();
+    } else {
+      router.push("/vehicles");
+    }
+  };
+
   return (
     <div
       className={`
@@ -72,7 +80,7 @@ const SearchButton: FC<SearchButtonProps> = ({
 
         {/* Vehicles */}
         <span
-          onClick={onCheckInClick}
+          onClick={handleVehiclesClick}
           className={`
             relative block px-5 py-3.5
             font-medium text-sm tracking-wide
