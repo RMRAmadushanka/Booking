@@ -23,7 +23,7 @@ const exploreLinks = [
 const supportLinks = [
   { label: "Contact Us", href: "/contact" },
   { label: "FAQs", href: "/faqs" },
-  { label: "Customize Your Trip", href: "/customize" },
+  { label: "Customize Your Trip", href: "/customize-trip" },
   { label: "Terms & Conditions", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy" },
 ];

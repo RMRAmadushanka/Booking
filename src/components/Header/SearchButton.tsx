@@ -16,7 +16,7 @@ const SearchButton: FC<SearchButtonProps> = ({
   onLocationClick,
   onCheckInClick,
   onGuestsClick,
-  onSearchClick,
+  onSearchClick: _onSearchClick,
 }) => {
   const router = useRouter();
 
@@ -33,6 +33,14 @@ const SearchButton: FC<SearchButtonProps> = ({
       onCheckInClick();
     } else {
       router.push("/vehicles");
+    }
+  };
+
+  const handleCustomizeTripClick = () => {
+    if (onGuestsClick) {
+      onGuestsClick();
+    } else {
+      router.push("/customize-trip");
     }
   };
 
@@ -102,7 +110,7 @@ const SearchButton: FC<SearchButtonProps> = ({
 
         {/* Customize Your Trip */}
         <span
-          onClick={onGuestsClick}
+          onClick={handleCustomizeTripClick}
           className={`
             relative block px-5 pr-6 py-3.5
             font-normal text-sm tracking-wide

@@ -178,7 +178,6 @@ export default function CustomizeTripPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [destinations, setDestinations] = useState<Destination[]>([]);
   const [tripStartDate, setTripStartDate] = useState<Date | null>(null);
   const [tripEndDate, setTripEndDate] = useState<Date | null>(null);
   const [adults, setAdults] = useState(1);
@@ -203,12 +202,6 @@ export default function CustomizeTripPage() {
       return next;
     });
   }, [tripDayCount]);
-
-  const toggleDestination = (d: Destination) => {
-    setDestinations((prev) =>
-      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
-    );
-  };
 
   const setDayPlan = (dayIndex: number, value: Destination | "") => {
     setDayPlans((prev) => {
@@ -313,28 +306,6 @@ export default function CustomizeTripPage() {
               </h2>
             </div>
             <div className="p-5 space-y-4 overflow-visible">
-              <div>
-                <label className="block text-sm font-medium text-[var(--color-dark)] mb-2">
-                  Places you&apos;d like to visit
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {DESTINATIONS.map((d) => (
-                    <button
-                      key={d}
-                      type="button"
-                      onClick={() => toggleDestination(d)}
-                      className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-[var(--radius)] text-sm font-medium transition-all border ${
-                        destinations.includes(d)
-                          ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
-                          : "bg-white text-[var(--color-dark)] border-[var(--color-border)] hover:border-[var(--color-primary)]/50"
-                      }`}
-                    >
-                      <MapPinIcon className="w-4 h-4" />
-                      {d}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <div>
                 <label className="block text-sm font-medium text-[var(--color-dark)] mb-2">
                   Trip duration
@@ -443,7 +414,7 @@ export default function CustomizeTripPage() {
                 Your travel plan
               </h2>
               <p className="text-sm text-[var(--color-muted)] mt-0.5">
-                Assign places to each day based on your trip dates. Select travel dates and places above first.
+                Assign a place to each day based on your trip dates. Select your travel dates above first.
               </p>
             </div>
             <div className="p-5 space-y-4">
