@@ -1,0 +1,70 @@
+[
+  {
+    "packageId": "1",
+    "packageTitle": "Cultural Triangle Explorer",
+    "travelerName": "asas",
+    "email": "sdsd@gmail.com",
+    "adultCount": 1,
+    "childrenCount": 0,
+    "guestCount": 1,
+    "pricing": {
+      "currency": "USD",
+      "adultPricePerPerson": 1200,
+      "childPricePerPerson": 900,
+      "childPriceMultiplier": 0.75,
+      "estimatedTotalPrice": 1200
+    },
+    "startDate": "2026-02-17",
+    "endDate": "2026-02-17",
+    "pickupLocation": "Kandy",
+    "id": "8b342b31-2d1e-44f5-b8ea-382e99419707",
+    "createdAt": "2026-02-17T10:57:59.485Z"
+  },
+  {
+    "packageId": "1",
+    "packageTitle": "Test Package",
+    "travelerName": "Pricing User",
+    "email": "pricing@example.com",
+    "adultCount": 2,
+    "childrenCount": 2,
+    "guestCount": 4,
+    "pricing": {
+      "currency": "USD",
+      "estimatedTotalPrice": 4200,
+      "childPricePerPerson": 900,
+      "adultPricePerPerson": 1200,
+      "childPriceMultiplier": 0.75
+    },
+    "startDate": "2026-03-01",
+    "endDate": "2026-03-05",
+    "pickupLocation": "Colombo",
+    "id": "eaed3bc5-d0c4-433f-bbfc-788d3103091a",
+    "createdAt": "2026-02-17T10:53:17.297Z"
+  },
+  {
+    "packageId": "1",
+    "packageTitle": "Test Package",
+    "travelerName": "Adult+Child User",
+    "email": "ac@example.com",
+    "adultCount": 2,
+    "childrenCount": 1,
+    "guestCount": 3,
+    "startDate": "2026-03-01",
+    "endDate": "2026-03-05",
+    "pickupLocation": "Colombo",
+    "id": "2cf5baa3-0b86-4f94-97f1-80db0a677d78",
+    "createdAt": "2026-02-17T10:26:59.948Z"
+  },
+  {
+    "packageId": "1",
+    "packageTitle": "Test Package",
+    "travelerName": "Test User",
+    "email": "test@example.com",
+    "guestCount": 2,
+    "startDate": "2026-03-01",
+    "endDate": "2026-03-05",
+    "pickupLocation": "Colombo",
+    "id": "f0226f81-a85d-46bb-9322-aebce86a22db",
+    "createdAt": "2026-02-17T10:18:01.415Z"
+  }
+]

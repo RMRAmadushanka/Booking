@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 
 /**
  * ===========================================
@@ -242,15 +243,6 @@ const theme = createTheme({
           },
           "&:hover": {
             backgroundColor: "#F8FAFC",
-          },
-        },
-      },
-    },
-    MuiDatePicker: {
-      styleOverrides: {
-        root: {
-          "& .MuiOutlinedInput-root": {
-            borderRadius: RADIUS.base,
           },
         },
       },

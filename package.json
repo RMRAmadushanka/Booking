@@ -16,6 +16,7 @@
     "@mui/material": "^7.3.7",
     "@mui/x-date-pickers": "^8.24.0",
     "dayjs": "^1.11.19",
+    "leaflet": "^1.9.4",
     "next": "16.0.5",
     "rc-slider": "^11.1.9",
     "react": "19.2.0",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/leaflet": "^1.9.21",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-date-range": "^1.4.10",

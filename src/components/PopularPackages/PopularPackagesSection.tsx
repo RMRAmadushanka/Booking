@@ -3,6 +3,8 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { Chip, ToggleButtonGroup, ToggleButton, Collapse } from "@mui/material";
 import { ChevronDownIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { TravelPackageCard, PackageSkeleton } from "@/components/Packages";
 import { mockPackages } from "@/data/packages";
 import { TravelPackage, Duration } from "@/types/packages";
@@ -41,9 +43,27 @@ const mapPriceToBudget = (price: number): BudgetFilter => {
   return "premium";
 };
 
+// Render filter row with horizontal scroll on mobile
+const FilterScrollContainer: React.FC<{
+  children: React.ReactNode;
+  label: string;
+}> = ({ children, label }) => (
+  <div className="w-full">
+    <span className="text-xs font-medium text-[#64748B] mb-2 block sm:hidden">
+      {label}
+    </span>
+    <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
+      <div className="flex items-center gap-2 w-max sm:w-auto sm:flex-wrap sm:justify-center">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
   featuredPackageId,
 }) => {
+  const router = useRouter();
   const [categoryFilter, setCategoryFilter] = useState<PackageCategory>("all");
   const [durationFilter, setDurationFilter] = useState<DurationFilter>("all");
   const [budgetFilter, setBudgetFilter] = useState<BudgetFilter>("all");
@@ -103,9 +123,12 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
   }, [categoryFilter, durationFilter, budgetFilter]);
 
   // Handle card actions
-  const handleBookNow = useCallback((pkg: TravelPackage) => {
-    console.log("Book package:", pkg.title);
-  }, []);
+  const handleBookNow = useCallback(
+    (pkg: TravelPackage) => {
+      router.push(`/packages/${pkg.id}`);
+    },
+    [router]
+  );
 
   const handleFavorite = useCallback(
     (pkg: TravelPackage, isFavorite: boolean) => {
@@ -180,23 +203,6 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
       outlineOffset: "2px",
     },
   };
-
-  // Render filter row with horizontal scroll on mobile
-  const FilterScrollContainer: React.FC<{ children: React.ReactNode; label: string }> = ({
-    children,
-    label,
-  }) => (
-    <div className="w-full">
-      <span className="text-xs font-medium text-[#64748B] mb-2 block sm:hidden">
-        {label}
-      </span>
-      <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
-        <div className="flex items-center gap-2 w-max sm:w-auto sm:flex-wrap sm:justify-center">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-[#FFFFFF]" aria-labelledby="popular-packages-heading">
@@ -625,7 +631,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
         {/* View All Link */}
         {filteredPackages.length > 0 && (
           <div className="text-center mt-8 sm:mt-10">
-            <a
+            <Link
               href="/packages"
               className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-[#2563EB] hover:text-[#1D4ED8] active:text-[#1E40AF] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] focus-visible:ring-offset-2 rounded-[var(--radius)]"
             >
@@ -643,7 +649,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         )}
       </div>
