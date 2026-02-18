@@ -1,13 +1,14 @@
-
-
 import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
-import PackageCard from "@/components/PackageCard";
 import { PopularPackagesSection } from "@/components/PopularPackages";
 import SocialProof from "@/components/SocialProof";
 import Footer from "@/components/Footer";
 import heroImage from "@/images/home-beach-hero.jpg";
+import { getPackages } from "@/lib/packages";
+import { mockPackages } from "@/data/packages";
 
-export default function Home() {
+export default async function Home() {
+  const packages = await getPackages();
+  const displayPackages = packages.length > 0 ? packages : mockPackages;
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -228,7 +229,7 @@ export default function Home() {
       </div>
 
       {/* Popular Travel Packages Section */}
-      <PopularPackagesSection featuredPackageId="5" />
+      <PopularPackagesSection packages={displayPackages} featuredPackageId="5" />
 
       {/* Social Proof Section */}
       <SocialProof />

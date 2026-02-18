@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@mui/material": "^7.3.7",
     "@mui/x-date-pickers": "^8.24.0",
+    "@supabase/supabase-js": "^2.96.0",
     "dayjs": "^1.11.19",
     "leaflet": "^1.9.4",
     "next": "16.0.5",

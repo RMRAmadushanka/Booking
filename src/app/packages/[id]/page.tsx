@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StarIcon, ClockIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import { getPackageById } from "@/lib/packages";
 import { mockPackages } from "@/data/packages";
 import type { Destination } from "@/types/packages";
 import PackageRouteMap from "@/components/Packages/PackageRouteMap";
@@ -44,7 +45,7 @@ export default async function PackageDetailsPage({
   // https://nextjs.org/docs/messages/sync-dynamic-apis
   const { id } = await params;
 
-  const pkg = mockPackages.find((p) => p.id === id);
+  const pkg = (await getPackageById(id)) ?? mockPackages.find((p) => p.id === id);
   if (!pkg) notFound();
 
   const images = getGalleryImages(pkg.imageUrl, `${pkg.id}-${pkg.title}`);

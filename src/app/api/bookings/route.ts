@@ -1,13 +1,10 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 type BookingPayload = {
   packageId: string;
   packageTitle: string;
   travelerName: string;
   email: string;
-  // New: keep adults/children for better pricing & planning.
-  // We still store `guestCount` as total for convenience.
   adultCount: number;
   childrenCount: number;
   guestCount: number;
@@ -18,15 +15,29 @@ type BookingPayload = {
     childPriceMultiplier: number;
     estimatedTotalPrice: number;
   };
-  startDate: string; // YYYY-MM-DD
-  endDate: string; // YYYY-MM-DD
+  startDate: string;
+  endDate: string;
   pickupLocation: string;
   notes?: string;
+  imageUrls?: string[];
 };
 
-type StoredBooking = BookingPayload & {
+type DbBooking = {
   id: string;
-  createdAt: string;
+  package_id: string;
+  package_title: string;
+  traveler_name: string;
+  email: string;
+  adult_count: number;
+  children_count: number;
+  guest_count: number;
+  pricing: unknown;
+  start_date: string;
+  end_date: string;
+  pickup_location: string;
+  notes: string | null;
+  image_urls: string[] | null;
+  created_at: string;
 };
 
 function isValidDateString(value: unknown): value is string {
@@ -39,7 +50,6 @@ function isNonEmptyString(value: unknown): value is string {
 
 function isValidEmail(value: unknown): value is string {
   if (typeof value !== "string") return false;
-  // simple, pragmatic email check
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
@@ -56,30 +66,53 @@ function isPositiveInt(value: unknown): value is number {
   return isNonNegativeInt(value) && value >= 1;
 }
 
-async function readBookingsFile(filePath: string): Promise<StoredBooking[]> {
-  try {
-    const raw = await fs.readFile(filePath, "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as StoredBooking[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeBookingsFile(filePath: string, bookings: StoredBooking[]) {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, JSON.stringify(bookings, null, 2), "utf8");
+function toCamelBooking(row: DbBooking) {
+  return {
+    id: row.id,
+    packageId: row.package_id,
+    packageTitle: row.package_title,
+    travelerName: row.traveler_name,
+    email: row.email,
+    adultCount: row.adult_count,
+    childrenCount: row.children_count,
+    guestCount: row.guest_count,
+    pricing: row.pricing ?? undefined,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    pickupLocation: row.pickup_location,
+    notes: row.notes ?? undefined,
+    imageUrls: row.image_urls ?? undefined,
+    createdAt: row.created_at,
+  };
 }
 
 export async function GET() {
-  const filePath = path.join(process.cwd(), "data", "bookings.json");
-  const bookings = await readBookingsFile(filePath);
-  return Response.json({ ok: true, bookings });
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from("bookings")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("[bookings GET]", error);
+      return Response.json(
+        { ok: false, error: "Failed to load bookings" },
+        { status: 500 }
+      );
+    }
+
+    const bookings = (data as DbBooking[] ?? []).map(toCamelBooking);
+    return Response.json({ ok: true, bookings });
+  } catch (err) {
+    console.error("[bookings GET]", err);
+    return Response.json(
+      { ok: false, error: "Server error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
-  const filePath = path.join(process.cwd(), "data", "bookings.json");
-
   let body: unknown;
   try {
     body = await req.json();
@@ -87,10 +120,11 @@ export async function POST(req: Request) {
     return Response.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
   }
 
-  // Backward compatible: accept either {adultCount, childrenCount} or {guestCount}.
-  const b = body as Partial<
-    BookingPayload & { guestCount: number } & { adultCount: number; childrenCount: number }
-  >;
+  const b = body as Partial<BookingPayload> & {
+    guestCount?: number;
+    adultCount?: number;
+    childrenCount?: number;
+  };
 
   const hasSplitCounts =
     typeof b.adultCount !== "undefined" || typeof b.childrenCount !== "undefined";
@@ -100,7 +134,7 @@ export async function POST(req: Request) {
     : typeof b.guestCount === "number"
       ? b.guestCount
       : undefined;
-  const childrenCount = hasSplitCounts ? b.childrenCount : 0;
+  const childrenCount = hasSplitCounts ? b.childrenCount ?? 0 : 0;
   const guestCount =
     typeof adultCount === "number" && typeof childrenCount === "number"
       ? adultCount + childrenCount
@@ -124,34 +158,46 @@ export async function POST(req: Request) {
     );
   }
 
-  if (b.startDate > b.endDate) {
+  if (b.startDate! > b.endDate!) {
     return Response.json(
       { ok: false, error: "Start date must be before end date" },
       { status: 400 }
     );
   }
 
-  const booking: StoredBooking = {
-    packageId: b.packageId,
-    packageTitle: b.packageTitle,
-    travelerName: b.travelerName.trim(),
+  const row = {
+    package_id: b.packageId,
+    package_title: b.packageTitle,
+    traveler_name: b.travelerName.trim(),
     email: b.email.trim(),
-    adultCount: adultCount,
-    childrenCount: childrenCount,
-    guestCount: guestCount,
-    pricing: b.pricing?.currency === "USD" ? b.pricing : undefined,
-    startDate: b.startDate,
-    endDate: b.endDate,
-    pickupLocation: b.pickupLocation.trim(),
-    notes: typeof b.notes === "string" ? b.notes.trim() : undefined,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+    adult_count: adultCount,
+    children_count: childrenCount,
+    guest_count: guestCount,
+    pricing: b.pricing?.currency === "USD" ? b.pricing : null,
+    start_date: b.startDate,
+    end_date: b.endDate,
+    pickup_location: b.pickupLocation.trim(),
+    notes: typeof b.notes === "string" && b.notes.trim() ? b.notes.trim() : null,
+    image_urls: Array.isArray(b.imageUrls) && b.imageUrls.length > 0 ? b.imageUrls : null,
   };
 
-  const bookings = await readBookingsFile(filePath);
-  bookings.unshift(booking);
-  await writeBookingsFile(filePath, bookings);
+  try {
+    const { data, error } = await getSupabaseAdmin().from("bookings").insert(row).select("id").single();
 
-  return Response.json({ ok: true, bookingId: booking.id });
+    if (error) {
+      console.error("[bookings POST]", error);
+      return Response.json(
+        { ok: false, error: "Failed to save booking" },
+        { status: 500 }
+      );
+    }
+
+    return Response.json({ ok: true, bookingId: (data as { id: string }).id });
+  } catch (err) {
+    console.error("[bookings POST]", err);
+    return Response.json(
+      { ok: false, error: "Server error" },
+      { status: 500 }
+    );
+  }
 }
-

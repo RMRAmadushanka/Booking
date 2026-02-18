@@ -15,6 +15,7 @@ type DurationFilter = "all" | "1-3" | "4-6" | "7+";
 type BudgetFilter = "all" | "low" | "medium" | "premium";
 
 interface PopularPackagesSectionProps {
+  packages?: TravelPackage[];
   featuredPackageId?: string;
 }
 
@@ -61,6 +62,7 @@ const FilterScrollContainer: React.FC<{
 );
 
 const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
+  packages = mockPackages,
   featuredPackageId,
 }) => {
   const router = useRouter();
@@ -105,7 +107,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
 
   // Memoized filtered packages
   const filteredPackages = useMemo(() => {
-    return mockPackages.filter((pkg) => {
+    return packages.filter((pkg) => {
       if (categoryFilter !== "all") {
         const pkgCategory = mapToCategory(pkg.packageType);
         if (pkgCategory !== categoryFilter) return false;
@@ -120,7 +122,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
       }
       return true;
     });
-  }, [categoryFilter, durationFilter, budgetFilter]);
+  }, [packages, categoryFilter, durationFilter, budgetFilter]);
 
   // Handle card actions
   const handleBookNow = useCallback(

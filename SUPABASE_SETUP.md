@@ -29,6 +29,31 @@ Follow these steps to create a Supabase account and configure it for the hero-se
 
 ---
 
+## Step 2b: Get Your API Keys (URL + anon + service_role)
+
+Use these steps whenever you need to copy your project URL and keys into `.env.local` or Vercel.
+
+1. In the **left sidebar**, click the **gear icon** at the bottom → **"Project Settings"**.
+2. In the left menu of Project Settings, click **"API"**.
+3. On the API page you’ll see:
+   - **Project URL**  
+     Copy this → use as `NEXT_PUBLIC_SUPABASE_URL` in `.env.local`.
+   - **Project API keys**  
+     - **anon public** – copy this → use as `NEXT_PUBLIC_SUPABASE_ANON_KEY`.  
+     - **service_role** – click **"Reveal"** (or the eye icon), then copy → use as `SUPABASE_SERVICE_ROLE_KEY`.
+
+4. Paste them into your **`.env.local`** file (project root), one per line:
+
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   ```
+
+5. **Important:** Never commit `.env.local` or expose `SUPABASE_SERVICE_ROLE_KEY` in the browser. Use the service_role key only in server code (e.g. API routes).
+
+---
+
 ## Step 3: Create the `bookings` Table
 
 1. In the left sidebar, open **"Table Editor"**.
@@ -95,6 +120,16 @@ create policy "Allow read for all"
   on public.bookings for select
   using (true);
 ```
+
+---
+
+## Step 3b: Create the `packages` Table (15 tour packages)
+
+1. In the left sidebar, open **"SQL Editor"**.
+2. Click **"New query"**.
+3. Open the file **`supabase/packages-table.sql`** in this project and copy its full contents.
+4. Paste into the SQL Editor and click **"Run"**.
+5. This creates the `packages` table and inserts 15 Sri Lanka tour packages with image URLs. The app will then load packages from Supabase on the **Packages** page and **Home** section; if the table is empty, it falls back to local mock data.
 
 ---
 
