@@ -13,6 +13,8 @@ create table if not exists public.packages (
   rating numeric not null,
   best_for jsonb not null default '[]',
   highlights jsonb not null default '[]',
+  gallery_urls jsonb not null default '[]',
+  destination_details jsonb not null default '[]',
   created_at timestamptz default now()
 );
 

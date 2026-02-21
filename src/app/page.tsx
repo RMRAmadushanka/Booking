@@ -3,12 +3,15 @@ import { PopularPackagesSection } from "@/components/PopularPackages";
 import SocialProof from "@/components/SocialProof";
 import Footer from "@/components/Footer";
 import heroImage from "@/images/home-beach-hero.jpg";
-import { getPackages } from "@/lib/packages";
-import { mockPackages } from "@/data/packages";
+import { getPackages, getUniqueDestinations, getUniquePackageTypes } from "@/lib/packages";
+import { getVehicles, getUniqueVehicleLocations, getUniqueVehicleTypes } from "@/lib/vehicles";
 
 export default async function Home() {
-  const packages = await getPackages();
-  const displayPackages = packages.length > 0 ? packages : mockPackages;
+  const [packages, vehicles] = await Promise.all([getPackages(), getVehicles()]);
+  const destinations = getUniqueDestinations(packages);
+  const packageTypes = getUniquePackageTypes(packages);
+  const vehicleLocations = getUniqueVehicleLocations(vehicles);
+  const vehicleTypes = getUniqueVehicleTypes(vehicles);
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -37,7 +40,12 @@ export default async function Home() {
 
           {/* Search Form */}
           <div className="flex justify-center">
-            <HeroSearchForm />
+            <HeroSearchForm
+            destinations={destinations}
+            packageTypes={packageTypes}
+            vehicleLocations={vehicleLocations}
+            vehicleTypes={vehicleTypes}
+          />
           </div>
 
           {/* Stats */}
@@ -229,7 +237,7 @@ export default async function Home() {
       </div>
 
       {/* Popular Travel Packages Section */}
-      <PopularPackagesSection packages={displayPackages} featuredPackageId="5" />
+      <PopularPackagesSection packages={packages} featuredPackageId="5" />
 
       {/* Social Proof Section */}
       <SocialProof />

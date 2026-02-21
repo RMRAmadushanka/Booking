@@ -3,19 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StarIcon, ClockIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { getPackageById } from "@/lib/packages";
-import { mockPackages } from "@/data/packages";
 import type { Destination } from "@/types/packages";
 import PackageRouteMap from "@/components/Packages/PackageRouteMap";
 import PackageBookingForm from "@/components/Packages/PackageBookingForm";
 import PackageLocationsAccordion from "@/components/Packages/PackageLocationsAccordion";
 
-function getGalleryImages(imageUrl: string, seed: string) {
-  // Use the package image + a few deterministic alternates.
-  const base = imageUrl;
-  const alt1 = `https://picsum.photos/seed/${encodeURIComponent(seed)}-1/1200/800`;
-  const alt2 = `https://picsum.photos/seed/${encodeURIComponent(seed)}-2/1200/800`;
-  const alt3 = `https://picsum.photos/seed/${encodeURIComponent(seed)}-3/1200/800`;
-  return [base, alt1, alt2, alt3];
+function getGalleryImages(pkg: { imageUrl: string; galleryUrls?: string[] }): string[] {
+  if (Array.isArray(pkg.galleryUrls) && pkg.galleryUrls.length > 0) {
+    return pkg.galleryUrls;
+  }
+  return [pkg.imageUrl];
 }
 
 function Rating({ value }: { value: number }) {
@@ -45,10 +42,10 @@ export default async function PackageDetailsPage({
   // https://nextjs.org/docs/messages/sync-dynamic-apis
   const { id } = await params;
 
-  const pkg = (await getPackageById(id)) ?? mockPackages.find((p) => p.id === id);
+  const pkg = await getPackageById(id);
   if (!pkg) notFound();
 
-  const images = getGalleryImages(pkg.imageUrl, `${pkg.id}-${pkg.title}`);
+  const images = getGalleryImages(pkg);
   const destinations = pkg.destinations as Destination[];
 
   return (
@@ -149,7 +146,10 @@ export default async function PackageDetailsPage({
               <p className="text-sm text-slate-600 mb-4">
                 Route is shown in order. First stop is usually the pickup area.
               </p>
-              <PackageLocationsAccordion destinations={destinations} />
+              <PackageLocationsAccordion
+                destinations={destinations}
+                locationDetails={pkg.destinationDetails}
+              />
             </section>
 
             {/* Highlights */}
@@ -179,8 +179,8 @@ export default async function PackageDetailsPage({
             </section>
           </div>
 
-          {/* Right column */}
-          <div className="lg:col-span-5">
+          {/* Right column - min-w-0 so form can shrink and stay responsive in narrow sidebar */}
+          <div className="lg:col-span-5 min-w-0">
             <div id="booking" className="scroll-mt-24">
               <PackageBookingForm
                 packageId={pkg.id}

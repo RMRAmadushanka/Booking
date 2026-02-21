@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface SearchButtonProps {
   className?: string;
@@ -19,6 +19,10 @@ const SearchButton: FC<SearchButtonProps> = ({
   onSearchClick: _onSearchClick,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const isPackages = pathname === "/packages" || pathname.startsWith("/packages/");
+  const isVehicles = pathname === "/vehicles" || pathname.startsWith("/vehicles/");
+  const isCustomizeTrip = pathname === "/customize-trip" || pathname.startsWith("/customize-trip/");
 
   const handlePackagesClick = () => {
     if (onLocationClick) {
@@ -69,16 +73,16 @@ const SearchButton: FC<SearchButtonProps> = ({
           className={`
             relative block pl-6 pr-5 py-3.5
             font-medium text-sm tracking-wide
-            text-slate-700
             cursor-pointer
             transition-all duration-200
             hover:text-[#2563EB]
             group/item
+            ${isPackages ? "text-[#2563EB]" : "text-slate-700"}
           `}
         >
           <span className="relative z-10">Packages</span>
-          {/* Hover underline accent */}
-          <span className="absolute bottom-2 left-6 right-5 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] scale-x-0 group-hover/item:scale-x-100 transition-transform duration-300 origin-left" />
+          {/* Hover / active underline accent */}
+          <span className={`absolute bottom-2 left-6 right-5 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] transition-transform duration-300 origin-left ${isPackages ? "scale-x-100" : "scale-x-0 group-hover/item:scale-x-100"}`} />
         </span>
 
         {/* Divider */}
@@ -92,15 +96,15 @@ const SearchButton: FC<SearchButtonProps> = ({
           className={`
             relative block px-5 py-3.5
             font-medium text-sm tracking-wide
-            text-slate-700
             cursor-pointer
             transition-all duration-200
             hover:text-[#2563EB]
             group/item
+            ${isVehicles ? "text-[#2563EB]" : "text-slate-700"}
           `}
         >
           <span className="relative z-10">Vehicles</span>
-          <span className="absolute bottom-2 left-5 right-5 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] scale-x-0 group-hover/item:scale-x-100 transition-transform duration-300 origin-left" />
+          <span className={`absolute bottom-2 left-5 right-5 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] transition-transform duration-300 origin-left ${isVehicles ? "scale-x-100" : "scale-x-0 group-hover/item:scale-x-100"}`} />
         </span>
 
         {/* Divider */}
@@ -114,11 +118,11 @@ const SearchButton: FC<SearchButtonProps> = ({
           className={`
             relative block px-5 pr-6 py-3.5
             font-normal text-sm tracking-wide
-            text-slate-500
             cursor-pointer
             transition-all duration-200
             hover:text-[#2563EB]
             group/item
+            ${isCustomizeTrip ? "text-[#2563EB]" : "text-slate-500"}
           `}
         >
           <span className="relative z-10 flex items-center gap-2">
@@ -128,7 +132,7 @@ const SearchButton: FC<SearchButtonProps> = ({
               <path d="M5 0L6.5 3.5L10 5L6.5 6.5L5 10L3.5 6.5L0 5L3.5 3.5L5 0Z" />
             </svg>
           </span>
-          <span className="absolute bottom-2 left-5 right-6 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] scale-x-0 group-hover/item:scale-x-100 transition-transform duration-300 origin-left" />
+          <span className={`absolute bottom-2 left-5 right-6 h-[1.5px] bg-gradient-to-r from-[#2563EB] to-[#2DD4BF] transition-transform duration-300 origin-left ${isCustomizeTrip ? "scale-x-100" : "scale-x-0 group-hover/item:scale-x-100"}`} />
         </span>
       </div>
     </div>

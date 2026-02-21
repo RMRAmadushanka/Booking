@@ -6,7 +6,6 @@ import { ChevronDownIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TravelPackageCard, PackageSkeleton } from "@/components/Packages";
-import { mockPackages } from "@/data/packages";
 import { TravelPackage, Duration } from "@/types/packages";
 
 // Filter types for this section
@@ -15,7 +14,8 @@ type DurationFilter = "all" | "1-3" | "4-6" | "7+";
 type BudgetFilter = "all" | "low" | "medium" | "premium";
 
 interface PopularPackagesSectionProps {
-  packages?: TravelPackage[];
+  /** Package data from database (Supabase). No dummy data fallback. */
+  packages: TravelPackage[];
   featuredPackageId?: string;
 }
 
@@ -62,7 +62,7 @@ const FilterScrollContainer: React.FC<{
 );
 
 const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
-  packages = mockPackages,
+  packages,
   featuredPackageId,
 }) => {
   const router = useRouter();
@@ -222,6 +222,25 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
           </p>
         </div>
 
+        {/* Empty state: no packages from database */}
+        {packages.length === 0 && (
+          <div className="text-center py-12 rounded-[var(--radius-md)] bg-slate-50 border border-slate-200">
+            <p className="text-slate-600 mb-2">No packages in the database yet.</p>
+            <p className="text-sm text-slate-500">
+              Add packages in Supabase (run <code className="px-1.5 py-0.5 bg-slate-200 rounded text-xs">supabase/packages-table.sql</code>) or check your connection.
+            </p>
+            <Link
+              href="/packages"
+              className="inline-block mt-4 text-[#2563EB] font-medium hover:underline"
+            >
+              View all packages →
+            </Link>
+          </div>
+        )}
+
+        {/* Filters and cards - only when there are packages from database */}
+        {packages.length > 0 && (
+          <>
         {/* Mobile Filter Toggle Button */}
         <div className="sm:hidden mb-4">
           <button
@@ -653,6 +672,8 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
               </svg>
             </Link>
           </div>
+        )}
+          </>
         )}
       </div>
     </section>

@@ -1,4 +1,6 @@
 import { getSupabaseAdmin } from "@/lib/supabase/server";
+import { sendBookingEmails } from "@/lib/email";
+import { generateShortId } from "@/lib/shortId";
 
 type BookingPayload = {
   packageId: string;
@@ -165,6 +167,7 @@ export async function POST(req: Request) {
     );
   }
 
+  const shortId = generateShortId("BK");
   const row = {
     package_id: b.packageId,
     package_title: b.packageTitle,
@@ -179,10 +182,11 @@ export async function POST(req: Request) {
     pickup_location: b.pickupLocation.trim(),
     notes: typeof b.notes === "string" && b.notes.trim() ? b.notes.trim() : null,
     image_urls: Array.isArray(b.imageUrls) && b.imageUrls.length > 0 ? b.imageUrls : null,
+    short_id: shortId,
   };
 
   try {
-    const { data, error } = await getSupabaseAdmin().from("bookings").insert(row).select("id").single();
+    const { data, error } = await getSupabaseAdmin().from("bookings").insert(row).select("id, short_id").single();
 
     if (error) {
       console.error("[bookings POST]", error);
@@ -192,7 +196,33 @@ export async function POST(req: Request) {
       );
     }
 
-    return Response.json({ ok: true, bookingId: (data as { id: string }).id });
+    const res = data as { id: string; short_id?: string | null };
+    const bookingId = res.short_id ?? res.id;
+
+    // Send confirmation to user and notification to admin (Resend; no-op if not configured)
+    const emailPayload = {
+      bookingId,
+      packageTitle: b.packageTitle!,
+      travelerName: b.travelerName!.trim(),
+      email: b.email!.trim(),
+      adultCount: adultCount!,
+      childrenCount: childrenCount!,
+      guestCount: guestCount!,
+      estimatedTotalPrice: b.pricing?.currency === "USD" ? b.pricing.estimatedTotalPrice : undefined,
+      startDate: b.startDate!,
+      endDate: b.endDate!,
+      pickupLocation: b.pickupLocation!.trim(),
+      notes: typeof b.notes === "string" && b.notes.trim() ? b.notes.trim() : undefined,
+    };
+    const emailResult = await sendBookingEmails(emailPayload);
+    const emailConfigured = emailResult !== null;
+
+    return Response.json({
+      ok: true,
+      bookingId,
+      emailSent: emailResult?.userSent ?? false,
+      emailConfigured,
+    });
   } catch (err) {
     console.error("[bookings POST]", err);
     return Response.json(

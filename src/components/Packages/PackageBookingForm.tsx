@@ -14,11 +14,11 @@ type PackageBookingFormProps = {
 type SubmitState =
   | { status: "idle" }
   | { status: "submitting" }
-  | { status: "success"; bookingId: string }
+  | { status: "success"; bookingId: string; emailSent: boolean; emailConfigured: boolean }
   | { status: "error"; message: string };
 
 type BookingPostResponse =
-  | { ok: true; bookingId: string }
+  | { ok: true; bookingId: string; emailSent?: boolean; emailConfigured?: boolean }
   | { ok: false; error: string };
 
 function todayISO() {
@@ -115,7 +115,12 @@ export default function PackageBookingForm({
         return;
       }
 
-      setSubmitState({ status: "success", bookingId: data.bookingId });
+      setSubmitState({
+        status: "success",
+        bookingId: data.bookingId,
+        emailSent: data.emailSent === true,
+        emailConfigured: data.emailConfigured === true,
+      });
     } catch {
       setSubmitState({ status: "error", message: "Network error. Please try again." });
     }
@@ -139,9 +144,18 @@ export default function PackageBookingForm({
           <div className="text-sm text-emerald-800 mt-1">
             Our agent will reach out to <span className="font-medium">{email.trim()}</span>.
           </div>
+          {submitState.emailSent ? (
+            <div className="text-sm text-emerald-800 mt-1">
+              A confirmation email was sent to your inbox.
+            </div>
+          ) : (
+            <div className="text-sm text-emerald-800 mt-1">
+              We couldn&apos;t send a confirmation email to your inbox, but our team will contact you at the email you provided.
+            </div>
+          )}
         </div>
       ) : (
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4 min-w-0">
           {submitState.status === "error" && (
             <div className="rounded-[var(--radius)] border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">
               {submitState.message}
@@ -175,26 +189,26 @@ export default function PackageBookingForm({
             </label>
           </div>
 
-          {/* Guests */}
-          <div className="block">
+          {/* Guests - responsive: stacks on narrow (e.g. sidebar), side-by-side on wide */}
+          <div className="block min-w-0">
             <span className="block text-sm font-medium text-slate-700 mb-1">
               Guests
             </span>
-            <div className="rounded-[var(--radius)] border border-slate-300 bg-white p-3 sm:p-3.5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {/* Adults */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
+            <div className="rounded-[var(--radius)] border border-slate-300 bg-white p-3 sm:p-3.5 min-w-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Adults - stack label above controls on narrow to prevent button overlap */}
+                <div className="flex flex-col gap-2 min-w-0">
+                  <div>
                     <div className="text-sm font-semibold text-slate-900 leading-5">
                       Adults
                     </div>
                     <div className="text-xs text-slate-500 leading-4">Age 12+</div>
                   </div>
-                  <div className="flex items-center justify-end gap-2">
+                  <div className="flex items-center gap-2 w-fit">
                     <button
                       type="button"
                       onClick={() => setAdultCount((v) => Math.max(1, v - 1))}
-                      className="w-9 h-9 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Decrease adults"
                     >
                       −
@@ -205,7 +219,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setAdultCount((v) => v + 1)}
-                      className="w-9 h-9 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Increase adults"
                     >
                       +
@@ -214,18 +228,18 @@ export default function PackageBookingForm({
                 </div>
 
                 {/* Children */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
+                <div className="flex flex-col gap-2 min-w-0">
+                  <div>
                     <div className="text-sm font-semibold text-slate-900 leading-5">
                       Children
                     </div>
                     <div className="text-xs text-slate-500 leading-4">Age 0–11</div>
                   </div>
-                  <div className="flex items-center justify-end gap-2">
+                  <div className="flex items-center gap-2 w-fit">
                     <button
                       type="button"
                       onClick={() => setChildrenCount((v) => Math.max(0, v - 1))}
-                      className="w-9 h-9 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Decrease children"
                     >
                       −
@@ -236,7 +250,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setChildrenCount((v) => v + 1)}
-                      className="w-9 h-9 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Increase children"
                     >
                       +

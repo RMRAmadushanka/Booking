@@ -19,15 +19,15 @@ import {
   VehicleFilters as FilterType,
 } from "@/types/vehicle";
 
-interface VehicleFiltersProps {
-  filters: FilterType;
-  onFiltersChange: (filters: FilterType) => void;
-  onClearFilters: () => void;
-  isMobile?: boolean;
-  onClose?: () => void;
+/** When provided, filter options are derived from DB (vehicles); otherwise use fallback lists. */
+export interface VehicleFilterOptions {
+  vehicleTypes: string[];
+  transmissions: string[];
+  fuelTypes: string[];
+  locations: string[];
 }
 
-const VEHICLE_TYPES: VehicleType[] = [
+const FALLBACK_VEHICLE_TYPES: VehicleType[] = [
   "SUV",
   "Sedan",
   "Sports",
@@ -37,11 +37,21 @@ const VEHICLE_TYPES: VehicleType[] = [
   "Convertible",
 ];
 
-const TRANSMISSION_TYPES: TransmissionType[] = ["Automatic", "Manual"];
+const FALLBACK_TRANSMISSION_TYPES: TransmissionType[] = ["Automatic", "Manual"];
 
-const FUEL_TYPES: FuelType[] = ["Petrol", "Diesel", "Hybrid", "Electric"];
+const FALLBACK_FUEL_TYPES: FuelType[] = ["Petrol", "Diesel", "Hybrid", "Electric"];
 
-const LOCATIONS = ["Colombo", "Kandy", "Galle", "Ella", "Bentota", "Airport"];
+const FALLBACK_LOCATIONS = ["Colombo", "Kandy", "Galle", "Ella", "Bentota", "Airport"];
+
+interface VehicleFiltersProps {
+  filters: FilterType;
+  onFiltersChange: (filters: FilterType) => void;
+  onClearFilters: () => void;
+  /** Options from vehicles DB; when provided, only these values are shown in filters. */
+  filterOptions?: VehicleFilterOptions;
+  isMobile?: boolean;
+  onClose?: () => void;
+}
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 400;
@@ -50,10 +60,24 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
   filters,
   onFiltersChange,
   onClearFilters,
+  filterOptions,
   isMobile = false,
   onClose,
 }) => {
   const [localSearch, setLocalSearch] = useState(filters.searchQuery);
+
+  const vehicleTypes = filterOptions?.vehicleTypes?.length
+    ? filterOptions.vehicleTypes
+    : FALLBACK_VEHICLE_TYPES;
+  const transmissionTypes = filterOptions?.transmissions?.length
+    ? filterOptions.transmissions
+    : FALLBACK_TRANSMISSION_TYPES;
+  const fuelTypes = filterOptions?.fuelTypes?.length
+    ? filterOptions.fuelTypes
+    : FALLBACK_FUEL_TYPES;
+  const locations = filterOptions?.locations?.length
+    ? filterOptions.locations
+    : FALLBACK_LOCATIONS;
 
   const updateFilter = useCallback(
     <K extends keyof FilterType>(key: K, value: FilterType[K]) => {
@@ -183,7 +207,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
           Vehicle Type
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {VEHICLE_TYPES.map((type) => (
+          {vehicleTypes.map((type) => (
             <FormControlLabel
               key={type}
               control={
@@ -231,7 +255,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
           Transmission
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {TRANSMISSION_TYPES.map((transmission) => (
+          {transmissionTypes.map((transmission) => (
             <FormControlLabel
               key={transmission}
               control={
@@ -279,7 +303,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
           Fuel Type
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {FUEL_TYPES.map((fuel) => (
+          {fuelTypes.map((fuel) => (
             <FormControlLabel
               key={fuel}
               control={
@@ -429,7 +453,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
           Pickup Location
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {LOCATIONS.map((location) => (
+          {locations.map((location) => (
             <FormControlLabel
               key={location}
               control={

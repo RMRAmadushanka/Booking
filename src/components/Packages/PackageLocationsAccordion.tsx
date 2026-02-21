@@ -6,20 +6,32 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import type { Destination } from "@/types/packages";
+import type { Destination, DestinationDetail } from "@/types/packages";
 import { destinationDetails } from "@/data/destinationDetails";
 
-type PackageLocationsAccordionProps = {
+export type PackageLocationsAccordionProps = {
   destinations: Destination[];
+  /** When provided (from DB), use these for image and description per stop. */
+  locationDetails?: DestinationDetail[] | null;
 };
 
 export default function PackageLocationsAccordion({
   destinations,
+  locationDetails: dbDestinationDetails,
 }: PackageLocationsAccordionProps) {
   return (
     <div className="space-y-3">
       {destinations.map((d, idx) => {
-        const details = destinationDetails[d];
+        const details =
+          Array.isArray(dbDestinationDetails) && dbDestinationDetails[idx]
+            ? {
+                imageUrl: dbDestinationDetails[idx].imageUrl,
+                description: dbDestinationDetails[idx].description,
+              }
+            : destinationDetails[d as keyof typeof destinationDetails] ?? {
+                imageUrl: "https://picsum.photos/seed/place/1200/800",
+                description: "Explore this stop on your route.",
+              };
         return (
           <Accordion
             key={`${d}-${idx}`}

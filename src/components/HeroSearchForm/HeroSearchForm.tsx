@@ -3,41 +3,44 @@
 import React, { FC, useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import StaySearchForm from "./(stay-search-form)/StaySearchForm";
-import ExperiencesSearchForm from "./(experiences-search-form)/ExperiencesSearchForm";
 import RentalCarSearchForm from "./(car-search-form)/RentalCarSearchForm";
-import FlightSearchForm from "./(flight-search-form)/FlightSearchForm";
 
-export type SearchTab = "Stays" | "Experiences" | "Cars" | "Flights";
+export type SearchTab = "Travel Package" | "Cars";
 
 export interface HeroSearchFormProps {
   className?: string;
   currentTab?: SearchTab;
-  currentPage?: "Stays" | "Experiences" | "Cars" | "Flights";
+  /** Destination options for the Travel Package tab (e.g. from DB). */
+  destinations?: string[];
+  /** Package type options for the Travel Package tab (e.g. from DB). */
+  packageTypes?: string[];
+  /** Pickup location options for the Cars tab (e.g. from DB). */
+  vehicleLocations?: string[];
+  /** Vehicle type options for the Cars tab (e.g. from DB). */
+  vehicleTypes?: string[];
 }
 
 const HeroSearchForm: FC<HeroSearchFormProps> = ({
   className = "",
-  currentTab = "Stays",
-  currentPage,
+  currentTab = "Travel Package",
+  destinations = [],
+  packageTypes = [],
+  vehicleLocations = [],
+  vehicleTypes = [],
 }) => {
-  const tabs: SearchTab[] = ["Stays", "Experiences", "Cars", "Flights"];
+  const tabs: SearchTab[] = ["Travel Package", "Cars"];
   const [tabActive, setTabActive] = useState<SearchTab>(currentTab);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabActive(tabs[newValue]);
   };
 
   const renderForm = () => {
     switch (tabActive) {
-      case "Stays":
-        return <StaySearchForm />;
-      case "Experiences":
-        return <ExperiencesSearchForm />;
+      case "Travel Package":
+        return <StaySearchForm destinations={destinations} packageTypes={packageTypes} />;
       case "Cars":
-        return <RentalCarSearchForm />;
-      case "Flights":
-        return <FlightSearchForm />;
-
+        return <RentalCarSearchForm vehicleLocations={vehicleLocations} vehicleTypes={vehicleTypes} />;
       default:
         return null;
     }

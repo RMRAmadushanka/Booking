@@ -27,6 +27,7 @@
     "react-multi-date-picker": "^4.5.2",
     "react-search-autocomplete": "^8.5.2",
     "react-use": "^17.6.0",
+    "resend": "^6.9.2",
     "rsuite": "^6.1.1"
   },
   "devDependencies": {

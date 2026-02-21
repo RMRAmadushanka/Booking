@@ -10,6 +10,14 @@ export interface LocationInputProps {
   className?: string;
   divHideVerticalLineClass?: string;
   autoFocus?: boolean;
+  /** When provided, show these as selectable options (e.g. package destinations or vehicle locations). */
+  suggestions?: string[];
+  /** Called when user selects a suggestion or changes input (when controlled, use this to sync). */
+  onSelect?: (value: string) => void;
+  /** Controlled value (when provided, parent manages value for submit URL). */
+  value?: string;
+  /** Called when input text changes (use with value for controlled mode). */
+  onChange?: (value: string) => void;
 }
 
 const LocationInput: FC<LocationInputProps> = ({
@@ -18,11 +26,20 @@ const LocationInput: FC<LocationInputProps> = ({
   desc = "Where are you going?",
   className = "nc-flex-1.5",
   divHideVerticalLineClass = "left-10 -right-0.5",
+  suggestions,
+  onSelect,
+  value: controlledValue,
+  onChange,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState("");
+  const [internalValue, setInternalValue] = useState("");
+  const value = controlledValue !== undefined ? controlledValue : internalValue;
+  const setValue = (v: string) => {
+    if (controlledValue === undefined) setInternalValue(v);
+    onChange?.(v);
+  };
   const [showPopover, setShowPopover] = useState(autoFocus);
 
   useEffect(() => {
@@ -55,64 +72,30 @@ const LocationInput: FC<LocationInputProps> = ({
   const handleSelectLocation = (item: string) => {
     setValue(item);
     setShowPopover(false);
+    onSelect?.(item);
   };
 
-  const renderRecentSearches = () => {
-    return (
-      <>
-        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-[#0F172A]">
-          Recent searches
-        </h3>
-        <div className="mt-2">
-          {[
-            "Hamptons, Suffolk County, NY",
-            "Las Vegas, NV, United States",
-            "Ueno, Taito, Tokyo",
-            "Ikebukuro, Toshima, Tokyo",
-          ].map((item) => (
-            <span
-              onClick={() => handleSelectLocation(item)}
-              key={item}
-              className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-xl)]"
-            >
-              <span className="block text-[#64748B]">
-                <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
-              </span>
-              <span className="block font-medium text-[#0F172A]">
-                {item}
-              </span>
-            </span>
-          ))}
-        </div>
-      </>
-    );
-  };
-
-  const renderSearchValue = () => {
-    return (
-      <>
-        {[
+  const list = suggestions && suggestions.length > 0
+    ? (value
+        ? suggestions.filter((s) =>
+            s.toLowerCase().includes(value.toLowerCase())
+          )
+        : suggestions)
+    : value
+      ? [
           "Ha Noi, Viet Nam",
           "San Diego, CA",
           "Humboldt Park, Chicago, IL",
           "Bangor, Northern Ireland",
-        ].map((item) => (
-          <span
-            onClick={() => handleSelectLocation(item)}
-            key={item}
-            className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-xl)]"
-          >
-            <span className="block text-[#64748B]">
-              <ClockIcon className="h-4 w-4 sm:h-6 sm:w-6" />
-            </span>
-            <span className="block font-medium text-[#0F172A]">
-              {item}
-            </span>
-          </span>
-        ))}
-      </>
-    );
-  };
+        ].filter((s) =>
+          s.toLowerCase().includes(value.toLowerCase())
+        )
+      : [
+          "Hamptons, Suffolk County, NY",
+          "Las Vegas, NV, United States",
+          "Ueno, Taito, Tokyo",
+          "Ikebukuro, Toshima, Tokyo",
+        ];
 
   return (
     <div className={`relative flex ${className}`} ref={containerRef}>
@@ -132,13 +115,17 @@ const LocationInput: FC<LocationInputProps> = ({
             value={value}
             autoFocus={showPopover}
             onChange={(e) => {
-              setValue(e.currentTarget.value);
+              const v = e.currentTarget.value;
+              setValue(v);
+              onSelect?.(v);
             }}
             ref={inputRef}
           />
-          <span className="block mt-0.5 text-sm text-[#64748B] font-light">
-            <span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
-          </span>
+          {!value && (
+            <span className="block mt-0.5 text-sm text-[#64748B] font-light">
+              <span className="line-clamp-1">{desc}</span>
+            </span>
+          )}
           {value && showPopover && (
             <ClearDataButton
               onClick={() => {
@@ -156,8 +143,28 @@ const LocationInput: FC<LocationInputProps> = ({
       )}
 
       {showPopover && (
-        <div className="absolute left-0 right-0 lg:right-auto z-40 w-auto lg:w-full min-w-0 lg:min-w-[300px] sm:min-w-[500px] bg-white top-full mt-3 py-3 sm:py-6 rounded-[var(--radius-2xl)] shadow-lg border border-[#E5E7EB] max-h-80 lg:max-h-96 overflow-y-auto mx-4 lg:mx-0">
-          {value ? renderSearchValue() : renderRecentSearches()}
+        <div className="absolute left-0 right-0 lg:right-auto z-40 w-auto lg:w-full min-w-0 lg:min-w-[300px] sm:min-w-[500px] bg-white top-full mt-3 rounded-[var(--radius-2xl)] shadow-lg border border-[#E5E7EB] mx-4 lg:mx-0 overflow-hidden flex flex-col max-h-[min(80vh,24rem)]">
+          {/* Padding wraps the scroll area so the scrollbar sits inside the dropdown */}
+          <div className="flex flex-1 min-h-0 flex-col py-3 sm:py-4 pr-3 overflow-hidden">
+            <div className="overflow-y-auto overflow-x-hidden flex-1 min-h-0 overscroll-contain scrollbar-no-arrows">
+              {list.length > 0 ? (
+                list.map((item) => (
+                  <span
+                    onClick={() => handleSelectLocation(item)}
+                    key={item}
+                    className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)]"
+                  >
+                    <span className="block text-[#64748B]">
+                      <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />
+                    </span>
+                    <span className="block font-medium text-[#0F172A]">{item}</span>
+                  </span>
+                ))
+              ) : (
+                <p className="px-4 sm:px-8 py-4 text-sm text-[#64748B]">No matches</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

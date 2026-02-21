@@ -28,6 +28,8 @@ export interface Vehicle {
   location: string;
   features: string[];
   isAvailable: boolean;
+  /** Gallery images for the vehicle detail page. From DB gallery_urls. */
+  galleryUrls?: string[];
 }
 
 export interface VehicleFilters {

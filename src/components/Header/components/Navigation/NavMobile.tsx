@@ -7,6 +7,7 @@ import { NavItemType } from "@/shared/Navigation/NavigationItem";
 import { NAVIGATION_DEMO } from "@/data/navigation";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -56,6 +57,14 @@ const NavMobile: React.FC<NavMobileProps> = ({
   data = NAVIGATION_DEMO,
   onClickClose,
 }) => {
+  const pathname = usePathname();
+
+  const isActive = (href: string | undefined) => {
+    if (!href) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  };
+
   const _renderMenuChild = (item: NavItemType) => {
     return (
       <ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
@@ -99,6 +108,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
   };
 
   const _renderItem = (item: NavItemType, index: number) => {
+    const active = isActive(item.href);
     return (
       <Disclosure
         key={item.id}
@@ -106,7 +116,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
         className="text-[#0F172A]"
       >
         <Link
-          className="flex w-full px-4 font-medium uppercase tracking-wide text-sm hover:bg-[#EFF6FF] hover:text-[#2563EB] rounded-[var(--radius)] transition-colors duration-150"
+          className={`flex w-full px-4 font-medium uppercase tracking-wide text-sm rounded-[var(--radius)] transition-colors duration-150 ${active ? "bg-[#EFF6FF] text-[#2563EB]" : "hover:bg-[#EFF6FF] hover:text-[#2563EB]"}`}
           href={{
             pathname: item.href || undefined,
           }}

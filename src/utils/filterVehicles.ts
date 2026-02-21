@@ -1,13 +1,22 @@
 import { Vehicle, VehicleFilters } from "@/types/vehicle";
 
+/** Normalize value to number for comparison (Supabase may return numeric columns as strings). */
+function toNum(value: unknown): number {
+  if (value == null) return 0;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export function filterVehicles(
   vehicles: Vehicle[],
   filters: VehicleFilters
 ): Vehicle[] {
+  const [minPrice, maxPrice] = filters.priceRange;
+
   return vehicles.filter((vehicle) => {
     // Search query filter
-    if (filters.searchQuery) {
-      const query = filters.searchQuery.toLowerCase();
+    if (filters.searchQuery.trim()) {
+      const query = filters.searchQuery.toLowerCase().trim();
       const searchableText = [
         vehicle.title,
         vehicle.description,
@@ -16,6 +25,7 @@ export function filterVehicles(
         vehicle.location,
         vehicle.vehicleType,
       ]
+        .filter(Boolean)
         .join(" ")
         .toLowerCase();
 
@@ -48,30 +58,31 @@ export function filterVehicles(
       return false;
     }
 
-    // Price range filter
-    if (
-      vehicle.pricePerDay < filters.priceRange[0] ||
-      vehicle.pricePerDay > filters.priceRange[1]
-    ) {
+    // Price range filter (normalize for Supabase numeric/string)
+    const price = toNum(vehicle.pricePerDay);
+    if (price < minPrice || price > maxPrice) {
       return false;
     }
 
     // Minimum seats filter
-    if (filters.minSeats > 0 && vehicle.seats < filters.minSeats) {
+    const seats = toNum(vehicle.seats);
+    if (filters.minSeats > 0 && seats < filters.minSeats) {
       return false;
     }
 
     // Minimum rating filter
-    if (filters.minRating > 0 && vehicle.rating < filters.minRating) {
+    const rating = toNum(vehicle.rating);
+    if (filters.minRating > 0 && rating < filters.minRating) {
       return false;
     }
 
     // Location filter
-    if (
-      filters.location &&
-      !vehicle.location.toLowerCase().includes(filters.location.toLowerCase())
-    ) {
-      return false;
+    if (filters.location.trim()) {
+      const loc = (vehicle.location ?? "").toString().toLowerCase();
+      const filterLoc = filters.location.toLowerCase().trim();
+      if (!loc.includes(filterLoc)) {
+        return false;
+      }
     }
 
     return true;
