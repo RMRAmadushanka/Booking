@@ -165,7 +165,7 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
           type="text"
           value={localSearch}
           onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Search packages..."
+          placeholder="Search by package name, destination..."
           size="small"
           InputProps={{
             startAdornment: (

@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "ui-avatars.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.gravatar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "gravatar.com",
+      },
       // Supabase Storage (any project subdomain, e.g. abcdefgh.supabase.co)
       {
         protocol: "https",

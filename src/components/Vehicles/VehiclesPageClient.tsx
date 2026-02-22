@@ -6,6 +6,7 @@ import { FunnelIcon } from "@heroicons/react/24/outline";
 import VehicleFilters from "@/components/Vehicles/VehicleFilters";
 import VehicleCard from "@/components/Packages/VehicleCard";
 import VehicleSkeleton from "@/components/Vehicles/VehicleSkeleton";
+import Pagination from "@/components/common/Pagination";
 import type { Vehicle, VehicleFilters as FilterType } from "@/types/vehicle";
 import {
   getUniqueVehicleLocations,
@@ -14,6 +15,8 @@ import {
   getUniqueFuelTypes,
 } from "@/lib/vehicles";
 import { filterVehicles } from "@/utils/filterVehicles";
+
+const VEHICLES_PAGE_SIZE = 9;
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 400;
@@ -31,13 +34,16 @@ const INITIAL_FILTERS: FilterType = {
 
 type VehiclesPageClientProps = {
   initialVehicles: Vehicle[];
+  reviewCounts?: Record<string, { count: number; averageRating: number | null }>;
 };
 
 export default function VehiclesPageClient({
   initialVehicles,
+  reviewCounts = {},
 }: VehiclesPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const currentPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [filters, setFilters] = useState<FilterType>(() => {
     const search = searchParams.get("search") || "";
@@ -91,6 +97,17 @@ export default function VehiclesPageClient({
     [initialVehicles, filters]
   );
 
+  const totalPages = Math.max(1, Math.ceil(filteredVehicles.length / VEHICLES_PAGE_SIZE));
+  const pageToShow = Math.min(currentPage, totalPages);
+  const paginatedVehicles = useMemo(
+    () =>
+      filteredVehicles.slice(
+        (pageToShow - 1) * VEHICLES_PAGE_SIZE,
+        pageToShow * VEHICLES_PAGE_SIZE
+      ),
+    [filteredVehicles, pageToShow]
+  );
+
   const filterOptions = useMemo(
     () => ({
       vehicleTypes: getUniqueVehicleTypes(initialVehicles),
@@ -120,8 +137,15 @@ export default function VehiclesPageClient({
     if (newFilters.minRating > 0)
       params.set("minRating", newFilters.minRating.toString());
     if (newFilters.location) params.set("location", newFilters.location);
+    params.set("page", "1");
 
     router.push(`/vehicles?${params.toString()}`, { scroll: false });
+  };
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(page));
+    router.push(`/vehicles?${params.toString()}`, { scroll: true });
   };
 
   const activeFilterCount =
@@ -230,15 +254,26 @@ export default function VehiclesPageClient({
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredVehicles.map((vehicle) => (
-                <VehicleCard
-                  key={vehicle.id}
-                  vehicle={vehicle}
-                  onRentNow={handleRentNow}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {paginatedVehicles.map((vehicle) => (
+                  <VehicleCard
+                    key={vehicle.id}
+                    vehicle={vehicle}
+                    reviewCount={reviewCounts[vehicle.id]?.count ?? 0}
+                    averageRating={reviewCounts[vehicle.id]?.averageRating ?? null}
+                    onRentNow={handleRentNow}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={pageToShow}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                totalItems={filteredVehicles.length}
+                pageSize={VEHICLES_PAGE_SIZE}
+              />
+            </>
           )}
         </main>
       </div>

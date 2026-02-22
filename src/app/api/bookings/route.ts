@@ -7,6 +7,7 @@ type BookingPayload = {
   packageTitle: string;
   travelerName: string;
   email: string;
+  country?: string;
   adultCount: number;
   childrenCount: number;
   guestCount: number;
@@ -147,6 +148,7 @@ export async function POST(req: Request) {
     !isNonEmptyString(b.packageTitle) ||
     !isNonEmptyString(b.travelerName) ||
     !isValidEmail(b.email) ||
+    !isNonEmptyString(b.country) ||
     !isPositiveInt(adultCount) ||
     !isNonNegativeInt(childrenCount) ||
     !isPositiveInt(guestCount) ||
@@ -173,6 +175,7 @@ export async function POST(req: Request) {
     package_title: b.packageTitle,
     traveler_name: b.travelerName.trim(),
     email: b.email.trim(),
+    country: b.country!.trim(),
     adult_count: adultCount,
     children_count: childrenCount,
     guest_count: guestCount,
@@ -205,6 +208,7 @@ export async function POST(req: Request) {
       packageTitle: b.packageTitle!,
       travelerName: b.travelerName!.trim(),
       email: b.email!.trim(),
+      country: b.country!.trim(),
       adultCount: adultCount!,
       childrenCount: childrenCount!,
       guestCount: guestCount!,

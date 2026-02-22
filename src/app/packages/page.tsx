@@ -1,7 +1,20 @@
+import dynamic from "next/dynamic";
 import { getPackages } from "@/lib/packages";
-import PackagesPageClient from "@/components/Packages/PackagesPageClient";
+import { getPackageReviewCounts } from "@/lib/reviews";
+import PackagesLoading from "./loading";
+
+const PackagesPageClient = dynamic(
+  () => import("@/components/Packages/PackagesPageClient"),
+  { loading: () => <PackagesLoading /> }
+);
 
 export default async function PackagesPage() {
   const packages = await getPackages();
-  return <PackagesPageClient initialPackages={packages} />;
+  const reviewCounts = await getPackageReviewCounts(packages.map((p) => p.id));
+  return (
+    <PackagesPageClient
+      initialPackages={packages}
+      reviewCounts={reviewCounts}
+    />
+  );
 }

@@ -1,6 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { Popover } from "@headlessui/react";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import ReactDatePicker from "react-datepicker";
+import CountrySearchDropdown from "@/components/forms/CountrySearchDropdown";
+import DatePickerCustomHeaderTwoMonth from "@/components/DatePickerCustomHeaderTwoMonth";
 
 type VehicleRentalFormProps = {
   vehicleId: string;
@@ -25,10 +30,27 @@ function todayISO() {
 }
 
 function daysBetween(start: string, end: string): number {
-  const a = new Date(start);
-  const b = new Date(end);
+  if (!start || !end) return 0;
+  const a = new Date(start + "T12:00:00");
+  const b = new Date(end + "T12:00:00");
   const diff = (b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24);
   return Math.max(0, Math.ceil(diff) + 1);
+}
+
+function formatDateDisplay(iso: string): string {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function isoToDate(iso: string): Date {
+  return new Date(iso + "T12:00:00");
+}
+
+function dateToISO(d: Date): string {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 export default function VehicleRentalForm({
@@ -39,8 +61,9 @@ export default function VehicleRentalForm({
 }: VehicleRentalFormProps) {
   const [travelerName, setTravelerName] = useState("");
   const [email, setEmail] = useState("");
-  const [startDate, setStartDate] = useState(todayISO());
-  const [endDate, setEndDate] = useState(todayISO());
+  const [country, setCountry] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [pickupLocation, setPickupLocation] = useState(defaultPickup);
   const [notes, setNotes] = useState("");
   const [submitState, setSubmitState] = useState<SubmitState>({ status: "idle" });
@@ -57,6 +80,7 @@ export default function VehicleRentalForm({
     if (!endDate) return "Please select end date.";
     if (startDate > endDate) return "Start date must be before end date.";
     if (!pickupLocation.trim()) return "Please enter pickup location.";
+    if (!country.trim()) return "Please select your country.";
     return null;
   };
 
@@ -78,6 +102,7 @@ export default function VehicleRentalForm({
           vehicleTitle,
           travelerName: travelerName.trim(),
           email: email.trim(),
+          country: country.trim(),
           startDate,
           endDate,
           pickupLocation: pickupLocation.trim(),
@@ -166,6 +191,14 @@ export default function VehicleRentalForm({
             />
           </label>
 
+          <CountrySearchDropdown
+            value={country}
+            onChange={setCountry}
+            placeholder="Search your country..."
+            id="rental-country"
+            required
+          />
+
           <div className="rounded-[var(--radius)] border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -183,25 +216,54 @@ export default function VehicleRentalForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="block">
-              <span className="block text-sm font-medium text-slate-700 mb-1">Start date</span>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </label>
-            <label className="block">
-              <span className="block text-sm font-medium text-slate-700 mb-1">End date</span>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </label>
+          <div className="block">
+            <span className="block text-sm font-medium text-slate-700 mb-1">Rental period</span>
+            <Popover className="relative">
+              <Popover.Button
+                type="button"
+                className="w-full flex items-center gap-3 rounded-[var(--radius)] border border-slate-300 bg-white px-3 py-2.5 text-left text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF] text-slate-700"
+              >
+                <CalendarDaysIcon className="w-5 h-5 text-slate-500 shrink-0" />
+                <span className={startDate && endDate ? "text-slate-700" : "text-slate-500"}>
+                  {startDate && endDate
+                    ? `${formatDateDisplay(startDate)} – ${formatDateDisplay(endDate)} (${daysBetween(startDate, endDate)} days)`
+                    : startDate
+                      ? `${formatDateDisplay(startDate)} – Select end date`
+                      : "Select travel dates"}
+                </span>
+              </Popover.Button>
+              <Popover.Panel className="absolute right-0 z-[1000] mt-2 w-auto max-h-[min(85vh,520px)] overflow-auto rounded-[var(--radius)] border border-slate-200 bg-white p-4 shadow-lg">
+                <ReactDatePicker
+                  selected={startDate ? isoToDate(startDate) : null}
+                  startDate={startDate ? isoToDate(startDate) : null}
+                  endDate={endDate ? isoToDate(endDate) : null}
+                  selectsRange
+                  minDate={isoToDate(todayISO())}
+                  onChange={(dates: [Date | null, Date | null] | null) => {
+                    if (!dates) return;
+                    const [start, end] = dates;
+                    if (start) {
+                      const startISO = dateToISO(start);
+                      const clampedStart = startISO < todayISO() ? todayISO() : startISO;
+                      setStartDate(clampedStart);
+                      if (!end) setEndDate("");
+                    } else {
+                      setStartDate("");
+                      setEndDate("");
+                    }
+                    if (end) {
+                      setEndDate(dateToISO(end));
+                    }
+                  }}
+                  monthsShown={2}
+                  showPopperArrow={false}
+                  inline
+                  renderCustomHeader={(props) => (
+                    <DatePickerCustomHeaderTwoMonth {...props} />
+                  )}
+                />
+              </Popover.Panel>
+            </Popover>
           </div>
 
           <label className="block">

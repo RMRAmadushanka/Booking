@@ -7,12 +7,16 @@ import { CommonCard } from "@/components/common";
 
 interface TravelPackageCardProps {
   package: TravelPackage;
+  reviewCount?: number;
+  averageRating?: number | null;
   onBookNow?: (pkg: TravelPackage) => void;
   onFavorite?: (pkg: TravelPackage, isFavorite: boolean) => void;
 }
 
 const TravelPackageCard: React.FC<TravelPackageCardProps> = ({
   package: pkg,
+  reviewCount = 0,
+  averageRating = null,
   onBookNow,
   onFavorite,
 }) => {
@@ -27,6 +31,8 @@ const TravelPackageCard: React.FC<TravelPackageCardProps> = ({
     <CommonCard
       type="travel"
       data={pkg}
+      reviewCount={reviewCount}
+      averageRating={averageRating}
       onBookNow={handleBookNow}
       onFavorite={onFavorite}
     />

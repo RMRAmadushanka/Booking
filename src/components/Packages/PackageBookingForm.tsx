@@ -1,12 +1,65 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import type { Destination } from "@/types/packages";
+import { Popover } from "@headlessui/react";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import ReactDatePicker from "react-datepicker";
+import type { Destination, Duration } from "@/types/packages";
+import CountrySearchDropdown from "@/components/forms/CountrySearchDropdown";
+import DatePickerCustomHeaderTwoMonth from "@/components/DatePickerCustomHeaderTwoMonth";
+
+/** Fixed number of days for the package (used for date range). Supports "5 Days" / "1 Day" or legacy "1-3 Days", etc. */
+function getFixedDayCount(duration: Duration | string): number {
+  const s = String(duration).trim();
+  const singleMatch = s.match(/^(\d+)\s*Day(s)?$/i);
+  if (singleMatch) {
+    const n = parseInt(singleMatch[1], 10);
+    return Number.isFinite(n) && n >= 1 ? n : 3;
+  }
+  switch (s) {
+    case "1-3 Days":
+      return 3;
+    case "4-6 Days":
+      return 5;
+    case "7-10 Days":
+      return 8;
+    case "10+ Days":
+      return 10;
+    default:
+      return 3;
+  }
+}
+
+function addDays(iso: string, days: number): string {
+  const d = new Date(iso + "T12:00:00");
+  d.setDate(d.getDate() + days);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function formatDateDisplay(iso: string): string {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function isoToDate(iso: string): Date {
+  return new Date(iso + "T12:00:00");
+}
+
+function dateToISO(d: Date): string {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 type PackageBookingFormProps = {
   packageId: string;
   packageTitle: string;
   destinations: Destination[];
+  duration: Duration;
   basePricePerPerson: number; // adult price
   childPriceMultiplier?: number; // e.g. 0.75 = 25% off
 };
@@ -33,20 +86,25 @@ export default function PackageBookingForm({
   packageId,
   packageTitle,
   destinations,
+  duration,
   basePricePerPerson,
   childPriceMultiplier = 0.75,
 }: PackageBookingFormProps) {
   const defaultPickup = useMemo<string>(() => destinations[0] ?? "", [destinations]);
+  const dayCount = useMemo(() => getFixedDayCount(duration), [duration]);
 
   const [travelerName, setTravelerName] = useState("");
   const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
   const [adultCount, setAdultCount] = useState(1);
   const [childrenCount, setChildrenCount] = useState(0);
   const [startDate, setStartDate] = useState(todayISO());
-  const [endDate, setEndDate] = useState(todayISO());
   const [pickupLocation, setPickupLocation] = useState<string>(defaultPickup);
   const [notes, setNotes] = useState("");
   const [submitState, setSubmitState] = useState<SubmitState>({ status: "idle" });
+
+  const today = todayISO();
+  const endDate = addDays(startDate, dayCount - 1);
 
   const guestCount = adultCount + childrenCount;
   const childPricePerPerson = Math.round(basePricePerPerson * childPriceMultiplier);
@@ -64,10 +122,10 @@ export default function PackageBookingForm({
       return "Children cannot be negative.";
     if (!Number.isFinite(basePricePerPerson) || basePricePerPerson <= 0)
       return "Package price is missing.";
-    if (!startDate) return "Please select start date.";
-    if (!endDate) return "Please select end date.";
-    if (startDate > endDate) return "Start date must be before end date.";
+    if (!startDate?.trim()) return "Please select trip start date.";
+    if (startDate < todayISO()) return "Start date cannot be in the past.";
     if (!pickupLocation.trim()) return "Please enter pickup location.";
+    if (!country.trim()) return "Please select your country.";
     return null;
   };
 
@@ -102,6 +160,7 @@ export default function PackageBookingForm({
           startDate,
           endDate,
           pickupLocation,
+          country: country.trim(),
           notes: notes.trim() ? notes : undefined,
         }),
       });
@@ -153,6 +212,23 @@ export default function PackageBookingForm({
               We couldn&apos;t send a confirmation email to your inbox, but our team will contact you at the email you provided.
             </div>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              setSubmitState({ status: "idle" });
+              setTravelerName("");
+              setEmail("");
+              setCountry("");
+              setAdultCount(1);
+              setChildrenCount(0);
+              setStartDate(todayISO());
+              setPickupLocation(defaultPickup);
+              setNotes("");
+            }}
+            className="mt-4 px-4 py-2 text-sm font-semibold text-emerald-800 bg-white border border-emerald-300 rounded-[var(--radius)] hover:bg-emerald-50 transition-colors"
+          >
+            Book again
+          </button>
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4 min-w-0">
@@ -188,6 +264,14 @@ export default function PackageBookingForm({
               />
             </label>
           </div>
+
+          <CountrySearchDropdown
+            value={country}
+            onChange={setCountry}
+            placeholder="Search your country..."
+            id="booking-country"
+            required
+          />
 
           {/* Guests - responsive: stacks on narrow (e.g. sidebar), side-by-side on wide */}
           <div className="block min-w-0">
@@ -311,49 +395,69 @@ export default function PackageBookingForm({
             </div>
           </div>
 
-          {/* Dates */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="block">
+          {/* Trip details: date range picker (fixed day count) + pickup */}
+          <div className="space-y-4">
+            <div className="text-sm font-medium text-slate-700">
+              Trip details — {dayCount} day{dayCount !== 1 ? "s" : ""}
+            </div>
+            <div className="block">
               <span className="block text-sm font-medium text-slate-700 mb-1">
-                Start date
+                Trip dates
               </span>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF]"
-              />
-            </label>
+              <Popover className="relative">
+                <Popover.Button
+                  type="button"
+                  className="w-full flex items-center gap-3 rounded-[var(--radius)] border border-slate-300 bg-white px-3 py-2.5 text-left text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF]"
+                >
+                  <CalendarDaysIcon className="w-5 h-5 text-slate-500 shrink-0" />
+                  <span className="text-slate-700">
+                    {formatDateDisplay(startDate)} – {formatDateDisplay(endDate)}
+                    <span className="text-slate-500 ml-1">({dayCount} days)</span>
+                  </span>
+                </Popover.Button>
+                <Popover.Panel className="absolute right-0 z-[1000] mt-2 w-auto max-h-[min(85vh,520px)] overflow-auto rounded-[var(--radius)] border border-slate-200 bg-white p-4 shadow-lg">
+                  <ReactDatePicker
+                    selected={isoToDate(startDate)}
+                    startDate={isoToDate(startDate)}
+                    endDate={isoToDate(endDate)}
+                    selectsRange
+                    minDate={isoToDate(today)}
+                    onChange={(dates: [Date | null, Date | null] | null) => {
+                      if (!dates || !dates[0]) return;
+                      let start = dates[0];
+                      let startISO = dateToISO(start);
+                      if (startISO < today) startISO = today;
+                      setStartDate(startISO);
+                    }}
+                    monthsShown={2}
+                    showPopperArrow={false}
+                    inline
+                    renderCustomHeader={(props) => (
+                      <DatePickerCustomHeaderTwoMonth {...props} />
+                    )}
+                  />
+                </Popover.Panel>
+              </Popover>
+            </div>
 
             <label className="block">
               <span className="block text-sm font-medium text-slate-700 mb-1">
-                End date
+                Pick-up location
               </span>
               <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                value={pickupLocation}
+                onChange={(e) => setPickupLocation(e.target.value)}
                 className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF]"
+                placeholder="e.g. airport, hotel, or city"
+                autoComplete="street-address"
               />
+              {!!defaultPickup && (
+                <div className="text-xs text-slate-500 mt-1">
+                  Default: first destination ({defaultPickup}). Change if you need a different pick-up point.
+                </div>
+              )}
             </label>
           </div>
-
-          <label className="block">
-            <span className="block text-sm font-medium text-slate-700 mb-1">
-              Pickup location
-            </span>
-            <input
-              value={pickupLocation}
-              onChange={(e) => setPickupLocation(e.target.value)}
-              className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF]"
-              placeholder="Airport / hotel / city"
-            />
-            {!!defaultPickup && (
-              <div className="text-xs text-slate-500 mt-1">
-                Tip: default is first destination ({defaultPickup}).
-              </div>
-            )}
-          </label>
 
           <label className="block">
             <span className="block text-sm font-medium text-slate-700 mb-1">

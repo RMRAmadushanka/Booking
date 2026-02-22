@@ -5,9 +5,9 @@ export const filterPackages = (
   filters: PackageFilters
 ): TravelPackage[] => {
   return packages.filter((pkg) => {
-    // Search filter
+    // Search filter (package name, description, destinations, type, highlights)
     if (filters.searchQuery) {
-      const query = filters.searchQuery.toLowerCase();
+      const query = filters.searchQuery.toLowerCase().trim();
       const matchesSearch =
         pkg.title.toLowerCase().includes(query) ||
         pkg.description.toLowerCase().includes(query) ||

@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import ThemeProvider from "@/components/ThemeProvider";
+import { getPageMetadata, toNextMetadata } from "@/lib/seo/metadata";
+import { getTravelAgencySchema } from "@/lib/seo/structuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,13 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const homeMeta = getPageMetadata("home");
 export const metadata: Metadata = {
-  title: "Drimooria Travels - Find Your Perfect Stay",
-  description:
-    "Discover amazing places to stay, unique experiences, and adventures around the world.",
-  icons: {
-    icon: "/favicon.ico",
-  },
+  ...toNextMetadata(homeMeta),
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
@@ -28,11 +27,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const travelAgencyJsonLd = getTravelAgencySchema();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-[#0F172A]`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(travelAgencyJsonLd) }}
+        />
         <ThemeProvider>
           <Header />
           {children}

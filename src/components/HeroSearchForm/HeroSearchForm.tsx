@@ -10,6 +10,8 @@ export type SearchTab = "Travel Package" | "Cars";
 export interface HeroSearchFormProps {
   className?: string;
   currentTab?: SearchTab;
+  /** When true, tab labels (Travel Package, Cars) use white text for dark hero backgrounds. */
+  tabTextWhite?: boolean;
   /** Destination options for the Travel Package tab (e.g. from DB). */
   destinations?: string[];
   /** Package type options for the Travel Package tab (e.g. from DB). */
@@ -23,6 +25,7 @@ export interface HeroSearchFormProps {
 const HeroSearchForm: FC<HeroSearchFormProps> = ({
   className = "",
   currentTab = "Travel Package",
+  tabTextWhite = false,
   destinations = [],
   packageTypes = [],
   vehicleLocations = [],
@@ -30,6 +33,11 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 }) => {
   const tabs: SearchTab[] = ["Travel Package", "Cars"];
   const [tabActive, setTabActive] = useState<SearchTab>(currentTab);
+
+  const tabActiveColor = tabTextWhite ? "#FFFFFF" : "#2563EB";
+  const tabInactiveColor = tabTextWhite ? "rgba(255,255,255,0.8)" : "#64748B";
+  const tabHoverColor = tabTextWhite ? "#FFFFFF" : "#2563EB";
+  const dotActiveBg = tabTextWhite ? "#FFFFFF" : "#2563EB";
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabActive(tabs[newValue]);
@@ -89,7 +97,8 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                       width: "10px",
                       height: "10px",
                       borderRadius: "50%",
-                      bgcolor: tabs.indexOf(tabActive) === index ? "#2563EB" : "transparent",
+                      bgcolor: tabs.indexOf(tabActive) === index ? dotActiveBg : "transparent",
+                      border: tabTextWhite && tabs.indexOf(tabActive) !== index ? "1px solid rgba(255,255,255,0.5)" : "none",
                     }}
                   />
                   <span>{tab}</span>
@@ -99,11 +108,14 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                 textTransform: "none",
                 fontSize: { xs: "0.875rem", lg: "1rem" },
                 fontWeight: tabs.indexOf(tabActive) === index ? 600 : 500,
-                color: tabs.indexOf(tabActive) === index ? "#2563EB" : "#64748B",
+                color: tabs.indexOf(tabActive) === index ? tabActiveColor : tabInactiveColor,
                 minWidth: "auto",
                 padding: 0,
                 "&:hover": {
-                  color: "#2563EB",
+                  color: tabHoverColor,
+                },
+                "&.Mui-selected": {
+                  color: `${tabActiveColor} !important`,
                 },
               }}
             />

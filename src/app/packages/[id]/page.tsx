@@ -2,11 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StarIcon, ClockIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { getPackageById } from "@/lib/packages";
+import { getPackageById, getDayCountFromDuration } from "@/lib/packages";
+import { getPackageReviews, getPackageReviewStats } from "@/lib/reviews";
 import type { Destination } from "@/types/packages";
 import PackageRouteMap from "@/components/Packages/PackageRouteMap";
 import PackageBookingForm from "@/components/Packages/PackageBookingForm";
 import PackageLocationsAccordion from "@/components/Packages/PackageLocationsAccordion";
+import ReviewsSection from "@/components/Reviews/ReviewsSection";
 
 function getGalleryImages(pkg: { imageUrl: string; galleryUrls?: string[] }): string[] {
   if (Array.isArray(pkg.galleryUrls) && pkg.galleryUrls.length > 0) {
@@ -16,6 +18,7 @@ function getGalleryImages(pkg: { imageUrl: string; galleryUrls?: string[] }): st
 }
 
 function Rating({ value }: { value: number }) {
+  const stars = Math.min(5, Math.max(0, Math.round(value)));
   return (
     <div className="flex items-center gap-2">
       <div className="flex items-center">
@@ -23,7 +26,7 @@ function Rating({ value }: { value: number }) {
           <StarIcon
             key={i}
             className={`w-4 h-4 ${
-              i < Math.floor(value) ? "text-amber-400" : "text-slate-300"
+              i < stars ? "text-amber-400" : "text-slate-300"
             }`}
           />
         ))}
@@ -35,15 +38,24 @@ function Rating({ value }: { value: number }) {
 
 export default async function PackageDetailsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ reviewPage?: string }>;
 }) {
-  // Next.js 16: `params` is async in server components.
-  // https://nextjs.org/docs/messages/sync-dynamic-apis
   const { id } = await params;
+  const { reviewPage } = await searchParams;
+  const page = Math.max(1, parseInt(String(reviewPage), 10) || 1);
 
-  const pkg = await getPackageById(id);
+  const [pkg, reviewsData, reviewStats] = await Promise.all([
+    getPackageById(id),
+    getPackageReviews(id, page, 5),
+    getPackageReviewStats(id),
+  ]);
+
   if (!pkg) notFound();
+
+  const displayRating = reviewStats.averageRating ?? pkg.rating;
 
   const images = getGalleryImages(pkg);
   const destinations = pkg.destinations as Destination[];
@@ -67,7 +79,10 @@ export default async function PackageDetailsPage({
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
                 {pkg.packageType}
               </span>
-              <Rating value={pkg.rating} />
+              <Rating value={displayRating} />
+              <span className="text-sm text-slate-500">
+                ({reviewsData.total} review{reviewsData.total === 1 ? "" : "s"})
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
               {pkg.title}
@@ -149,6 +164,10 @@ export default async function PackageDetailsPage({
               <PackageLocationsAccordion
                 destinations={destinations}
                 locationDetails={pkg.destinationDetails}
+                dayCount={getDayCountFromDuration(pkg.duration)}
+                destinationDays={pkg.destinationDays}
+                routeDays={pkg.routeDays}
+                packageId={pkg.id}
               />
             </section>
 
@@ -177,6 +196,13 @@ export default async function PackageDetailsPage({
               </p>
               <PackageRouteMap destinations={destinations} />
             </section>
+
+            {/* Guest feedback */}
+            <ReviewsSection
+              data={reviewsData}
+              basePath={`/packages/${id}`}
+              emptyMessage="No reviews yet for this package."
+            />
           </div>
 
           {/* Right column - min-w-0 so form can shrink and stay responsive in narrow sidebar */}
@@ -186,6 +212,7 @@ export default async function PackageDetailsPage({
                 packageId={pkg.id}
                 packageTitle={pkg.title}
                 destinations={destinations}
+                duration={pkg.duration}
                 basePricePerPerson={pkg.price}
               />
             </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,9 +13,9 @@ const Logo: FC<LogoProps> = ({ className = "" }) => {
       <Image
         src={MainLogo}
         alt="Drimooria Travels"
-        width={140}
+        width={180}
         height={200}
-        className="h-8 sm:h-10 w-auto"
+        className="h-10 sm:h-12 w-auto"
         priority
       />
     </Link>

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StarIcon, MapPinIcon, CogIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import { getVehicleById } from "@/lib/vehicles";
+import { getVehicleReviews, getVehicleReviewStats } from "@/lib/reviews";
 import VehicleRentalForm from "@/components/Vehicles/VehicleRentalForm";
+import ReviewsSection from "@/components/Reviews/ReviewsSection";
 
 function getGalleryImages(vehicle: { imageUrl: string; galleryUrls?: string[] }): string[] {
   if (Array.isArray(vehicle.galleryUrls) && vehicle.galleryUrls.length > 0) {
@@ -32,14 +34,24 @@ function Rating({ value }: { value: number }) {
 
 export default async function VehicleDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ reviewPage?: string }>;
 }) {
   const { id } = await params;
+  const { reviewPage } = await searchParams;
+  const page = Math.max(1, parseInt(String(reviewPage), 10) || 1);
 
-  const vehicle = await getVehicleById(id);
+  const [vehicle, reviewsData, reviewStats] = await Promise.all([
+    getVehicleById(id),
+    getVehicleReviews(id, page, 5),
+    getVehicleReviewStats(id),
+  ]);
+
   if (!vehicle) notFound();
 
+  const displayRating = reviewStats.averageRating ?? vehicle.rating;
   const images = getGalleryImages(vehicle);
 
   return (
@@ -61,7 +73,10 @@ export default async function VehicleDetailPage({
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
                 {vehicle.vehicleType}
               </span>
-              <Rating value={vehicle.rating} />
+              <Rating value={displayRating} />
+              <span className="text-sm text-slate-500">
+                ({reviewsData.total} review{reviewsData.total === 1 ? "" : "s"})
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
               {vehicle.title}
@@ -190,6 +205,13 @@ export default async function VehicleDetailPage({
                 ))}
               </div>
             </section>
+
+            {/* Guest feedback */}
+            <ReviewsSection
+              data={reviewsData}
+              basePath={`/vehicles/${id}`}
+              emptyMessage="No reviews yet for this vehicle."
+            />
           </div>
 
           {/* Right column: rental form */}

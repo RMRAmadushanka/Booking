@@ -1,13 +1,18 @@
 import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
 import { PopularPackagesSection } from "@/components/PopularPackages";
-import SocialProof from "@/components/SocialProof";
+import SocialProof from "@/components/SocialProof/index";
 import Footer from "@/components/Footer";
 import heroImage from "@/images/home-beach-hero.jpg";
 import { getPackages, getUniqueDestinations, getUniquePackageTypes } from "@/lib/packages";
 import { getVehicles, getUniqueVehicleLocations, getUniqueVehicleTypes } from "@/lib/vehicles";
+import { getRecentTestimonials } from "@/lib/reviews";
 
 export default async function Home() {
-  const [packages, vehicles] = await Promise.all([getPackages(), getVehicles()]);
+  const [packages, vehicles, testimonials] = await Promise.all([
+    getPackages(),
+    getVehicles(),
+    getRecentTestimonials(6),
+  ]);
   const destinations = getUniqueDestinations(packages);
   const packageTypes = getUniquePackageTypes(packages);
   const vehicleLocations = getUniqueVehicleLocations(vehicles);
@@ -41,11 +46,12 @@ export default async function Home() {
           {/* Search Form */}
           <div className="flex justify-center">
             <HeroSearchForm
-            destinations={destinations}
-            packageTypes={packageTypes}
-            vehicleLocations={vehicleLocations}
-            vehicleTypes={vehicleTypes}
-          />
+              tabTextWhite
+              destinations={destinations}
+              packageTypes={packageTypes}
+              vehicleLocations={vehicleLocations}
+              vehicleTypes={vehicleTypes}
+            />
           </div>
 
           {/* Stats */}
@@ -240,7 +246,7 @@ export default async function Home() {
       <PopularPackagesSection packages={packages} featuredPackageId="5" />
 
       {/* Social Proof Section */}
-      <SocialProof />
+      <SocialProof testimonials={testimonials} />
 
       
 

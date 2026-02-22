@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import { Popover } from "@headlessui/react";
 import {
   MapPinIcon,
   SparklesIcon,
@@ -13,12 +14,30 @@ import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
+import ReactDatePicker from "react-datepicker";
 import { Destination } from "@/types/packages";
-import DateRangePicker from "@/components/HeroSearchForm/DateRangePicker";
+import DatePickerCustomHeaderTwoMonth from "@/components/DatePickerCustomHeaderTwoMonth";
 
 function getDaysBetween(start: Date, end: Date): number {
   const ms = end.getTime() - start.getTime();
   return Math.max(1, Math.ceil(ms / (24 * 60 * 60 * 1000)) + 1);
+}
+
+function todayISO(): string {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function formatDateDisplay(iso: string): string {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function isoToDate(iso: string): Date {
+  return new Date(iso + "T12:00:00");
 }
 
 function formatDayDate(start: Date, dayIndex: number): string {
@@ -185,7 +204,13 @@ export default function CustomizeTripPage() {
   const [dayPlans, setDayPlans] = useState<(Destination | "")[]>([]);
   const [travelPlan, setTravelPlan] = useState("");
   const [notes, setNotes] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+
+  type SubmitState =
+    | { status: "idle" }
+    | { status: "submitting" }
+    | { status: "success"; requestId: string; emailSent: boolean; emailConfigured: boolean }
+    | { status: "error"; message: string };
+  const [submitState, setSubmitState] = useState<SubmitState>({ status: "idle" });
 
   const tripDayCount = useMemo(() => {
     if (!tripStartDate || !tripEndDate) return 0;
@@ -211,9 +236,82 @@ export default function CustomizeTripPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function dateToISO(d: Date): string {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  const validate = (): string | null => {
+    if (!name.trim()) return "Please enter your name.";
+    if (!email.trim()) return "Please enter your email.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return "Please enter a valid email.";
+    if (!Number.isFinite(adults) || adults < 1) return "Adults must be at least 1.";
+    if (!Number.isFinite(children) || children < 0) return "Children cannot be negative.";
+    if (tripStartDate && tripEndDate && tripStartDate > tripEndDate) return "Start date must be before end date.";
+    return null;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    const err = validate();
+    if (err) {
+      setSubmitState({ status: "error", message: err });
+      return;
+    }
+
+    setSubmitState({ status: "submitting" });
+    try {
+      const res = await fetch("/api/custom-trip-requests", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim() || undefined,
+          startDate: tripStartDate ? dateToISO(tripStartDate) : undefined,
+          endDate: tripEndDate ? dateToISO(tripEndDate) : undefined,
+          adults,
+          children,
+          dayPlan: dayPlans.map((loc) => (loc || "").trim()),
+          travelPlanNotes: travelPlan.trim() || undefined,
+          notes: notes.trim() || undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setSubmitState({
+          status: "error",
+          message: data?.error ?? "Failed to submit. Please try again.",
+        });
+        return;
+      }
+
+      setSubmitState({
+        status: "success",
+        requestId: data.requestId,
+        emailSent: data.emailSent === true,
+        emailConfigured: data.emailConfigured === true,
+      });
+    } catch {
+      setSubmitState({ status: "error", message: "Network error. Please try again." });
+    }
+  };
+
+  const resetForm = () => {
+    setSubmitState({ status: "idle" });
+    setName("");
+    setEmail("");
+    setPhone("");
+    setTripStartDate(null);
+    setTripEndDate(null);
+    setAdults(1);
+    setChildren(0);
+    setDayPlans([]);
+    setTravelPlan("");
+    setNotes("");
   };
 
   return (
@@ -238,11 +336,48 @@ export default function CustomizeTripPage() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-3xl">
+        {submitState.status === "success" ? (
+          <div className="rounded-[var(--radius-md)] border border-emerald-200 bg-emerald-50 p-5 sm:p-6">
+            <div className="flex items-start gap-3">
+              <CheckCircleIcon className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-emerald-900">Request submitted</p>
+                <p className="text-sm text-emerald-800 mt-1">
+                  Request ID: <span className="font-mono">{submitState.requestId}</span>
+                </p>
+                <p className="text-sm text-emerald-800 mt-1">
+                  Our team will reach out to <span className="font-medium">{email.trim()}</span>.
+                </p>
+                {submitState.emailSent ? (
+                  <p className="text-sm text-emerald-800 mt-1">
+                    A confirmation email was sent to your inbox.
+                  </p>
+                ) : (
+                  <p className="text-sm text-emerald-800 mt-1">
+                    We couldn&apos;t send a confirmation email, but our team will contact you at the email you provided.
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="mt-4 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-white border border-emerald-300 rounded-[var(--radius)] hover:bg-emerald-50 transition-colors"
+                >
+                  Submit another request
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
           aria-label="Submit your travel plan"
         >
+          {submitState.status === "error" && (
+            <div className="rounded-[var(--radius-md)] border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+              {submitState.message}
+            </div>
+          )}
           {/* Contact */}
           <section className="bg-white rounded-[var(--radius-md)] border border-[var(--color-border)] shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-[var(--color-border)]">
@@ -310,22 +445,52 @@ export default function CustomizeTripPage() {
                 <label className="block text-sm font-medium text-[var(--color-dark)] mb-2">
                   Trip duration
                 </label>
-                <div className="rounded-[var(--radius)] border border-[var(--color-border)] overflow-visible focus-within:ring-2 focus-within:ring-[var(--color-primary)] focus-within:border-transparent">
-                  <DateRangePicker
-                    placeholder="Select travel dates"
-                    description="Start date – End date"
-                    selectsRange={true}
-                    hasButtonSubmit={false}
-                    defaultStartDate={tripStartDate}
-                    defaultEndDate={tripEndDate}
-                    onChange={(start, end) => {
-                      setTripStartDate(start);
-                      setTripEndDate(end);
-                    }}
-                    className="w-full"
-                    fieldClassName="py-3 px-4 w-full"
-                  />
-                </div>
+                <Popover className="relative">
+                  <Popover.Button
+                    type="button"
+                    className="w-full flex items-center gap-3 rounded-[var(--radius)] border border-[var(--color-border)] bg-white px-4 py-3 text-left text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-[var(--color-dark)]"
+                  >
+                    <CalendarDaysIcon className="w-5 h-5 text-[var(--color-muted)] shrink-0" />
+                    <span className={tripStartDate || tripEndDate ? "text-[var(--color-dark)]" : "text-[var(--color-muted)]"}>
+                      {tripStartDate && tripEndDate
+                        ? `${formatDateDisplay(dateToISO(tripStartDate))} – ${formatDateDisplay(dateToISO(tripEndDate))} (${getDaysBetween(tripStartDate, tripEndDate)} days)`
+                        : tripStartDate
+                          ? `${formatDateDisplay(dateToISO(tripStartDate))} – Select end date`
+                          : "Select travel dates"}
+                    </span>
+                  </Popover.Button>
+                  <Popover.Panel className="absolute right-0 z-[1000] mt-2 w-auto max-h-[min(85vh,520px)] overflow-auto rounded-[var(--radius)] border border-[var(--color-border)] bg-white p-4 shadow-lg">
+                    <ReactDatePicker
+                      selected={tripStartDate ?? null}
+                      startDate={tripStartDate ?? null}
+                      endDate={tripEndDate ?? null}
+                      selectsRange
+                      minDate={isoToDate(todayISO())}
+                      onChange={(dates: [Date | null, Date | null] | null) => {
+                        if (!dates) return;
+                        const [start, end] = dates;
+                        if (start) {
+                          const startISO = dateToISO(start);
+                          const clampedStart = startISO < todayISO() ? todayISO() : startISO;
+                          setTripStartDate(isoToDate(clampedStart));
+                        } else {
+                          setTripStartDate(null);
+                        }
+                        if (end) {
+                          setTripEndDate(end);
+                        } else {
+                          setTripEndDate(null);
+                        }
+                      }}
+                      monthsShown={2}
+                      showPopperArrow={false}
+                      inline
+                      renderCustomHeader={(props) => (
+                        <DatePickerCustomHeaderTwoMonth {...props} />
+                      )}
+                    />
+                  </Popover.Panel>
+                </Popover>
               </div>
               <div>
                 <label className="block text-sm font-medium text-[var(--color-dark)] mb-3">
@@ -497,28 +662,21 @@ export default function CustomizeTripPage() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <button
               type="submit"
-              className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold rounded-[var(--radius)] shadow-md hover:shadow-lg transition-all"
+              disabled={submitState.status === "submitting"}
+              className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold rounded-[var(--radius)] shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Submit to agency
-              <ChevronRightIcon className="w-5 h-5" />
+              {submitState.status === "submitting" ? (
+                <>Submitting…</>
+              ) : (
+                <>
+                  Submit to agency
+                  <ChevronRightIcon className="w-5 h-5" />
+                </>
+              )}
             </button>
           </div>
-
-          {submitted && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-[var(--radius-md)] p-4 flex items-start gap-3 animate-fadeIn">
-              <CheckCircleIcon className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-emerald-900">
-                  Travel plan submitted
-                </p>
-                <p className="text-sm text-emerald-800 mt-1">
-                  Our team will review your plan and get back to you with a
-                  tailored package and quote.
-                </p>
-              </div>
-            </div>
-          )}
         </form>
+        )}
       </div>
     </div>
   );

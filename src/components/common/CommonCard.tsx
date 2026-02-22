@@ -22,6 +22,8 @@ export type CardType = "travel" | "vehicle";
 interface TravelCardProps {
   type: "travel";
   data: TravelPackage;
+  reviewCount?: number;
+  averageRating?: number | null;
   onBookNow?: (pkg: TravelPackage) => void;
   onFavorite?: (pkg: TravelPackage, isFavorite: boolean) => void;
 }
@@ -30,6 +32,8 @@ interface TravelCardProps {
 interface VehicleCardProps {
   type: "vehicle";
   data: Vehicle;
+  reviewCount?: number;
+  averageRating?: number | null;
   onBookNow?: (vehicle: Vehicle) => void;
   onFavorite?: (vehicle: Vehicle, isFavorite: boolean) => void;
 }
@@ -37,17 +41,16 @@ interface VehicleCardProps {
 // Union type for CommonCard props
 export type CommonCardProps = TravelCardProps | VehicleCardProps;
 
-// Star rating component
+// Star rating component (uses rounded value so e.g. 4.5 shows 5 stars)
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
+  const stars = Math.min(5, Math.max(0, Math.round(rating)));
   return (
     <div className="flex items-center gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
         <StarIcon
           key={i}
           className={`w-4 h-4 ${
-            i < Math.floor(rating)
-              ? "text-amber-400 fill-current"
-              : "text-gray-300"
+            i < stars ? "text-amber-400 fill-current" : "text-gray-300"
           }`}
         />
       ))}
@@ -94,11 +97,16 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
     }
   };
 
-  // Get common data from either type
+  // Get common data from either type; use real average from reviews when available
   const { data, type } = props;
   const title = data.title;
   const imageUrl = data.imageUrl;
-  const rating = data.rating;
+  const averageRating =
+    type === "travel"
+      ? (props as TravelCardProps).averageRating
+      : (props as VehicleCardProps).averageRating;
+  const rating =
+    averageRating != null ? averageRating : data.rating;
   const description = data.description;
 
   // Type-specific data extraction
@@ -172,8 +180,11 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
     );
   };
 
-  // Generate random review count for display (consistent with original)
-  const reviewCount = Math.floor(Math.random() * 100 + 50);
+  // Real review count from server, or 0 if not provided
+  const reviewCount =
+    props.type === "travel"
+      ? (props as TravelCardProps).reviewCount ?? 0
+      : (props as VehicleCardProps).reviewCount ?? 0;
 
   return (
     <div className="group bg-white rounded-[var(--radius-md)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-indigo-200">
@@ -231,7 +242,9 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
         <div className="flex items-center gap-2 mb-4">
           <StarRating rating={rating} />
           <span className="text-sm font-semibold text-slate-900">{rating}</span>
-          <span className="text-xs text-slate-500">({reviewCount} reviews)</span>
+          <span className="text-xs text-slate-500">
+            ({reviewCount} review{reviewCount === 1 ? "" : "s"})
+          </span>
         </div>
 
         {/* Price and CTA */}

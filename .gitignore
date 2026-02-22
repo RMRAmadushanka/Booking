@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# setup, SQL migrations, and local/docs (remove this block if you want these tracked in git)
+supabase/*.sql
+supabase/*SETUP*.md
+supabase/*CREATE*.md
+supabase/REVIEW_*.md
+SUPABASE_SETUP.md
+CLIENT_COMPONENTS_AUDIT.md

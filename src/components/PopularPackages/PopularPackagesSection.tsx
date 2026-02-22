@@ -63,7 +63,6 @@ const FilterScrollContainer: React.FC<{
 
 const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
   packages,
-  featuredPackageId,
 }) => {
   const router = useRouter();
   const [categoryFilter, setCategoryFilter] = useState<PackageCategory>("all");
@@ -562,14 +561,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             {/* Desktop & Tablet Grid */}
             <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPackages.map((pkg) => (
-                <div
-                  key={pkg.id}
-                  className={`transition-all duration-200 ${
-                    featuredPackageId === pkg.id
-                      ? "ring-2 ring-[#2563EB] ring-offset-2 rounded-[var(--radius-md)]"
-                      : ""
-                  }`}
-                >
+                <div key={pkg.id} className="transition-all duration-200">
                   <TravelPackageCard
                     package={pkg}
                     onBookNow={handleBookNow}
@@ -593,11 +585,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
                 {filteredPackages.map((pkg) => (
                   <div
                     key={pkg.id}
-                    className={`flex-shrink-0 w-[85vw] max-w-[320px] snap-center transition-all duration-200 ${
-                      featuredPackageId === pkg.id
-                        ? "ring-2 ring-[#2563EB] ring-offset-2 rounded-[var(--radius-md)]"
-                        : ""
-                    }`}
+                    className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center transition-all duration-200"
                   >
                     <TravelPackageCard
                       package={pkg}

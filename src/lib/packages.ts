@@ -1,10 +1,44 @@
 import type { TravelPackage } from "@/types/packages";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 
+/** Parse package duration to a fixed day count (e.g. "5 Days" -> 5, "4-6 Days" -> 5). */
+export function getDayCountFromDuration(duration: string): number {
+  const s = String(duration).trim();
+  const singleMatch = s.match(/^(\d+)\s*Day(s)?$/i);
+  if (singleMatch) {
+    const n = parseInt(singleMatch[1], 10);
+    return Number.isFinite(n) && n >= 1 ? n : 3;
+  }
+  switch (s) {
+    case "1-3 Days":
+      return 3;
+    case "4-6 Days":
+      return 5;
+    case "7-10 Days":
+      return 8;
+    case "10+ Days":
+      return 10;
+    default:
+      return 3;
+  }
+}
+
 type DbDestinationDetail = {
   name: string;
   description: string;
   image_url: string;
+};
+
+type DbDestinationDay = {
+  day: number;
+  name: string;
+};
+
+type DbRouteDay = {
+  day: number;
+  name: string;
+  image_url: string;
+  description: string;
 };
 
 type DbPackage = {
@@ -21,17 +55,39 @@ type DbPackage = {
   highlights: string[];
   gallery_urls?: string[] | null;
   destination_details?: DbDestinationDetail[] | null;
+  destination_days?: DbDestinationDay[] | null;
+  route_days?: DbRouteDay[] | null;
 };
 
 function mapRowToPackage(row: DbPackage): TravelPackage {
   const destDetails = row.destination_details;
+  const destDays = row.destination_days;
+  const routeDaysRaw = row.route_days;
+  const destinations = row.destinations as TravelPackage["destinations"];
+  const destinationDays =
+    Array.isArray(destDays) && destDays.length > 0
+      ? destDays
+          .filter((d) => typeof d.day === "number" && typeof d.name === "string")
+          .map((d) => ({ name: d.name, day: Number(d.day) }))
+      : undefined;
+  const routeDays =
+    Array.isArray(routeDaysRaw) && routeDaysRaw.length > 0
+      ? routeDaysRaw
+          .filter((r) => typeof r.day === "number" && typeof r.name === "string")
+          .map((r) => ({
+            day: Number(r.day),
+            name: String(r.name),
+            imageUrl: typeof r.image_url === "string" && r.image_url.trim() ? r.image_url : "https://picsum.photos/seed/route/1200/800",
+            description: typeof r.description === "string" && r.description.trim() ? r.description : "A day on your route. Explore at your own pace.",
+          }))
+      : undefined;
   return {
     id: row.id,
     title: row.title,
     description: row.description,
     imageUrl: row.image_url,
     packageType: row.package_type as TravelPackage["packageType"],
-    destinations: row.destinations as TravelPackage["destinations"],
+    destinations,
     duration: row.duration as TravelPackage["duration"],
     price: Number(row.price),
     rating: Number(row.rating),
@@ -49,6 +105,8 @@ function mapRowToPackage(row: DbPackage): TravelPackage {
             imageUrl: d.image_url,
           }))
         : undefined,
+    destinationDays: destinationDays?.length ? destinationDays : undefined,
+    routeDays: routeDays?.length ? routeDays : undefined,
   };
 }
 

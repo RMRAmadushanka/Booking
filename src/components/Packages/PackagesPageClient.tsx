@@ -6,9 +6,12 @@ import { FunnelIcon } from "@heroicons/react/24/outline";
 import PackageFilters from "@/components/Packages/PackageFilters";
 import TravelPackageCard from "@/components/Packages/TravelPackageCard";
 import PackageSkeleton from "@/components/Packages/PackageSkeleton";
+import Pagination from "@/components/common/Pagination";
 import type { TravelPackage } from "@/types/packages";
 import { PackageFilters as FilterType } from "@/types/packages";
 import { filterPackages } from "@/utils/filterPackages";
+
+const PACKAGES_PAGE_SIZE = 9;
 
 const INITIAL_FILTERS: FilterType = {
   searchQuery: "",
@@ -20,16 +23,22 @@ const INITIAL_FILTERS: FilterType = {
   minRating: 0,
 };
 
+export type ReviewStats = { count: number; averageRating: number | null };
+
 type PackagesPageClientProps = {
   initialPackages: TravelPackage[];
+  reviewCounts?: Record<string, ReviewStats>;
 };
 
 export default function PackagesPageClient({
   initialPackages,
+  reviewCounts = {},
 }: PackagesPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const currentPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+
   const [filters, setFilters] = useState<FilterType>(() => {
     const search = searchParams.get("search") || "";
     const types = searchParams.get("types")?.split(",").filter(Boolean) || [];
@@ -60,6 +69,17 @@ export default function PackagesPageClient({
     [initialPackages, filters]
   );
 
+  const totalPages = Math.max(1, Math.ceil(filteredPackages.length / PACKAGES_PAGE_SIZE));
+  const pageToShow = Math.min(currentPage, totalPages);
+  const paginatedPackages = useMemo(
+    () =>
+      filteredPackages.slice(
+        (pageToShow - 1) * PACKAGES_PAGE_SIZE,
+        pageToShow * PACKAGES_PAGE_SIZE
+      ),
+    [filteredPackages, pageToShow]
+  );
+
   const handleFiltersChange = (newFilters: FilterType) => {
     setFilters(newFilters);
     const params = new URLSearchParams();
@@ -78,8 +98,15 @@ export default function PackagesPageClient({
       params.set("bestFor", newFilters.bestFor.join(","));
     if (newFilters.minRating > 0)
       params.set("minRating", newFilters.minRating.toString());
+    params.set("page", "1");
 
     router.push(`/packages?${params.toString()}`, { scroll: false });
+  };
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(page));
+    router.push(`/packages?${params.toString()}`, { scroll: true });
   };
 
   const activeFilterCount =
@@ -179,11 +206,25 @@ export default function PackagesPageClient({
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredPackages.map((pkg) => (
-                <TravelPackageCard key={pkg.id} package={pkg} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {paginatedPackages.map((pkg) => (
+                  <TravelPackageCard
+                    key={pkg.id}
+                    package={pkg}
+                    reviewCount={reviewCounts[pkg.id]?.count ?? 0}
+                    averageRating={reviewCounts[pkg.id]?.averageRating ?? null}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={pageToShow}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                totalItems={filteredPackages.length}
+                pageSize={PACKAGES_PAGE_SIZE}
+              />
+            </>
           )}
         </main>
       </div>

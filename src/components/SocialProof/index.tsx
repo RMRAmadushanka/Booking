@@ -1,36 +1,37 @@
-interface Testimonial {
-  id: string;
-  quote: string;
-  name: string;
-  location: string;
-}
+import React from "react";
+import { StarIcon } from "@heroicons/react/24/solid";
+import type { TestimonialItem } from "@/lib/reviews";
 
 interface TrustMetric {
   value: string;
   label: string;
 }
 
-const testimonials: Testimonial[] = [
+/** Fallback when no reviews from DB yet */
+const fallbackTestimonials: TestimonialItem[] = [
   {
-    id: "1",
+    id: "fallback-1",
     quote:
       "Drimooria Travels handled our entire corporate retreat seamlessly. From flights to accommodations, every detail was perfect.",
     name: "Marcus Chen",
     location: "Singapore",
+    rating: 5,
   },
   {
-    id: "2",
+    id: "fallback-2",
     quote:
       "We've worked with many travel agencies, but Drimooria Travels's attention to our business requirements is unmatched.",
     name: "Elena Hoffmann",
     location: "Germany",
+    rating: 5,
   },
   {
-    id: "3",
+    id: "fallback-3",
     quote:
       "Their team understood our tight schedule and delivered a flawless itinerary. Highly recommended for business travel.",
     name: "David Okonkwo",
     location: "United Kingdom",
+    rating: 5,
   },
 ];
 
@@ -53,7 +54,7 @@ function QuoteIcon() {
   );
 }
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({ testimonial }: { testimonial: TestimonialItem }) {
   return (
     <article
       className="flex-shrink-0 w-[85vw] sm:w-[340px] lg:w-auto lg:flex-1
@@ -66,6 +67,15 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       tabIndex={0}
     >
       <QuoteIcon />
+      <div className="flex items-center gap-1.5 mb-3">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <StarIcon
+            key={i}
+            className={`w-4 h-4 ${i <= testimonial.rating ? "text-amber-400" : "text-slate-200"}`}
+            aria-hidden
+          />
+        ))}
+      </div>
       <blockquote className="text-[#64748B] text-base leading-relaxed mb-6 flex-grow">
         "{testimonial.quote}"
       </blockquote>
@@ -125,7 +135,15 @@ function SoftCTA() {
   );
 }
 
-export default function SocialProof() {
+export type SocialProofProps = {
+  /** Real testimonials from DB (reviews with comments). When empty, fallback copy is used. */
+  testimonials?: TestimonialItem[];
+};
+
+const SocialProof: React.FC<SocialProofProps> = (props) => {
+  const { testimonials } = props;
+  const list = testimonials && testimonials.length > 0 ? testimonials : fallbackTestimonials;
+
   return (
     <section
       className="py-20 lg:py-28 bg-[#FFFFFF]"
@@ -157,7 +175,7 @@ export default function SocialProof() {
           role="list"
           aria-label="Customer testimonials"
         >
-          {testimonials.map((testimonial) => (
+          {list.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
@@ -167,4 +185,6 @@ export default function SocialProof() {
       </div>
     </section>
   );
-}
+};
+
+export default SocialProof;

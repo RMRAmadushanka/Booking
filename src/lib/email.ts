@@ -5,6 +5,7 @@ export type BookingEmailPayload = {
   packageTitle: string;
   travelerName: string;
   email: string;
+  country?: string;
   adultCount: number;
   childrenCount: number;
   guestCount: number;
@@ -86,18 +87,8 @@ function emailWrapper(content: string, title: string): string {
 </html>`;
 }
 
-function userConfirmationHtml(p: BookingEmailPayload): string {
-  const total = p.estimatedTotalPrice != null ? `$${Number(p.estimatedTotalPrice).toLocaleString()}` : "—";
-  const rows = [
-    ["Booking ID", p.bookingId],
-    ["Package", p.packageTitle],
-    ["Travelers", `${p.adultCount} adult(s), ${p.childrenCount} child(ren) (${p.guestCount} total)`],
-    ["Dates", `${p.startDate} to ${p.endDate}`],
-    ["Pickup", p.pickupLocation],
-    ["Estimated total", total],
-    ...(p.notes ? [["Notes", p.notes]] : []),
-  ];
-  const tableRows = rows
+function detailTableRows(rows: [string, string][]): string {
+  return rows
     .map(
       (r, i) => `
     <tr>
@@ -106,6 +97,21 @@ function userConfirmationHtml(p: BookingEmailPayload): string {
     </tr>`
     )
     .join("");
+}
+
+function userConfirmationHtml(p: BookingEmailPayload): string {
+  const total = p.estimatedTotalPrice != null ? `$${Number(p.estimatedTotalPrice).toLocaleString()}` : "—";
+  const rows: [string, string][] = [
+    ["Booking ID", p.bookingId],
+    ["Package", p.packageTitle],
+    ["Travelers", `${p.adultCount} adult(s), ${p.childrenCount} child(ren) (${p.guestCount} total)`],
+    ["Dates", `${p.startDate} to ${p.endDate}`],
+    ["Country", p.country ?? "—"],
+    ["Pickup", p.pickupLocation],
+    ["Estimated total", total],
+    ...(p.notes ? [["Notes", p.notes]] as [string, string][] : []),
+  ];
+  const tableRows = detailTableRows(rows);
 
   const content = `
     <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:${BRAND.dark};">
@@ -129,26 +135,19 @@ function userConfirmationHtml(p: BookingEmailPayload): string {
 
 function adminNotificationHtml(p: BookingEmailPayload): string {
   const total = p.estimatedTotalPrice != null ? `$${Number(p.estimatedTotalPrice).toLocaleString()}` : "—";
-  const rows = [
+  const rows: [string, string][] = [
     ["Booking ID", p.bookingId],
     ["Package", p.packageTitle],
     ["Traveler", p.travelerName],
     ["Email", p.email],
+    ["Country", p.country ?? "—"],
     ["Guests", `${p.adultCount} adult(s), ${p.childrenCount} child(ren)`],
     ["Dates", `${p.startDate} to ${p.endDate}`],
     ["Pickup", p.pickupLocation],
     ["Estimated total", total],
-    ...(p.notes ? [["Notes", p.notes]] : []),
+    ...(p.notes ? [["Notes", p.notes]] as [string, string][] : []),
   ];
-  const tableRows = rows
-    .map(
-      (r, i) => `
-    <tr>
-      <td style="padding:12px 16px;${i % 2 === 1 ? `background-color:${BRAND.bgLight};` : ""}font-size:14px;color:${BRAND.muted};border-bottom:1px solid ${BRAND.border};">${escapeHtml(r[0])}</td>
-      <td style="padding:12px 16px;${i % 2 === 1 ? `background-color:${BRAND.bgLight};` : ""}font-size:14px;font-weight:600;color:${BRAND.dark};border-bottom:1px solid ${BRAND.border};text-align:right;">${escapeHtml(String(r[1]))}</td>
-    </tr>`
-    )
-    .join("");
+  const tableRows = detailTableRows(rows);
 
   const content = `
     <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:${BRAND.dark};">
@@ -171,6 +170,7 @@ export type VehicleRentalEmailPayload = {
   vehicleTitle: string;
   travelerName: string;
   email: string;
+  country?: string;
   startDate: string;
   endDate: string;
   pickupLocation: string;
@@ -180,23 +180,12 @@ export type VehicleRentalEmailPayload = {
   numberOfDays: number;
 };
 
-function rentalTableRows(rows: [string, string][]): string {
-  return rows
-    .map(
-      (r, i) => `
-    <tr>
-      <td style="padding:12px 16px;${i % 2 === 1 ? `background-color:${BRAND.bgLight};` : ""}font-size:14px;color:${BRAND.muted};border-bottom:1px solid ${BRAND.border};">${escapeHtml(r[0])}</td>
-      <td style="padding:12px 16px;${i % 2 === 1 ? `background-color:${BRAND.bgLight};` : ""}font-size:14px;font-weight:600;color:${BRAND.dark};border-bottom:1px solid ${BRAND.border};text-align:right;">${escapeHtml(r[1])}</td>
-    </tr>`
-    )
-    .join("");
-}
-
 function vehicleRentalUserConfirmationHtml(p: VehicleRentalEmailPayload): string {
   const rows: [string, string][] = [
     ["Rental ID", p.rentalId],
     ["Vehicle", p.vehicleTitle],
     ["Dates", `${p.startDate} to ${p.endDate}`],
+    ["Country", p.country ?? "—"],
     ["Pickup", p.pickupLocation],
     ["Number of days", String(p.numberOfDays)],
     ["Price per day", `$${Number(p.pricePerDay).toLocaleString()}`],
@@ -214,7 +203,7 @@ function vehicleRentalUserConfirmationHtml(p: VehicleRentalEmailPayload): string
       We've received your vehicle rental request. Our team will confirm availability and contact you shortly.
     </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid ${BRAND.border};border-radius:8px;overflow:hidden;">
-      ${rentalTableRows(rows)}
+      ${detailTableRows(rows)}
     </table>
     <p style="margin:24px 0 0;font-size:15px;color:${BRAND.dark};">
       Thank you for choosing Drimooria.
@@ -229,6 +218,7 @@ function vehicleRentalAdminNotificationHtml(p: VehicleRentalEmailPayload): strin
     ["Vehicle", p.vehicleTitle],
     ["Traveler", p.travelerName],
     ["Email", p.email],
+    ["Country", p.country ?? "—"],
     ["Dates", `${p.startDate} to ${p.endDate}`],
     ["Pickup", p.pickupLocation],
     ["Number of days", String(p.numberOfDays)],
@@ -244,7 +234,7 @@ function vehicleRentalAdminNotificationHtml(p: VehicleRentalEmailPayload): strin
       A new vehicle rental was submitted and needs follow-up.
     </p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid ${BRAND.border};border-radius:8px;overflow:hidden;">
-      ${rentalTableRows(rows)}
+      ${detailTableRows(rows)}
     </table>
   `;
   return emailWrapper(content, `New rental: ${p.vehicleTitle}`);
@@ -256,6 +246,72 @@ function escapeHtml(s: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+// ---- Review request email (sent after trip end_date) ----
+
+export type ReviewRequestEmailPayload = {
+  type: "booking" | "rental";
+  travelerName: string;
+  email: string;
+  reviewLink: string;
+  /** Package title (when type is booking) or vehicle title (when type is rental) */
+  title: string;
+};
+
+function reviewRequestHtml(p: ReviewRequestEmailPayload): string {
+  const content = `
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:${BRAND.dark};">
+      How was your ${p.type === "booking" ? "trip" : "rental"}?
+    </h1>
+    <p style="margin:0 0 24px;font-size:16px;color:${BRAND.muted};">
+      Hi ${escapeHtml(p.travelerName)},
+    </p>
+    <p style="margin:0 0 24px;font-size:15px;color:${BRAND.dark};">
+      Your ${p.type === "booking" ? "travel package" : "vehicle rental"} &ldquo;${escapeHtml(p.title)}&rdquo; has ended. We&rsquo;d love to hear your feedback—it helps us improve.
+    </p>
+    <p style="margin:0 0 24px;font-size:15px;color:${BRAND.dark};">
+      <a href="${escapeHtml(p.reviewLink)}" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,${BRAND.primary} 0%,${BRAND.primaryDark} 100%);color:#ffffff !important;text-decoration:none;font-weight:600;font-size:16px;border-radius:8px;">
+        Leave your review
+      </a>
+    </p>
+    <p style="margin:0;font-size:14px;color:${BRAND.muted};">
+      If the button doesn&rsquo;t work, copy and paste this link into your browser:<br/>
+      <a href="${escapeHtml(p.reviewLink)}" style="color:${BRAND.primary};word-break:break-all;">${escapeHtml(p.reviewLink)}</a>
+    </p>
+  `;
+  return emailWrapper(content, `Share your feedback – ${p.title}`);
+}
+
+/**
+ * Sends a single "Leave your review" email with a link to the review form.
+ * Used by the cron job after trip/rental end_date.
+ */
+export async function sendReviewRequestEmail(
+  payload: ReviewRequestEmailPayload
+): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) return false;
+
+  const resend = new Resend(apiKey);
+  const from = getFromAddress();
+
+  try {
+    const { error } = await resend.emails.send({
+      from,
+      to: payload.email,
+      subject: `How was your ${payload.type === "booking" ? "trip" : "rental"}? – ${payload.title}`,
+      html: reviewRequestHtml(payload),
+    });
+    if (error) {
+      console.error("[sendReviewRequestEmail]", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[sendReviewRequestEmail]", err);
+    return false;
+  }
 }
 
 /**
@@ -393,6 +449,133 @@ export async function sendVehicleRentalEmails(
     return results;
   } catch (err) {
     console.error("[sendVehicleRentalEmails]", err);
+    return results;
+  }
+}
+
+// ---- Custom trip request emails ----
+
+export type CustomTripEmailPayload = {
+  requestId: string;
+  name: string;
+  email: string;
+  phone?: string;
+  startDate?: string;
+  endDate?: string;
+  adultCount: number;
+  childrenCount: number;
+  dayPlanSummary?: string;
+  travelPlanNotes?: string;
+  notes?: string;
+};
+
+function customTripUserConfirmationHtml(p: CustomTripEmailPayload): string {
+  const rows: [string, string][] = [
+    ["Request ID", p.requestId],
+    ["Name", p.name],
+    ["Email", p.email],
+    ...(p.phone ? [["Phone", p.phone]] as [string, string][] : []),
+    ...(p.startDate && p.endDate ? [["Dates", `${p.startDate} to ${p.endDate}`]] as [string, string][] : []),
+    ["Travelers", `${p.adultCount} adult(s), ${p.childrenCount} child(ren)`],
+    ...(p.dayPlanSummary ? [["Day plan", p.dayPlanSummary]] as [string, string][] : []),
+    ...(p.travelPlanNotes ? [["Itinerary notes", p.travelPlanNotes]] as [string, string][] : []),
+    ...(p.notes ? [["Additional notes", p.notes]] as [string, string][] : []),
+  ];
+  const tableRows = detailTableRows(rows);
+  const content = `
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:${BRAND.dark};">
+      Custom trip request received
+    </h1>
+    <p style="margin:0 0 24px;font-size:16px;color:${BRAND.muted};">
+      Hi ${escapeHtml(p.name)},
+    </p>
+    <p style="margin:0 0 24px;font-size:15px;color:${BRAND.dark};">
+      We've received your custom trip request. Our team will create a tailored package and get back to you shortly.
+    </p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid ${BRAND.border};border-radius:8px;overflow:hidden;">
+      ${tableRows}
+    </table>
+    <p style="margin:24px 0 0;font-size:15px;color:${BRAND.dark};">
+      Thank you for choosing Drimooria.
+    </p>
+  `;
+  return emailWrapper(content, "Custom trip request received");
+}
+
+function customTripAdminNotificationHtml(p: CustomTripEmailPayload): string {
+  const rows: [string, string][] = [
+    ["Request ID", p.requestId],
+    ["Name", p.name],
+    ["Email", p.email],
+    ...(p.phone ? [["Phone", p.phone]] as [string, string][] : []),
+    ...(p.startDate && p.endDate ? [["Dates", `${p.startDate} to ${p.endDate}`]] as [string, string][] : []),
+    ["Travelers", `${p.adultCount} adult(s), ${p.childrenCount} child(ren)`],
+    ...(p.dayPlanSummary ? [["Day plan", p.dayPlanSummary]] as [string, string][] : []),
+    ...(p.travelPlanNotes ? [["Itinerary notes", p.travelPlanNotes]] as [string, string][] : []),
+    ...(p.notes ? [["Additional notes", p.notes]] as [string, string][] : []),
+  ];
+  const tableRows = detailTableRows(rows);
+  const content = `
+    <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:${BRAND.dark};">
+      New custom trip request
+    </h1>
+    <p style="margin:0 0 24px;font-size:15px;color:${BRAND.muted};">
+      A new custom trip request was submitted and needs follow-up.
+    </p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid ${BRAND.border};border-radius:8px;overflow:hidden;">
+      ${tableRows}
+    </table>
+  `;
+  return emailWrapper(content, "New custom trip request");
+}
+
+export async function sendCustomTripEmails(
+  payload: CustomTripEmailPayload
+): Promise<{ userSent: boolean; adminSent: boolean } | null> {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const adminEmail = process.env.ADMIN_EMAIL?.trim();
+
+  if (!apiKey) {
+    console.warn("[sendCustomTripEmails] Skipped: RESEND_API_KEY is not set.");
+    return null;
+  }
+
+  const resend = new Resend(apiKey);
+  const results = { userSent: false, adminSent: false };
+  const from = getFromAddress();
+
+  try {
+    const [userResult, adminResult] = await Promise.allSettled([
+      resend.emails.send({
+        from,
+        to: payload.email,
+        subject: "Custom trip request received",
+        html: customTripUserConfirmationHtml(payload),
+      }),
+      adminEmail
+        ? resend.emails.send({
+            from,
+            to: adminEmail,
+            subject: `New custom trip request – ${payload.name}`,
+            html: customTripAdminNotificationHtml(payload),
+          })
+        : Promise.resolve({ data: null, error: null }),
+    ]);
+
+    if (userResult.status === "fulfilled" && !userResult.value.error) {
+      results.userSent = true;
+    } else if (userResult.status === "fulfilled" && userResult.value.error) {
+      const err = userResult.value.error as { message?: string };
+      console.error("[sendCustomTripEmails] User email not sent:", err?.message ?? err);
+    }
+
+    if (adminEmail && adminResult.status === "fulfilled" && !(adminResult.value as { error?: unknown }).error) {
+      results.adminSent = true;
+    }
+
+    return results;
+  } catch (err) {
+    console.error("[sendCustomTripEmails]", err);
     return results;
   }
 }

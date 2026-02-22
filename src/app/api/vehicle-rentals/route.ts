@@ -7,6 +7,7 @@ type RentalPayload = {
   vehicleTitle: string;
   travelerName: string;
   email: string;
+  country?: string;
   startDate: string;
   endDate: string;
   pickupLocation: string;
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
     !isNonEmptyString(b.vehicleTitle) ||
     !isNonEmptyString(b.travelerName) ||
     !isValidEmail(b.email) ||
+    !isNonEmptyString(b.country) ||
     !isValidDateString(b.startDate) ||
     !isValidDateString(b.endDate) ||
     !isNonEmptyString(b.pickupLocation) ||
@@ -74,6 +76,7 @@ export async function POST(req: Request) {
     vehicle_title: b.vehicleTitle,
     traveler_name: b.travelerName.trim(),
     email: b.email.trim(),
+    country: b.country!.trim(),
     start_date: b.startDate,
     end_date: b.endDate,
     pickup_location: b.pickupLocation.trim(),
@@ -113,6 +116,7 @@ export async function POST(req: Request) {
       vehicleTitle: b.vehicleTitle!,
       travelerName: b.travelerName!.trim(),
       email: b.email!.trim(),
+      country: b.country!.trim(),
       startDate: b.startDate!,
       endDate: b.endDate!,
       pickupLocation: b.pickupLocation!.trim(),
