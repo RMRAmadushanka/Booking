@@ -17,8 +17,8 @@ export type BookingEmailPayload = {
 };
 
 // Default: Resend sandbox. Only delivers to verified recipients (e.g. your admin email).
-// To send to any customer email: verify your domain in Resend, then set RESEND_FROM_EMAIL e.g. "Hero Search <noreply@yourdomain.com>"
-const DEFAULT_FROM = "Hero Search <onboarding@resend.dev>";
+// To send to any customer email: verify your domain in Resend, then set RESEND_FROM_EMAIL e.g. "Drimooria Travels <noreply@yourdomain.com>"
+const DEFAULT_FROM = "Drimooria Travels <onboarding@resend.dev>";
 
 function getFromAddress(): string {
   const custom = process.env.RESEND_FROM_EMAIL?.trim();
@@ -339,11 +339,11 @@ export async function sendBookingEmails(
 
   if (!hasCustomFrom) {
     console.warn(
-      "[sendBookingEmails] RESEND_FROM_EMAIL is not set. With Resend free tier, sending from onboarding@resend.dev only delivers to verified recipient addresses. Add RESEND_FROM_EMAIL to .env.local (use double quotes: RESEND_FROM_EMAIL=\"Hero Search <noreply@yourverifieddomain.com>\") and restart the server."
+      "[sendBookingEmails] RESEND_FROM_EMAIL is not set. With Resend free tier, sending from onboarding@resend.dev only delivers to verified recipient addresses. Add RESEND_FROM_EMAIL to .env.local (use double quotes: RESEND_FROM_EMAIL=\"Drimooria Travels <noreply@yourverifieddomain.com>\") and restart the server."
     );
   } else if (!from.includes("@")) {
     console.error(
-      "[sendBookingEmails] RESEND_FROM_EMAIL is set but does not look like a valid email. Use double quotes in .env.local, e.g. RESEND_FROM_EMAIL=\"Hero Search <noreply@yourdomain.com>\""
+      "[sendBookingEmails] RESEND_FROM_EMAIL is set but does not look like a valid email. Use double quotes in .env.local, e.g. RESEND_FROM_EMAIL=\"Drimooria Travels <noreply@yourdomain.com>\""
     );
   }
 
