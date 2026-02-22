@@ -192,13 +192,15 @@ export async function getVehicleReviews(
   };
 }
 
+export type ReviewCountResult = { count: number; averageRating: number | null };
+
 /**
  * Get review counts for multiple packages (for listing pages).
- * Returns a map of package_id -> number of reviews.
+ * Returns a map of package_id -> { count, averageRating }.
  */
 export async function getPackageReviewCounts(
   packageIds: string[]
-): Promise<Record<string, number>> {
+): Promise<Record<string, ReviewCountResult>> {
   if (packageIds.length === 0) return {};
   const supabase = getSupabaseAdmin();
 
@@ -240,7 +242,7 @@ export async function getPackageReviewCounts(
       sumByPackage[pkgId] = (sumByPackage[pkgId] ?? 0) + row.rating;
     }
   }
-  const result: Record<string, { count: number; averageRating: number | null }> = {};
+  const result: Record<string, ReviewCountResult> = {};
   for (const id of packageIds) {
     const count = countByPackage[id] ?? 0;
     const sum = sumByPackage[id] ?? 0;
@@ -254,11 +256,11 @@ export async function getPackageReviewCounts(
 
 /**
  * Get review counts for multiple vehicles (for listing pages).
- * Returns a map of vehicle_id -> number of reviews.
+ * Returns a map of vehicle_id -> { count, averageRating }.
  */
 export async function getVehicleReviewCounts(
   vehicleIds: string[]
-): Promise<Record<string, number>> {
+): Promise<Record<string, ReviewCountResult>> {
   if (vehicleIds.length === 0) return {};
   const supabase = getSupabaseAdmin();
 
@@ -300,7 +302,7 @@ export async function getVehicleReviewCounts(
       sumByVehicle[vehId] = (sumByVehicle[vehId] ?? 0) + row.rating;
     }
   }
-  const result: Record<string, { count: number; averageRating: number | null }> = {};
+  const result: Record<string, ReviewCountResult> = {};
   for (const id of vehicleIds) {
     const count = countByVehicle[id] ?? 0;
     const sum = sumByVehicle[id] ?? 0;

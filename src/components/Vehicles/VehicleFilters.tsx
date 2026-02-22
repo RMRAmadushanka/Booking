@@ -212,9 +212,9 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
               key={type}
               control={
                 <Checkbox
-                  checked={filters.vehicleTypes.includes(type)}
+                  checked={filters.vehicleTypes.includes(type as VehicleType)}
                   onChange={() => {
-                    toggleArrayFilter("vehicleTypes", type);
+                    toggleArrayFilter("vehicleTypes", type as VehicleType);
                   }}
                   sx={{
                     color: "#E5E7EB",
@@ -260,9 +260,9 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
               key={transmission}
               control={
                 <Checkbox
-                  checked={filters.transmissions.includes(transmission)}
+                  checked={filters.transmissions.includes(transmission as TransmissionType)}
                   onChange={() => {
-                    toggleArrayFilter("transmissions", transmission);
+                    toggleArrayFilter("transmissions", transmission as TransmissionType);
                   }}
                   sx={{
                     color: "#E5E7EB",
@@ -308,9 +308,9 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
               key={fuel}
               control={
                 <Checkbox
-                  checked={filters.fuelTypes.includes(fuel)}
+                  checked={filters.fuelTypes.includes(fuel as FuelType)}
                   onChange={() => {
-                    toggleArrayFilter("fuelTypes", fuel);
+                    toggleArrayFilter("fuelTypes", fuel as FuelType);
                   }}
                   sx={{
                     color: "#E5E7EB",
