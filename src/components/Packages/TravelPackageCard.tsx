@@ -10,7 +10,6 @@ interface TravelPackageCardProps {
   reviewCount?: number;
   averageRating?: number | null;
   onBookNow?: (pkg: TravelPackage) => void;
-  onFavorite?: (pkg: TravelPackage, isFavorite: boolean) => void;
 }
 
 const TravelPackageCard: React.FC<TravelPackageCardProps> = ({
@@ -18,7 +17,6 @@ const TravelPackageCard: React.FC<TravelPackageCardProps> = ({
   reviewCount = 0,
   averageRating = null,
   onBookNow,
-  onFavorite,
 }) => {
   const router = useRouter();
 
@@ -34,7 +32,6 @@ const TravelPackageCard: React.FC<TravelPackageCardProps> = ({
       reviewCount={reviewCount}
       averageRating={averageRating}
       onBookNow={handleBookNow}
-      onFavorite={onFavorite}
     />
   );
 };

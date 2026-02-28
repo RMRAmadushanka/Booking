@@ -7,7 +7,6 @@ interface VehicleCardProps {
   reviewCount?: number;
   averageRating?: number | null;
   onRentNow?: (vehicle: Vehicle) => void;
-  onFavorite?: (vehicle: Vehicle, isFavorite: boolean) => void;
 }
 
 const VehicleCard: React.FC<VehicleCardProps> = ({
@@ -15,7 +14,6 @@ const VehicleCard: React.FC<VehicleCardProps> = ({
   reviewCount = 0,
   averageRating = null,
   onRentNow,
-  onFavorite,
 }) => {
   return (
     <CommonCard
@@ -24,7 +22,6 @@ const VehicleCard: React.FC<VehicleCardProps> = ({
       reviewCount={reviewCount}
       averageRating={averageRating}
       onBookNow={onRentNow}
-      onFavorite={onFavorite}
     />
   );
 };

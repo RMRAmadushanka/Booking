@@ -568,7 +568,6 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
                   <TravelPackageCard
                     package={pkg}
                     onBookNow={handleBookNow}
-                    onFavorite={handleFavorite}
                   />
                 </div>
               ))}
@@ -593,7 +592,6 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
                     <TravelPackageCard
                       package={pkg}
                       onBookNow={handleBookNow}
-                      onFavorite={handleFavorite}
                     />
                   </div>
                 ))}
