@@ -152,22 +152,23 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
     setBudgetFilter("all");
   };
 
-  // Chip styles for consistent design system
+  // Chip styles for consistent design system (teal #2DD4BF)
   const chipSx = (isActive: boolean) => ({
     height: { xs: 40, sm: 36 },
     minWidth: 44,
     px: { xs: 1.5, sm: 2 },
     fontSize: { xs: "0.8125rem", sm: "0.875rem" },
     fontWeight: 500,
-    borderRadius: "var(--radius)",
+    borderRadius: "var(--button-radius)",
     transition: "all 200ms ease",
-    backgroundColor: isActive ? "#2563EB" : "transparent",
+    backgroundColor: isActive ? "#2DD4BF" : "transparent",
     color: isActive ? "#FFFFFF" : "#64748B",
-    border: isActive ? "1px solid #2563EB" : "1px solid #E2E8F0",
+    border: isActive ? "1px solid #2DD4BF" : "1px solid #E2E8F0",
     whiteSpace: "nowrap",
     "&:hover": {
-      backgroundColor: isActive ? "#1D4ED8" : "#F8FAFC",
-      borderColor: isActive ? "#1D4ED8" : "#2DD4BF",
+      backgroundColor: isActive ? "#14B8A6" : "#F0FDFA",
+      borderColor: isActive ? "#14B8A6" : "#2DD4BF",
+      color: isActive ? "#FFFFFF" : "#0D9488",
     },
     "&:focus-visible": {
       outline: "2px solid #2DD4BF",
@@ -175,7 +176,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
     },
   });
 
-  // Toggle button styles
+  // Toggle button styles (teal #2DD4BF)
   const toggleButtonSx = {
     height: { xs: 40, sm: 36 },
     minWidth: 44,
@@ -187,17 +188,19 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
     color: "#64748B",
     transition: "all 200ms ease",
     whiteSpace: "nowrap",
+    borderRadius: "var(--button-radius) !important",
     "&.Mui-selected": {
-      backgroundColor: "#2563EB",
+      backgroundColor: "#2DD4BF",
       color: "#FFFFFF",
-      borderColor: "#2563EB",
+      borderColor: "#2DD4BF",
       "&:hover": {
-        backgroundColor: "#1D4ED8",
+        backgroundColor: "#14B8A6",
       },
     },
     "&:hover": {
-      backgroundColor: "#F8FAFC",
+      backgroundColor: "#F0FDFA",
       borderColor: "#2DD4BF",
+      color: "#0D9488",
     },
     "&:focus-visible": {
       outline: "2px solid #2DD4BF",
@@ -230,7 +233,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             </p>
             <Link
               href="/packages"
-              className="inline-block mt-4 text-[#2563EB] font-medium hover:underline"
+              className="inline-block mt-4 px-4 py-2 text-[#2563EB] font-medium border border-[#2563EB]/50 hover:border-[#2563EB] hover:bg-[#EFF6FF] rounded-[var(--button-radius)] transition-colors"
             >
               View all packages →
             </Link>
@@ -244,7 +247,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
         <div className="sm:hidden mb-4">
           <button
             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-[#F8FAFC] rounded-[var(--radius)] border border-[#E2E8F0] active:bg-[#F1F5F9] transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 bg-[#F8FAFC] rounded-[var(--radius)] border border-[#E2E8F0] hover:border-[#2563EB]/40 hover:bg-[#EFF6FF] active:bg-[#E0E7FF] transition-colors"
             aria-expanded={mobileFiltersOpen}
             aria-controls="mobile-filters"
           >
@@ -252,7 +255,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
               <AdjustmentsHorizontalIcon className="w-5 h-5 text-[#64748B]" />
               <span className="font-medium text-[#0F172A]">Filters</span>
               {activeFilterCount > 0 && (
-                <span className="px-2 py-0.5 bg-[#2563EB] text-white text-xs font-medium rounded-full">
+                <span className="px-2 py-0.5 bg-[#2DD4BF] text-white text-xs font-medium rounded-full">
                   {activeFilterCount}
                 </span>
               )}
@@ -354,7 +357,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             {activeFilterCount > 0 && (
               <button
                 onClick={clearFilters}
-                className="w-full py-2.5 text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] border border-[#2563EB] rounded-[var(--radius)] transition-colors active:bg-[#EFF6FF]"
+                className="w-full py-2.5 text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] hover:bg-[#EFF6FF] border border-[#2563EB] rounded-[var(--button-radius)] transition-colors active:bg-[#E0E7FF]"
               >
                 Clear All Filters
               </button>
@@ -416,7 +419,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             aria-label="Filter by duration"
             sx={{
               "& .MuiToggleButtonGroup-grouped": {
-                borderRadius: "var(--radius) !important",
+                borderRadius: "var(--button-radius) !important",
                 mx: 0.5,
                 border: "1px solid #E2E8F0 !important",
               },
@@ -452,7 +455,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             aria-label="Filter by budget"
             sx={{
               "& .MuiToggleButtonGroup-grouped": {
-                borderRadius: "var(--radius) !important",
+                borderRadius: "var(--button-radius) !important",
                 mx: 0.5,
                 border: "1px solid #E2E8F0 !important",
               },
@@ -482,7 +485,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             </span>
             <button
               onClick={clearFilters}
-              className="text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] transition-colors underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] focus-visible:ring-offset-2 rounded"
+              className="text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] hover:bg-[#EFF6FF] px-2 py-1 rounded-[var(--button-radius)] transition-colors underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
             >
               Clear filters
             </button>
@@ -497,7 +500,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             </span>
             <button
               onClick={clearFilters}
-              className="text-sm font-medium text-[#2563EB] active:text-[#1D4ED8]"
+              className="text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] hover:bg-[#EFF6FF] active:bg-[#E0E7FF] px-2 py-1 rounded-[var(--button-radius)] transition-colors"
             >
               Clear
             </button>
@@ -551,7 +554,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
             </p>
             <button
               onClick={clearFilters}
-              className="px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] active:bg-[#1E40AF] text-white text-sm font-medium rounded-[var(--radius)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] focus-visible:ring-offset-2"
+              className="px-5 py-2.5 bg-button-gradient text-white text-sm font-medium rounded-[var(--button-radius)] transition-all shadow-sm hover:shadow-md disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
             >
               Reset Filters
             </button>
@@ -619,7 +622,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
                       className={`w-2 h-2 rounded-full transition-all duration-200 ${
                         activeScrollIndex === i
                           ? "bg-[#2563EB] w-6"
-                          : "bg-[#E2E8F0] hover:bg-[#CBD5E1]"
+                          : "bg-[#E2E8F0] hover:bg-[#2563EB]/50"
                       }`}
                       role="tab"
                       aria-selected={activeScrollIndex === i}
@@ -642,7 +645,7 @@ const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({
           <div className="text-center mt-8 sm:mt-10">
             <Link
               href="/packages"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-[#2563EB] hover:text-[#1D4ED8] active:text-[#1E40AF] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF] focus-visible:ring-offset-2 rounded-[var(--radius)]"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-[#2563EB] hover:text-[#1D4ED8] font-medium border-2 border-[#2563EB]/50 hover:border-[#2563EB] hover:bg-[#EFF6FF] rounded-[var(--button-radius)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
             >
               View All Packages
               <svg

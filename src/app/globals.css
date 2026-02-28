@@ -39,6 +39,18 @@
   --radius-xl: 28px;
   --radius-2xl: 36px;
   --radius-full: 9999px;
+
+  /* Button design – matches navbar gradient (blue → teal). Control radius and colors here. */
+  --button-radius: 24px;
+  --button-bg: #2563EB;
+  --button-bg-hover: #1D4ED8;
+  /* Gradient theme (navbar hover: from #2563EB to #2DD4BF) */
+  --button-gradient: linear-gradient(135deg, #2563EB 0%, #2DD4BF 100%);
+  --button-gradient-hover: linear-gradient(135deg, #1D4ED8 0%, #14B8A6 100%);
+  /* Secondary/outline buttons – theme border and hover */
+  --button-outline-border: #2563EB;
+  --button-outline-hover-bg: rgba(37, 99, 235, 0.08);
+  --button-outline-hover-border: #2DD4BF;
 }
 
 @theme inline {
@@ -72,6 +84,45 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Primary button – gradient matches navbar (blue → teal), radius from --button-radius */
+.btn-primary {
+  background: var(--button-gradient);
+  border-radius: var(--button-radius);
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--button-gradient-hover);
+}
+/* Gradient for all primary buttons (navbar theme: blue → teal) */
+.bg-button-gradient {
+  background: var(--button-gradient);
+  transition: background 0.2s ease;
+}
+.bg-button-gradient:hover {
+  background: var(--button-gradient-hover);
+}
+.bg-button-gradient:disabled {
+  background: #E5E7EB;
+  cursor: not-allowed;
+}
+
+/* Secondary/outline buttons – theme border and hover (navbar blue/teal) */
+.btn-outline-theme {
+  border: 1px solid var(--button-outline-border);
+  color: var(--button-outline-border);
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btn-outline-theme:hover {
+  background: var(--button-outline-hover-bg);
+  border-color: var(--button-outline-hover-border);
+  color: #1D4ED8;
+}
+.btn-ghost-theme:hover {
+  background: var(--button-outline-hover-bg);
+  color: #2563EB;
 }
 
 /* Custom field padding - Mobile optimized */
@@ -361,7 +412,7 @@ body {
 .react-datepicker__day--selected,
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range {
-  background-color: #2563EB !important;
+  background-color: var(--button-bg) !important;
   color: white !important;
 }
 
@@ -371,7 +422,7 @@ body {
 
 .react-datepicker__day--range-start,
 .react-datepicker__day--range-end {
-  background-color: #2563EB !important;
+  background-color: var(--button-bg) !important;
   color: white !important;
 }
 

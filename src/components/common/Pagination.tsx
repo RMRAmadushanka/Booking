@@ -69,7 +69,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="p-2 rounded-[var(--radius)] border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+          className="p-2 rounded-[var(--button-radius)] border border-[#E2E8F0] text-[#64748B] hover:border-[#2563EB]/40 hover:bg-[#EFF6FF] hover:text-[#2563EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[#E2E8F0] disabled:hover:text-[#64748B] transition-colors"
           aria-label="Previous page"
         >
           <ChevronLeftIcon className="w-5 h-5" />
@@ -85,10 +85,10 @@ export default function Pagination({
                 key={p}
                 type="button"
                 onClick={() => onPageChange(p)}
-                className={`min-w-[2.25rem] h-9 px-2 rounded-[var(--radius)] text-sm font-medium transition-colors ${
+                className={`min-w-[2.25rem] h-9 px-2 rounded-[var(--button-radius)] text-sm font-medium transition-colors ${
                   p === currentPage
-                    ? "bg-[#2563EB] text-white border border-[#2563EB]"
-                    : "border border-[#E2E8F0] text-[#0F172A] hover:bg-[#F8FAFC]"
+                    ? "bg-button-gradient text-white border border-transparent"
+                    : "border border-[#E2E8F0] text-[#0F172A] hover:border-[#2563EB]/50 hover:bg-[#EFF6FF] hover:text-[#2563EB]"
                 }`}
                 aria-label={`Page ${p}`}
                 aria-current={p === currentPage ? "page" : undefined}
@@ -102,7 +102,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="p-2 rounded-[var(--radius)] border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+          className="p-2 rounded-[var(--button-radius)] border border-[#E2E8F0] text-[#64748B] hover:border-[#2563EB]/40 hover:bg-[#EFF6FF] hover:text-[#2563EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[#E2E8F0] disabled:hover:text-[#64748B] transition-colors"
           aria-label="Next page"
         >
           <ChevronRightIcon className="w-5 h-5" />

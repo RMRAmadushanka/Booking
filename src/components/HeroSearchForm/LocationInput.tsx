@@ -152,7 +152,7 @@ const LocationInput: FC<LocationInputProps> = ({
                   <span
                     onClick={() => handleSelectLocation(item)}
                     key={item}
-                    className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)]"
+                    className="flex px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-[#EFF6FF] cursor-pointer transition-colors rounded-[var(--radius-2xl)]"
                   >
                     <span className="block text-[#64748B]">
                       <ClockIcon className="h-4 sm:h-6 w-4 sm:w-6" />

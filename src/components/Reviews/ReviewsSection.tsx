@@ -137,7 +137,7 @@ export default function ReviewsSection({
                         ? basePath
                         : `${basePath}?reviewPage=${page - 1}`
                     }
-                    className="px-3 py-1.5 text-sm font-medium text-[#2563EB] hover:bg-slate-50 rounded-[var(--radius)]"
+                    className="px-3 py-1.5 text-sm font-medium text-[#2563EB] hover:bg-[#EFF6FF] rounded-[var(--button-radius)]"
                   >
                     ← Previous
                   </Link>
@@ -145,7 +145,7 @@ export default function ReviewsSection({
                 {page < totalPages ? (
                   <Link
                     href={`${basePath}?reviewPage=${page + 1}`}
-                    className="px-3 py-1.5 text-sm font-medium text-[#2563EB] hover:bg-slate-50 rounded-[var(--radius)]"
+                    className="px-3 py-1.5 text-sm font-medium text-[#2563EB] hover:bg-[#EFF6FF] rounded-[var(--button-radius)]"
                   >
                     Next →
                   </Link>

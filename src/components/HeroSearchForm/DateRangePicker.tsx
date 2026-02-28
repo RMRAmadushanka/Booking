@@ -200,7 +200,7 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
             </h2>
             <button
               onClick={() => setIsMobileModalOpen(false)}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-full hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
               type="button"
             >
               <XMarkIcon className="w-6 h-6 text-[#64748B]" />

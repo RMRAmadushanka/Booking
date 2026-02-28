@@ -35,7 +35,7 @@ const DatePickerCustomHeaderTwoMonth = ({
       {showLeftArrow && (
         <button
           aria-label="Previous Month"
-          className="custom-nav-arrow react-datepicker__navigation react-datepicker__navigation--previous absolute left-0 flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-10"
+          className="custom-nav-arrow react-datepicker__navigation react-datepicker__navigation--previous absolute left-0 flex items-center justify-center p-2 rounded-full hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD] transition-colors z-10"
           onClick={decreaseMonth}
           type="button"
           style={{ top: "50%", transform: "translateY(-50%)" }}
@@ -52,7 +52,7 @@ const DatePickerCustomHeaderTwoMonth = ({
       {showRightArrow && (
         <button
           aria-label="Next Month"
-          className="custom-nav-arrow react-datepicker__navigation react-datepicker__navigation--next absolute right-0 flex items-center justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors z-10"
+          className="custom-nav-arrow react-datepicker__navigation react-datepicker__navigation--next absolute right-0 flex items-center justify-center p-2 hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD] rounded-full transition-colors z-10"
           onClick={increaseMonth}
           type="button"
           style={{ top: "50%", transform: "translateY(-50%)" }}

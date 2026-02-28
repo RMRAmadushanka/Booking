@@ -80,7 +80,7 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
                 <Popover.Button
                   className={` ${
                     open ? "" : "text-opacity-90"
-                  } group self-center w-10 h-10 sm:w-12 sm:h-12 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full inline-flex items-center justify-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
+                  } group self-center w-10 h-10 sm:w-12 sm:h-12 hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD] rounded-full inline-flex items-center justify-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative transition-colors`}
                 >
                   <span className="w-2 h-2 bg-blue-500 absolute top-2 right-2 rounded-full"></span>
                   <BellIcon className="h-6 w-6" />
@@ -102,7 +102,7 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
                           <a
                             key={index}
                             href={item.href}
-                            className="flex p-2 pr-8 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 relative"
+                            className="flex p-2 pr-8 -m-3 transition duration-150 ease-in-out rounded-[var(--radius)] hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD] focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 relative"
                             onClick={handleClose}
                           >
                             <Avatar

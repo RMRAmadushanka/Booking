@@ -31,6 +31,10 @@ type RouteDay = {
   name: string;
   imageUrl: string;
   description: string;
+  accommodation?: string | null;
+  mealPlan?: string | null;
+  travelTime?: string | null;
+  transportMode?: string | null;
 };
 
 function buildRouteDaysFromDb(
@@ -96,6 +100,10 @@ export default function PackageLocationsAccordion({
         name: r.name,
         imageUrl: r.imageUrl,
         description: r.description,
+        accommodation: r.accommodation ?? undefined,
+        mealPlan: r.mealPlan ?? undefined,
+        travelTime: r.travelTime ?? undefined,
+        transportMode: r.transportMode ?? undefined,
       }));
     }
     return buildRouteDaysFromDb(
@@ -107,70 +115,108 @@ export default function PackageLocationsAccordion({
     );
   }, [routeDaysFromDb, dayCount, destinations, dbDestinationDetails, destinationDays, packageId]);
 
+  const hasDayDetails = (r: RouteDay) =>
+    (r.accommodation?.trim?.() ?? "") !== "" ||
+    (r.mealPlan?.trim?.() ?? "") !== "" ||
+    (r.travelTime?.trim?.() ?? "") !== "" ||
+    (r.transportMode?.trim?.() ?? "") !== "";
+
   return (
     <div className="space-y-3">
-      {routeDays.map(({ day, name, imageUrl, description }) => (
-        <Accordion
-          key={day}
-          disableGutters
-          elevation={0}
-          sx={{
-            borderRadius: "var(--radius)",
-            border: "1px solid #E2E8F0",
-            overflow: "hidden",
-            "&:before": { display: "none" },
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon className="w-5 h-5 text-slate-500" />}
+      {routeDays.map((routeDay) => {
+        const { day, name, imageUrl, description, accommodation, mealPlan, travelTime, transportMode } = routeDay;
+        const showDetails = hasDayDetails(routeDay);
+        return (
+          <Accordion
+            key={day}
+            disableGutters
+            elevation={0}
             sx={{
-              px: 2,
-              py: 1,
-              "& .MuiAccordionSummary-content": { my: 1 },
+              borderRadius: "var(--radius)",
+              border: "1px solid #E2E8F0",
+              overflow: "hidden",
+              "&:before": { display: "none" },
             }}
           >
-            <div className="flex items-center gap-3 w-full">
-              <div className="w-8 h-8 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 flex-shrink-0">
-                {day}
-              </div>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 h-5 text-slate-500" />}
+              sx={{
+                px: 2,
+                py: 1,
+                "& .MuiAccordionSummary-content": { my: 1 },
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <div className="w-8 h-8 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 flex-shrink-0">
+                  {day}
+                </div>
 
-              <div className="min-w-0 flex-1">
-                <div className="font-semibold text-slate-900 leading-5 truncate">
-                  {name}
-                </div>
-                <div className="text-xs text-slate-500 leading-4">
-                  Day {day}{dayCount > 0 ? ` of ${dayCount}` : ""}
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-slate-900 leading-5 truncate">
+                    {name}
+                  </div>
+                  <div className="text-xs text-slate-500 leading-4">
+                    Day {day}{dayCount > 0 ? ` of ${dayCount}` : ""}
+                  </div>
                 </div>
               </div>
-            </div>
-          </AccordionSummary>
+            </AccordionSummary>
 
-          <AccordionDetails sx={{ px: 2, pb: 2, pt: 0 }}>
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-              <div className="sm:col-span-5">
-                <div className="relative w-full h-44 sm:h-36 rounded-[var(--radius-md)] overflow-hidden border border-slate-200 bg-slate-100">
-                  <Image
-                    src={imageUrl}
-                    alt={`${name} – Day ${day}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 35vw"
-                    loading="lazy"
-                  />
+            <AccordionDetails sx={{ px: 2, pb: 2, pt: 0 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                <div className="sm:col-span-5">
+                  <div className="relative w-full h-44 sm:h-36 rounded-[var(--radius-md)] overflow-hidden border border-slate-200 bg-slate-100">
+                    <Image
+                      src={imageUrl}
+                      alt={`${name} – Day ${day}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 35vw"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-7">
+                  <div className="text-sm font-semibold text-slate-900 mb-1">
+                    About {name}
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    {description}
+                  </p>
+                  {showDetails && (
+                    <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm border-t border-slate-200 pt-3">
+                      {accommodation?.trim() && (
+                        <>
+                          <dt className="font-medium text-slate-500">Accommodation</dt>
+                          <dd className="text-slate-700">{accommodation}</dd>
+                        </>
+                      )}
+                      {mealPlan?.trim() && (
+                        <>
+                          <dt className="font-medium text-slate-500">Meal Plan</dt>
+                          <dd className="text-slate-700">{mealPlan}</dd>
+                        </>
+                      )}
+                      {travelTime?.trim() && (
+                        <>
+                          <dt className="font-medium text-slate-500">Travel Time</dt>
+                          <dd className="text-slate-700">{travelTime}</dd>
+                        </>
+                      )}
+                      {transportMode?.trim() && (
+                        <>
+                          <dt className="font-medium text-slate-500">Transport Mode</dt>
+                          <dd className="text-slate-700">{transportMode}</dd>
+                        </>
+                      )}
+                    </dl>
+                  )}
                 </div>
               </div>
-              <div className="sm:col-span-7">
-                <div className="text-sm font-semibold text-slate-900 mb-1">
-                  About {name}
-                </div>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {description}
-                </p>
-              </div>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </div>
   );
 }

@@ -47,7 +47,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
             return (
               <>
                 <Popover.Button
-                  className={`self-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none flex items-center justify-center`}
+                  className={`self-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD] focus:outline-none flex items-center justify-center transition-colors`}
                 >
                   <Avatar sizeClass="w-8 h-8 sm:w-9 sm:h-9" />
                 </Popover.Button>

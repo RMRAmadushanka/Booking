@@ -10,7 +10,7 @@ interface ButtonCloseProps {
 
 const ButtonClose: FC<ButtonCloseProps> = ({
   onClick,
-  className = "p-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800",
+  className = "p-1 rounded-full hover:bg-[#EFF6FF] hover:text-[#2563EB] dark:hover:bg-[#1E3A5F] dark:hover:text-[#93C5FD]",
 }) => {
   return (
     <button

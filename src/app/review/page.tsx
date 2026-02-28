@@ -136,7 +136,7 @@ function ReviewFormInner() {
           <p className="text-emerald-800 mb-6">{state.message}</p>
           <Link
             href="/"
-            className="inline-block px-5 py-2.5 rounded-lg bg-[#2563EB] text-white font-medium hover:opacity-90"
+            className="inline-block px-5 py-2.5 rounded-[var(--button-radius)] bg-button-gradient text-white font-medium hover:opacity-90"
           >
             Back to home
           </Link>
@@ -213,7 +213,7 @@ function ReviewFormInner() {
         <button
           type="submit"
           disabled={submitting || rating < 1}
-          className="w-full py-3 rounded-lg bg-[#2563EB] text-white font-semibold hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 rounded-[var(--button-radius)] bg-button-gradient text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
         >
           {submitting ? "Submitting…" : "Submit review"}
         </button>

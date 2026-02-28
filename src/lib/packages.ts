@@ -39,6 +39,10 @@ type DbRouteDay = {
   name: string;
   image_url: string;
   description: string;
+  accommodation?: string | null;
+  meal_plan?: string | null;
+  travel_time?: string | null;
+  transport_mode?: string | null;
 };
 
 type DbPackage = {
@@ -79,6 +83,10 @@ function mapRowToPackage(row: DbPackage): TravelPackage {
             name: String(r.name),
             imageUrl: typeof r.image_url === "string" && r.image_url.trim() ? r.image_url : "https://picsum.photos/seed/route/1200/800",
             description: typeof r.description === "string" && r.description.trim() ? r.description : "A day on your route. Explore at your own pace.",
+            accommodation: typeof r.accommodation === "string" && r.accommodation.trim() ? r.accommodation : undefined,
+            mealPlan: typeof r.meal_plan === "string" && r.meal_plan.trim() ? r.meal_plan : undefined,
+            travelTime: typeof r.travel_time === "string" && r.travel_time.trim() ? r.travel_time : undefined,
+            transportMode: typeof r.transport_mode === "string" && r.transport_mode.trim() ? r.transport_mode : undefined,
           }))
       : undefined;
   return {
@@ -160,6 +168,59 @@ export function getUniquePackageTypes(packages: TravelPackage[]): string[] {
     if (typeof pkg.packageType === "string" && pkg.packageType.trim()) set.add(pkg.packageType.trim());
   }
   return Array.from(set).sort((a, b) => a.localeCompare(b));
+}
+
+export type PopularDestination = {
+  name: string;
+  country: string;
+  imageUrl: string;
+};
+
+/**
+ * Build popular destinations with images from package data (destination_details and route_days).
+ * Uses first image found per destination name. Limit to top N for the home section.
+ */
+export function getPopularDestinationsWithImages(
+  packages: TravelPackage[],
+  limit = 4,
+  country = "Sri Lanka"
+): PopularDestination[] {
+  const byName = new Map<string, string>();
+
+  for (const pkg of packages) {
+    if (Array.isArray(pkg.destinationDetails)) {
+      for (const d of pkg.destinationDetails) {
+        if (typeof d.name === "string" && d.name.trim() && typeof d.imageUrl === "string" && d.imageUrl.trim()) {
+          const key = d.name.trim();
+          if (!byName.has(key)) byName.set(key, d.imageUrl.trim());
+        }
+      }
+    }
+    if (Array.isArray(pkg.routeDays)) {
+      for (const r of pkg.routeDays) {
+        if (typeof r.name === "string" && r.name.trim() && typeof r.imageUrl === "string" && r.imageUrl.trim()) {
+          const key = r.name.trim();
+          if (!byName.has(key)) byName.set(key, r.imageUrl.trim());
+        }
+      }
+    }
+  }
+
+  const order = ["Sigiriya", "Kandy", "Nuwara Eliya", "Ella", "Galle", "Colombo", "Bentota", "Yala"];
+  const sorted = Array.from(byName.entries()).sort(([a], [b]) => {
+    const ia = order.indexOf(a);
+    const ib = order.indexOf(b);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.localeCompare(b);
+  });
+
+  return sorted.slice(0, limit).map(([name, imageUrl]) => ({
+    name,
+    country,
+    imageUrl,
+  }));
 }
 
 /**

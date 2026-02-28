@@ -360,7 +360,7 @@ export default function CustomizeTripPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="mt-4 px-4 py-2.5 text-sm font-semibold text-emerald-800 bg-white border border-emerald-300 rounded-[var(--radius)] hover:bg-emerald-50 transition-colors"
+                  className="mt-4 px-4 py-2.5 text-sm font-semibold text-[#2563EB] bg-white border border-[#2563EB]/60 rounded-[var(--button-radius)] hover:bg-[#EFF6FF] transition-colors"
                 >
                   Submit another request
                 </button>
@@ -512,7 +512,7 @@ export default function CustomizeTripPage() {
                         onClick={() => setAdults((n) => Math.max(1, n - 1))}
                         disabled={adults <= 1}
                         aria-label="Decrease adults"
-                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#F1F5F9] hover:border-[var(--color-primary)]/50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] transition-colors"
+                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#EFF6FF] hover:border-[#2563EB]/50 hover:text-[#2563EB] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] disabled:hover:text-[var(--color-dark)] transition-colors"
                       >
                         <MinusIcon className="w-4 h-4" />
                       </button>
@@ -524,7 +524,7 @@ export default function CustomizeTripPage() {
                         onClick={() => setAdults((n) => Math.min(9, n + 1))}
                         disabled={adults >= 9}
                         aria-label="Increase adults"
-                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#F1F5F9] hover:border-[var(--color-primary)]/50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] transition-colors"
+                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#EFF6FF] hover:border-[#2563EB]/50 hover:text-[#2563EB] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] disabled:hover:text-[var(--color-dark)] transition-colors"
                       >
                         <PlusIcon className="w-4 h-4" />
                       </button>
@@ -545,7 +545,7 @@ export default function CustomizeTripPage() {
                         onClick={() => setChildren((n) => Math.max(0, n - 1))}
                         disabled={children <= 0}
                         aria-label="Decrease children"
-                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#F1F5F9] hover:border-[var(--color-primary)]/50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] transition-colors"
+                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#EFF6FF] hover:border-[#2563EB]/50 hover:text-[#2563EB] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] disabled:hover:text-[var(--color-dark)] transition-colors"
                       >
                         <MinusIcon className="w-4 h-4" />
                       </button>
@@ -557,7 +557,7 @@ export default function CustomizeTripPage() {
                         onClick={() => setChildren((n) => Math.min(9, n + 1))}
                         disabled={children >= 9}
                         aria-label="Increase children"
-                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#F1F5F9] hover:border-[var(--color-primary)]/50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] transition-colors"
+                        className="w-9 h-9 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-dark)] hover:bg-[#EFF6FF] hover:border-[#2563EB]/50 hover:text-[#2563EB] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-[var(--color-border)] disabled:hover:text-[var(--color-dark)] transition-colors"
                       >
                         <PlusIcon className="w-4 h-4" />
                       </button>
@@ -663,7 +663,7 @@ export default function CustomizeTripPage() {
             <button
               type="submit"
               disabled={submitState.status === "submitting"}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold rounded-[var(--radius)] shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 bg-button-gradient text-white font-semibold rounded-[var(--button-radius)] shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {submitState.status === "submitting" ? (
                 <>Submitting…</>

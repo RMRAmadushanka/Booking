@@ -159,7 +159,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
         
         <button 
           onClick={onClickClose}
-          className="absolute right-4 top-4 p-2 rounded-[var(--radius)] text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition-colors duration-150"
+          className="absolute right-4 top-4 p-2 rounded-[var(--button-radius)] text-[#64748B] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors duration-150"
           aria-label="Close menu"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -185,7 +185,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-[var(--radius)] bg-[#F1F5F9] text-[#64748B] hover:bg-[#2563EB] hover:text-white transition-all duration-200"
+              className="w-10 h-10 flex items-center justify-center rounded-[var(--button-radius)] bg-[#F1F5F9] text-[#64748B] hover:bg-button-gradient hover:text-white transition-all duration-200"
               aria-label={social.name}
             >
               {social.icon}

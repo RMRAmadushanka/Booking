@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import {
   MapPinIcon,
   ClockIcon,
   StarIcon,
-  HeartIcon,
   CogIcon,
   UserGroupIcon,
   TagIcon,
 } from "@heroicons/react/24/solid";
-import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { TravelPackage } from "@/types/packages";
 import { Vehicle } from "@/types/vehicle";
 
@@ -25,7 +23,6 @@ interface TravelCardProps {
   reviewCount?: number;
   averageRating?: number | null;
   onBookNow?: (pkg: TravelPackage) => void;
-  onFavorite?: (pkg: TravelPackage, isFavorite: boolean) => void;
 }
 
 // Props for vehicle
@@ -35,7 +32,6 @@ interface VehicleCardProps {
   reviewCount?: number;
   averageRating?: number | null;
   onBookNow?: (vehicle: Vehicle) => void;
-  onFavorite?: (vehicle: Vehicle, isFavorite: boolean) => void;
 }
 
 // Union type for CommonCard props
@@ -71,21 +67,6 @@ const InfoItem: React.FC<{
 );
 
 const CommonCard: React.FC<CommonCardProps> = (props) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const newFavoriteState = !isFavorite;
-    setIsFavorite(newFavoriteState);
-
-    if (props.type === "travel" && props.onFavorite) {
-      props.onFavorite(props.data, newFavoriteState);
-    } else if (props.type === "vehicle" && props.onFavorite) {
-      props.onFavorite(props.data, newFavoriteState);
-    }
-  };
-
   const handleBookNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -187,7 +168,7 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
       : (props as VehicleCardProps).reviewCount ?? 0;
 
   return (
-    <div className="group bg-white rounded-[var(--radius-md)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-indigo-200">
+    <div className="group bg-white rounded-[var(--radius-md)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-[#2563EB]/40">
       {/* Image Section */}
       <div className="relative h-64 overflow-hidden bg-slate-100">
         <Image
@@ -201,23 +182,10 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
 
         {/* Badge */}
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-full shadow-md">
+          <span className="px-3 py-1.5 bg-button-gradient text-white text-xs font-semibold rounded-[var(--button-radius)] shadow-md">
             {getBadgeText()}
           </span>
         </div>
-
-        {/* Favorite Button */}
-        <button
-          onClick={handleFavoriteClick}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-colors shadow-md group/fav"
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-        >
-          {isFavorite ? (
-            <HeartIcon className="w-5 h-5 text-rose-500" />
-          ) : (
-            <HeartOutlineIcon className="w-5 h-5 text-slate-400 group-hover/fav:text-rose-500 transition-colors" />
-          )}
-        </button>
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -257,7 +225,7 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
           </div>
           <button
             onClick={handleBookNow}
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-[var(--radius)] transition-colors shadow-sm hover:shadow-md"
+            className="px-5 py-2.5 bg-button-gradient text-white text-sm font-medium rounded-[var(--button-radius)] transition-colors shadow-sm hover:shadow-md"
           >
             {getActionButtonText()}
           </button>

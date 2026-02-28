@@ -177,7 +177,7 @@ export default function VehiclesPageClient({
             </div>
             <button
               onClick={() => setIsMobileFiltersOpen(true)}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-[var(--radius)] font-medium transition-colors"
+              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-button-gradient text-white rounded-[var(--button-radius)] font-medium transition-colors"
               aria-label="Open filters"
             >
               <FunnelIcon className="w-5 h-5" />
@@ -247,7 +247,7 @@ export default function VehiclesPageClient({
                 </p>
                 <button
                   onClick={() => handleFiltersChange(INITIAL_FILTERS)}
-                  className="px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-medium rounded-[var(--radius)] transition-colors"
+                  className="px-6 py-3 bg-button-gradient text-white font-medium rounded-[var(--button-radius)] transition-colors"
                 >
                   Clear All Filters
                 </button>

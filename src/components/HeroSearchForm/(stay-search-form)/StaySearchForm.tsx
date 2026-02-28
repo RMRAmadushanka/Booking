@@ -91,7 +91,7 @@ const StaySearchForm: FC<StaySearchFormProps> = ({ destinations = [], packageTyp
                       setPackageType("");
                       setShowPackageTypeDropdown(false);
                     }}
-                    className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
+                    className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-[#EFF6FF] cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
                   >
                     <span className="block text-[#64748B]">
                       <TagIcon className="h-4 sm:h-6 w-4 sm:w-6" />
@@ -108,7 +108,7 @@ const StaySearchForm: FC<StaySearchFormProps> = ({ destinations = [], packageTyp
                         setPackageType(t);
                         setShowPackageTypeDropdown(false);
                       }}
-                      className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
+                      className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-[#EFF6FF] cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
                     >
                       <span className="block text-[#64748B]">
                         <TagIcon className="h-4 sm:h-6 w-4 sm:w-6" />

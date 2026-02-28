@@ -115,7 +115,7 @@ export default async function VehicleDetailPage({
             </div>
             <Link
               href="#rental-form"
-              className="mt-4 inline-flex w-full items-center justify-center px-5 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-semibold rounded-[var(--radius)] transition-colors shadow-sm"
+              className="mt-4 inline-flex w-full items-center justify-center px-5 py-3 bg-button-gradient text-white text-sm font-semibold rounded-[var(--button-radius)] transition-colors shadow-sm"
             >
               Rent this vehicle
             </Link>

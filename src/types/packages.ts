@@ -56,6 +56,14 @@ export interface RouteDayFromDb {
   name: string;
   imageUrl: string;
   description: string;
+  /** e.g. "Thilanka Hotel (4 Hotel)" */
+  accommodation?: string | null;
+  /** e.g. "Breakfast", "None", "Breakfast & Dinner" */
+  mealPlan?: string | null;
+  /** e.g. "Airport to Kandy - 3 hours (approx.)" */
+  travelTime?: string | null;
+  /** e.g. "Private Car (Air Conditioned)" */
+  transportMode?: string | null;
 }
 
 export interface TravelPackage {

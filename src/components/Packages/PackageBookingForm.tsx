@@ -225,7 +225,7 @@ export default function PackageBookingForm({
               setPickupLocation(defaultPickup);
               setNotes("");
             }}
-            className="mt-4 px-4 py-2 text-sm font-semibold text-emerald-800 bg-white border border-emerald-300 rounded-[var(--radius)] hover:bg-emerald-50 transition-colors"
+            className="mt-4 px-4 py-2 text-sm font-semibold text-[#2563EB] bg-white border border-[#2563EB]/60 rounded-[var(--button-radius)] hover:bg-[#EFF6FF] transition-colors"
           >
             Book again
           </button>
@@ -292,7 +292,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setAdultCount((v) => Math.max(1, v - 1))}
-                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:border-[#2563EB]/50 hover:bg-[#EFF6FF] hover:text-[#2563EB] text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Decrease adults"
                     >
                       −
@@ -303,7 +303,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setAdultCount((v) => v + 1)}
-                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:border-[#2563EB]/50 hover:bg-[#EFF6FF] hover:text-[#2563EB] text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Increase adults"
                     >
                       +
@@ -323,7 +323,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setChildrenCount((v) => Math.max(0, v - 1))}
-                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:border-[#2563EB]/50 hover:bg-[#EFF6FF] hover:text-[#2563EB] text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Decrease children"
                     >
                       −
@@ -334,7 +334,7 @@ export default function PackageBookingForm({
                     <button
                       type="button"
                       onClick={() => setChildrenCount((v) => v + 1)}
-                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-900 font-semibold flex items-center justify-center transition-colors"
+                      className="w-9 h-9 shrink-0 rounded-full border border-slate-300 hover:border-[#2563EB]/50 hover:bg-[#EFF6FF] hover:text-[#2563EB] text-slate-900 font-semibold flex items-center justify-center transition-colors"
                       aria-label="Increase children"
                     >
                       +
@@ -474,7 +474,7 @@ export default function PackageBookingForm({
           <button
             type="submit"
             disabled={submitState.status === "submitting"}
-            className="w-full px-5 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-[var(--radius)] transition-colors shadow-sm"
+            className="w-full px-5 py-3 bg-button-gradient disabled:opacity-70 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-[var(--button-radius)] transition-all shadow-sm hover:shadow-md"
           >
             {submitState.status === "submitting" ? "Submitting..." : "Submit to agent"}
           </button>

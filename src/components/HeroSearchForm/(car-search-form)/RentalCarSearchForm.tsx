@@ -95,7 +95,7 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({
                       setVehicleType("");
                       setShowVehicleTypeDropdown(false);
                     }}
-                    className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
+                    className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-[#EFF6FF] cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
                   >
                     <span className="block text-[#64748B]">
                       <TruckIcon className="h-4 sm:h-6 w-4 sm:w-6" />
@@ -112,7 +112,7 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({
                         setVehicleType(t);
                         setShowVehicleTypeDropdown(false);
                       }}
-                      className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-gray-100 cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
+                      className="flex w-full px-4 sm:px-8 mx-2 sm:mx-4 items-center space-x-3 sm:space-x-4 py-4 hover:bg-[#EFF6FF] cursor-pointer transition-colors rounded-[var(--radius-2xl)] text-left"
                     >
                       <span className="block text-[#64748B]">
                         <TruckIcon className="h-4 sm:h-6 w-4 sm:w-6" />

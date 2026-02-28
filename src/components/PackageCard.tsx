@@ -1,9 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
-
 export type PackageType = "travel" | "vehicle";
 export type CardVariant = 
   | "default" | "glass" | "minimal" | "modern" | "elegant"
@@ -41,7 +37,6 @@ interface VehiclePackageProps extends BasePackageProps {
 type PackageCardProps = TravelPackageProps | VehiclePackageProps;
 
 export default function PackageCard(props: PackageCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const { title, price, imageUrl, onAction, badge, type, variant = "default" } = props;
 
   const renderPackageInfo = () => {
@@ -395,7 +390,7 @@ export default function PackageCard(props: PackageCardProps) {
           title: "text-2xl font-semibold mb-1 text-[#0F172A]",
           badge: "",
           favoriteButton: "",
-          button: "bg-[#2563EB] text-white py-2.5 px-6 rounded-[var(--radius)] font-medium hover:bg-[#1D4ED8] transition-colors shadow-sm text-sm",
+          button: "bg-button-gradient text-white py-2.5 px-6 rounded-[var(--button-radius)] font-medium transition-colors shadow-sm text-sm",
           isSplit: true as const,
         };
       default: // "default"
@@ -407,9 +402,9 @@ export default function PackageCard(props: PackageCardProps) {
           contentWrapper: "",
           contentInner: "relative z-10 p-5 text-white",
           title: "text-2xl sm:text-3xl font-semibold mb-2",
-          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-[var(--radius)] bg-[#2563EB] text-white text-xs font-semibold",
-          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-[var(--radius)] bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
-          button: "w-full bg-white text-[#0F172A] py-2.5 px-6 rounded-[var(--radius)] font-semibold hover:bg-gray-50 transition-colors shadow-sm text-sm sm:text-base",
+          badge: "absolute top-4 left-4 z-10 px-3 py-1.5 rounded-[var(--button-radius)] bg-button-gradient text-white text-xs font-semibold",
+          favoriteButton: "absolute top-4 right-4 z-10 p-2.5 rounded-[var(--button-radius)] bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors border border-white/30",
+          button: "w-full bg-white text-[#0F172A] py-2.5 px-6 rounded-[var(--button-radius)] font-semibold hover:bg-[#EFF6FF] hover:text-[#2563EB] border border-[#E2E8F0] hover:border-[#2563EB]/50 transition-colors shadow-sm text-sm sm:text-base",
         };
     }
   };
@@ -493,24 +488,13 @@ export default function PackageCard(props: PackageCardProps) {
             )}
           </div>
 
-          {/* Button and Favorite Icon Row */}
+          {/* Button Row */}
           <div className="flex items-center gap-3">
             <button
               onClick={onAction}
               className={`${styles.button} flex-1`}
             >
               {getActionButtonText()}
-            </button>
-            <button
-              onClick={() => setIsFavorite(!isFavorite)}
-              className="p-2 text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
-              aria-label="Add to favorites"
-            >
-              {isFavorite ? (
-                <HeartIconSolid className="w-5 h-5" />
-              ) : (
-                <HeartIcon className="w-5 h-5" />
-              )}
             </button>
           </div>
         </div>
@@ -539,19 +523,6 @@ export default function PackageCard(props: PackageCardProps) {
         {/* Gradient Overlay */}
         <div className={styles.overlay}></div>
         {styles.bokeh && <div className={styles.bokeh}></div>}
-        
-        {/* Favorite Icon */}
-        <button
-          onClick={() => setIsFavorite(!isFavorite)}
-          className={styles.favoriteButton}
-          aria-label="Add to favorites"
-        >
-          {isFavorite ? (
-            <HeartIconSolid className="w-5 h-5 text-white" />
-          ) : (
-            <HeartIcon className="w-5 h-5 text-white stroke-2" />
-          )}
-        </button>
 
         {/* Content Overlay */}
         <div className={styles.contentContainer}>

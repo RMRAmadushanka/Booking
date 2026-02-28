@@ -116,7 +116,7 @@ export default function CountrySearchDropdown({
                   className={`w-full text-left px-3 py-2.5 rounded-[var(--radius-sm)] text-sm transition-colors ${
                     country === value
                       ? "bg-[#2563EB]/10 text-[#2563EB] font-medium"
-                      : "text-slate-700 hover:bg-slate-100"
+                      : "text-slate-700 hover:bg-[#EFF6FF] hover:text-[#2563EB]"
                   }`}
                 >
                   {country}

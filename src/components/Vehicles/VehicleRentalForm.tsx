@@ -293,7 +293,7 @@ export default function VehicleRentalForm({
           <button
             type="submit"
             disabled={submitState.status === "submitting"}
-            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold rounded-[var(--radius)] transition-colors"
+            className="w-full py-3 bg-button-gradient disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold rounded-[var(--button-radius)] transition-all shadow-sm hover:shadow-md"
           >
             {submitState.status === "submitting" ? "Submitting..." : "Submit rental request"}
           </button>

@@ -1,9 +1,11 @@
+import Link from "next/link";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import HeroSearchForm from "@/components/HeroSearchForm/HeroSearchForm";
 import { PopularPackagesSection } from "@/components/PopularPackages";
 import SocialProof from "@/components/SocialProof/index";
 import Footer from "@/components/Footer";
 import heroImage from "@/images/home-beach-hero.jpg";
-import { getPackages, getUniqueDestinations, getUniquePackageTypes } from "@/lib/packages";
+import { getPackages, getUniqueDestinations, getUniquePackageTypes, getPopularDestinationsWithImages } from "@/lib/packages";
 import { getVehicles, getUniqueVehicleLocations, getUniqueVehicleTypes } from "@/lib/vehicles";
 import { getRecentTestimonials } from "@/lib/reviews";
 
@@ -15,6 +17,7 @@ export default async function Home() {
   ]);
   const destinations = getUniqueDestinations(packages);
   const packageTypes = getUniquePackageTypes(packages);
+  const popularDestinations = getPopularDestinationsWithImages(packages, 4);
   const vehicleLocations = getUniqueVehicleLocations(vehicles);
   const vehicleTypes = getUniqueVehicleTypes(vehicles);
   return (
@@ -196,38 +199,13 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-            {[
-              {
-                name: "Sigiriya",
-                country: "Sri Lanka",
-                image:
-                  "https://picsum.photos/seed/sigiriya/400/500",
-              },
-              {
-                name: "Kandy",
-                country: "Sri Lanka",
-                image:
-                  "https://picsum.photos/seed/kandy/400/500",
-              },
-              {
-                name: "Galle",
-                country: "Sri Lanka",
-                image:
-                  "https://picsum.photos/seed/galle/400/500",
-              },
-              {
-                name: "Ella",
-                country: "Sri Lanka",
-                image:
-                  "https://picsum.photos/seed/ella/400/500",
-              },
-            ].map((destination, idx) => (
+            {popularDestinations.map((destination) => (
               <div
-                key={idx}
+                key={destination.name}
                 className="group relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] cursor-pointer"
               >
                 <img
-                  src={destination.image}
+                  src={destination.imageUrl}
                   alt={destination.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -250,19 +228,23 @@ export default async function Home() {
 
       
 
-      {/* CTA Section */}
+      {/* CTA Section - Custom package creation */}
       <div className="py-20 bg-[#2563EB]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-6">
             Ready to Start Your Journey?
           </h2>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Join millions of travelers who trust us for their booking needs.
-            Sign up today and get exclusive deals!
+            Design your own itinerary: pick destinations, dates, and travelers.
+            We’ll match you with the perfect custom package and connect you with our agents.
           </p>
-          <button className="bg-white text-[#2563EB] px-8 py-4 rounded-[var(--radius)] font-semibold hover:bg-gray-50 transition-colors shadow-lg">
-            Get Started Free
-          </button>
+          <Link
+            href="/customize-trip"
+            className="inline-flex items-center justify-center gap-2 bg-white text-[#2563EB] px-8 py-4 rounded-[var(--button-radius)] font-semibold hover:bg-[#EFF6FF] hover:text-[#1D4ED8] border-2 border-[#2563EB]/30 hover:border-[#2563EB]/60 transition-colors shadow-lg"
+          >
+            Create Your Custom Package
+            <ChevronRightIcon className="w-5 h-5" />
+          </Link>
         </div>
       </div>
 
