@@ -7,6 +7,7 @@ type RentalPayload = {
   vehicleTitle: string;
   travelerName: string;
   email: string;
+  mobileNumber?: string;
   country?: string;
   startDate: string;
   endDate: string;
@@ -76,6 +77,10 @@ export async function POST(req: Request) {
     vehicle_title: b.vehicleTitle,
     traveler_name: b.travelerName.trim(),
     email: b.email.trim(),
+    mobile_number:
+      typeof b.mobileNumber === "string" && b.mobileNumber.trim()
+        ? b.mobileNumber.trim()
+        : null,
     country: b.country!.trim(),
     start_date: b.startDate,
     end_date: b.endDate,

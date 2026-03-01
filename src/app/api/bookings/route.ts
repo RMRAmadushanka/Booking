@@ -7,6 +7,7 @@ type BookingPayload = {
   packageTitle: string;
   travelerName: string;
   email: string;
+  mobileNumber?: string;
   country?: string;
   adultCount: number;
   childrenCount: number;
@@ -175,6 +176,10 @@ export async function POST(req: Request) {
     package_title: b.packageTitle,
     traveler_name: b.travelerName.trim(),
     email: b.email.trim(),
+    mobile_number:
+      typeof b.mobileNumber === "string" && b.mobileNumber.trim()
+        ? b.mobileNumber.trim()
+        : null,
     country: b.country!.trim(),
     adult_count: adultCount,
     children_count: childrenCount,

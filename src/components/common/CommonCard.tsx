@@ -46,7 +46,7 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
         <StarIcon
           key={i}
           className={`w-4 h-4 ${
-            i < stars ? "text-amber-400 fill-current" : "text-gray-300"
+            i < stars ? "text-amber-400 fill-current" : "text-[var(--color-border)]"
           }`}
         />
       ))}
@@ -54,27 +54,37 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-// Info item component for consistent styling
+// Info item component – theme primary for icon, muted for text
 const InfoItem: React.FC<{
   icon: React.ReactNode;
   text: string;
   accentColor?: string;
-}> = ({ icon, text, accentColor = "text-indigo-600" }) => (
+}> = ({ icon, text, accentColor = "text-[var(--color-primary)]" }) => (
   <div className="flex items-center gap-1.5">
     <span className={accentColor}>{icon}</span>
-    <span className="text-sm text-slate-600">{text}</span>
+    <span className="text-sm text-[var(--color-muted)]">{text}</span>
   </div>
 );
 
 const CommonCard: React.FC<CommonCardProps> = (props) => {
-  const handleBookNow = (e: React.MouseEvent) => {
+  const handleCardClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     if (props.type === "travel" && props.onBookNow) {
       props.onBookNow(props.data);
     } else if (props.type === "vehicle" && props.onBookNow) {
       props.onBookNow(props.data);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (props.type === "travel" && props.onBookNow) {
+        props.onBookNow(props.data);
+      } else if (props.type === "vehicle" && props.onBookNow) {
+        props.onBookNow(props.data);
+      }
     }
   };
 
@@ -112,18 +122,11 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
     return "/day";
   };
 
-  const getActionButtonText = () => {
-    if (type === "travel") {
-      return "Book Now";
-    }
-    return "Rent Now";
-  };
-
   // Render travel-specific info
   const renderTravelInfo = () => {
     const pkg = data as TravelPackage;
     return (
-      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+      <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--color-muted)]">
         <InfoItem
           icon={<ClockIcon className="w-4 h-4" />}
           text={pkg.duration}
@@ -144,7 +147,7 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
   const renderVehicleInfo = () => {
     const vehicle = data as Vehicle;
     return (
-      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+      <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--color-muted)]">
         <InfoItem
           icon={<CogIcon className="w-4 h-4" />}
           text={vehicle.transmission}
@@ -167,8 +170,20 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
       ? (props as TravelCardProps).reviewCount ?? 0
       : (props as VehicleCardProps).reviewCount ?? 0;
 
+  const isClickable =
+    (props.type === "travel" && (props as TravelCardProps).onBookNow) ||
+    (props.type === "vehicle" && (props as VehicleCardProps).onBookNow);
+
   return (
-    <div className="group bg-white rounded-[var(--radius-md)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-[#2563EB]/40">
+    <div
+      {...(isClickable && {
+        role: "button",
+        tabIndex: 0,
+        onClick: handleCardClick,
+        onKeyDown: handleKeyDown,
+      })}
+      className={`group bg-white rounded-[var(--radius-md)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-[var(--color-border)] hover:border-[var(--color-primary)]/40 ${isClickable ? "cursor-pointer" : ""}`}
+    >
       {/* Image Section */}
       <div className="relative h-64 overflow-hidden bg-slate-100">
         <Image
@@ -194,12 +209,12 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
       {/* Content Section */}
       <div className="p-5">
         {/* Title */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-2 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+        <h3 className="text-xl font-semibold text-[var(--foreground)] mb-2 line-clamp-1 group-hover:text-[var(--color-primary)] transition-colors">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-slate-500 mb-4 line-clamp-2">{description}</p>
+        <p className="text-sm text-[var(--color-muted)] mb-4 line-clamp-2">{description}</p>
 
         {/* Type-specific Info */}
         <div className="mb-4">
@@ -209,26 +224,18 @@ const CommonCard: React.FC<CommonCardProps> = (props) => {
         {/* Rating */}
         <div className="flex items-center gap-2 mb-4">
           <StarRating rating={rating} />
-          <span className="text-sm font-semibold text-slate-900">{rating}</span>
-          <span className="text-xs text-slate-500">
+          <span className="text-sm font-semibold text-[var(--foreground)]">{rating}</span>
+          <span className="text-xs text-[var(--color-muted)]">
             ({reviewCount} review{reviewCount === 1 ? "" : "s"})
           </span>
         </div>
 
-        {/* Price and CTA */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-          <div>
-            <span className="text-2xl font-bold text-indigo-600">
-              ${getPrice()}
-            </span>
-            <span className="text-sm text-slate-500 ml-1">{getPriceLabel()}</span>
-          </div>
-          <button
-            onClick={handleBookNow}
-            className="px-5 py-2.5 bg-button-gradient text-white text-sm font-medium rounded-[var(--button-radius)] transition-colors shadow-sm hover:shadow-md"
-          >
-            {getActionButtonText()}
-          </button>
+        {/* Price */}
+        <div className="flex items-center pt-4 border-t border-[var(--color-border)]">
+          <span className="text-2xl font-bold text-[var(--color-primary)]">
+            ${getPrice()}
+          </span>
+          <span className="text-sm text-[var(--color-muted)] ml-1">{getPriceLabel()}</span>
         </div>
       </div>
     </div>

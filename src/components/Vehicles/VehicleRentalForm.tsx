@@ -61,6 +61,7 @@ export default function VehicleRentalForm({
 }: VehicleRentalFormProps) {
   const [travelerName, setTravelerName] = useState("");
   const [email, setEmail] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [country, setCountry] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -76,6 +77,8 @@ export default function VehicleRentalForm({
     if (!email.trim()) return "Please enter email.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return "Please enter a valid email.";
+    if (mobileNumber.trim() && !/^[+]?[\d\s\-()]{8,20}$/.test(mobileNumber.trim()))
+      return "Please enter a valid mobile number.";
     if (!startDate) return "Please select start date.";
     if (!endDate) return "Please select end date.";
     if (startDate > endDate) return "Start date must be before end date.";
@@ -102,6 +105,7 @@ export default function VehicleRentalForm({
           vehicleTitle,
           travelerName: travelerName.trim(),
           email: email.trim(),
+          mobileNumber: mobileNumber.trim() || undefined,
           country: country.trim(),
           startDate,
           endDate,
@@ -188,6 +192,20 @@ export default function VehicleRentalForm({
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="you@example.com"
+            />
+          </label>
+
+          <label className="block">
+            <span className="block text-sm font-medium text-slate-700 mb-1">
+              Mobile number (optional)
+            </span>
+            <input
+              type="tel"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
+              className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              placeholder="e.g. +94 77 123 4567"
+              autoComplete="tel"
             />
           </label>
 

@@ -16,7 +16,7 @@ const Header: FC<HeaderProps> = ({ className = "" }) => {
   return (
     <header
       className={`
-        nc-Header sticky top-0 z-40 w-full 
+        nc-Header sticky top-0 z-[1000] w-full 
         bg-white/70 
         backdrop-blur-xl backdrop-saturate-150
         border-b border-white/20

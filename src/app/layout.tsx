@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import ThemeProvider from "@/components/ThemeProvider";
+import WhatsAppButton from "@/components/WhatsAppButton/WhatsAppButton";
 import { getPageMetadata, toNextMetadata } from "@/lib/seo/metadata";
 import { getTravelAgencySchema } from "@/lib/seo/structuredData";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Header />
           {children}
+          <WhatsAppButton />
         </ThemeProvider>
       </body>
     </html>

@@ -95,6 +95,7 @@ export default function PackageBookingForm({
 
   const [travelerName, setTravelerName] = useState("");
   const [email, setEmail] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [country, setCountry] = useState("");
   const [adultCount, setAdultCount] = useState(1);
   const [childrenCount, setChildrenCount] = useState(0);
@@ -116,6 +117,8 @@ export default function PackageBookingForm({
     if (!email.trim()) return "Please enter email.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return "Please enter a valid email.";
+    if (mobileNumber.trim() && !/^[+]?[\d\s\-()]{8,20}$/.test(mobileNumber.trim()))
+      return "Please enter a valid mobile number.";
     if (!Number.isFinite(adultCount) || adultCount < 1)
       return "Adults must be at least 1.";
     if (!Number.isFinite(childrenCount) || childrenCount < 0)
@@ -147,6 +150,7 @@ export default function PackageBookingForm({
           packageTitle,
           travelerName,
           email,
+          mobileNumber: mobileNumber.trim() || undefined,
           adultCount,
           childrenCount,
           guestCount,
@@ -218,6 +222,7 @@ export default function PackageBookingForm({
               setSubmitState({ status: "idle" });
               setTravelerName("");
               setEmail("");
+              setMobileNumber("");
               setCountry("");
               setAdultCount(1);
               setChildrenCount(0);
@@ -261,6 +266,20 @@ export default function PackageBookingForm({
                 placeholder="you@example.com"
                 autoComplete="email"
                 inputMode="email"
+              />
+            </label>
+
+            <label className="block">
+              <span className="block text-sm font-medium text-slate-700 mb-1">
+                Mobile number (optional)
+              </span>
+              <input
+                value={mobileNumber}
+                onChange={(e) => setMobileNumber(e.target.value)}
+                className="w-full rounded-[var(--radius)] border border-slate-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2DD4BF] focus:border-[#2DD4BF]"
+                placeholder="e.g. +94 77 123 4567"
+                autoComplete="tel"
+                inputMode="tel"
               />
             </label>
           </div>
